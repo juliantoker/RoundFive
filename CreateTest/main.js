@@ -2,6 +2,7 @@ var stage;
 var queue;
 var buildPalletOpened;
 var mapOpened;
+var mapContainer;
 function init() {
 	buildPalletOpened = false;
 	mapOpened = false;
@@ -51,18 +52,52 @@ function initializeMapButton() {
 }
 
 function initializeMapBackground() {
+	mapContainer = new createjs.Container();
+	mapContainer.x = -540;
+	mapContainer.name = "mapContainer";
 	var mapBG = new createjs.Bitmap(queue.getResult("mapBackground"));
+	var buttonOne = new createjs.Bitmap(queue.getResult("mapButtonOne"));
+	var buttonTwo = new createjs.Bitmap(queue.getResult("mapButtonTwo"));
+	var buttonThree = new createjs.Bitmap(queue.getResult("mapButtonThree"));
+	var buttonFive = new createjs.Bitmap(queue.getResult("mapButtonFive"));
 	mapBG.name = "mapBG";
-	stage.addChild(mapBG);
+	buttonOne.name = "b1";
+	buttonTwo.name = "b2";
+	buttonThree.name = "b3";
+	buttonFive.name = "b5";
+	//mapContainer.addChild(mapBG,buttonOne,buttonTwo,buttonThree,buttonFive);
+	stage.addChild(mapBG,buttonOne,buttonTwo,buttonThree,buttonFive);
+	//stage.addChild(mapContainer);
 	mapBG.x = -540;
+	buttonOne.y = 825;
+	buttonTwo.y = 825;
+	buttonThree.y = 825;
+	buttonFive.y = 825;
+	buttonOne.x = -540;
+	buttonTwo.x = -405;
+	buttonThree.x = -270;
+	buttonFive.x = -135;
+
 }
 
 function moveMapUI (event) {
 	var mBG = stage.getChildByName("mapBG");
+	var b1 = stage.getChildByName("b1");
+	var b2 = stage.getChildByName("b2");
+	var b3 = stage.getChildByName("b3");
+	var b5 = stage.getChildByName("b5");
 	if(mapOpened) {
 		createjs.Tween.get(mBG,{loop:false}).to({x:-540},300);
+		createjs.Tween.get(b1,{loop:false}).to({x:-540},300);
+		createjs.Tween.get(b2,{loop:false}).to({x:-405},300);
+		createjs.Tween.get(b3,{loop:false}).to({x:-270},300);
+		createjs.Tween.get(b5,{loop:false}).to({x:-135},300);
 	} else {
 		createjs.Tween.get(mBG,{loop:false}).to({x:0},300);
+		createjs.Tween.get(b1,{loop:false}).to({x:0},300);
+		createjs.Tween.get(b2,{loop:false}).to({x:135},300);
+		createjs.Tween.get(b3,{loop:false}).to({x:270},300);
+		createjs.Tween.get(b5,{loop:false}).to({x:405},300);
 	}
 	mapOpened = !mapOpened;
 }
