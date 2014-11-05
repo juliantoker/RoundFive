@@ -1,6 +1,9 @@
 //Game resize code
 //Aspect Ratio: 9:16
 
+document.addEventListener('touchmove', function(e) {
+	e.preventDefault();
+}, false);
 
 var stage;
 var mapContainer;
