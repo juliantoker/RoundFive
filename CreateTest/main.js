@@ -1,12 +1,17 @@
 var stage;
+var mapContainer;
+var buttonContainer;
 var queue;
 var buildPalletOpened;
 var mapOpened;
-var mapContainer;
 function init() {
 	buildPalletOpened = false;
 	mapOpened = false;
 	stage = new createjs.Stage("myCanvas");
+	mapContainer = new createjs.Container();
+	mapContainer.name = "maps";
+	buttonContainer = new createjs.Container();
+	buttonContainer.name = "buttons";
 	queue = new createjs.LoadQueue(false);
 	queue.addEventListener("complete",handleComplete);
 	queue.loadManifest([
@@ -31,6 +36,7 @@ function handleComplete(event) {
 	initializeBuildButton();
 	initializeMapBackground();
 	initializeMapButton();
+	initializeMaps();
 	createjs.Ticker.addEventListener("tick",tick);
 	
 }
@@ -52,52 +58,53 @@ function initializeMapButton() {
 }
 
 function initializeMapBackground() {
-	mapContainer = new createjs.Container();
-	mapContainer.x = -540;
-	mapContainer.name = "mapContainer";
+	buttonContainer.x = -540;
+	stage.addChild(buttonContainer);
 	var mapBG = new createjs.Bitmap(queue.getResult("mapBackground"));
 	var buttonOne = new createjs.Bitmap(queue.getResult("mapButtonOne"));
 	var buttonTwo = new createjs.Bitmap(queue.getResult("mapButtonTwo"));
 	var buttonThree = new createjs.Bitmap(queue.getResult("mapButtonThree"));
 	var buttonFive = new createjs.Bitmap(queue.getResult("mapButtonFive"));
-	mapBG.name = "mapBG";
-	buttonOne.name = "b1";
-	buttonTwo.name = "b2";
-	buttonThree.name = "b3";
-	buttonFive.name = "b5";
-	//mapContainer.addChild(mapBG,buttonOne,buttonTwo,buttonThree,buttonFive);
-	stage.addChild(mapBG,buttonOne,buttonTwo,buttonThree,buttonFive);
-	//stage.addChild(mapContainer);
-	mapBG.x = -540;
+	mapBG.x = 0;
 	buttonOne.y = 825;
 	buttonTwo.y = 825;
 	buttonThree.y = 825;
 	buttonFive.y = 825;
-	buttonOne.x = -540;
-	buttonTwo.x = -405;
-	buttonThree.x = -270;
-	buttonFive.x = -135;
+	buttonOne.x = 0;
+	buttonTwo.x = 135;
+	buttonThree.x = 270;
+	buttonFive.x = 405;
+	buttonContainer.addChild(mapBG,buttonOne,buttonTwo,buttonThree,buttonFive);
 
 }
 
+function initializeMaps() {
+	mapContainer.x = -540;
+	stage.addChild(mapContainer);
+	var fx = 130;
+	var fy = 230;
+	var f1 = new createjs.Bitmap(queue.getResult("firstFloor"));
+	var f2 = new createjs.Bitmap(queue.getResult("secondFloor"));
+	var f3 = new createjs.Bitmap(queue.getResult("thirdFloor"));
+	var f5 = new createjs.Bitmap(queue.getResult("fifthFloor"));
+	f1.x = fx;
+	f1.y = fy;
+	f2.x = fx;
+	f2.y = fy;
+	f3.x = fx;
+	f3.y = fy;
+	f5.x = fx;
+	f5.y = fy;
+	mapContainer.addChild(f1,f2,f3,f5);
+}
+
 function moveMapUI (event) {
-	var mBG = stage.getChildByName("mapBG");
-	var b1 = stage.getChildByName("b1");
-	var b2 = stage.getChildByName("b2");
-	var b3 = stage.getChildByName("b3");
-	var b5 = stage.getChildByName("b5");
 	if(mapOpened) {
-		createjs.Tween.get(mBG,{loop:false}).to({x:-540},300);
-		createjs.Tween.get(b1,{loop:false}).to({x:-540},300);
-		createjs.Tween.get(b2,{loop:false}).to({x:-405},300);
-		createjs.Tween.get(b3,{loop:false}).to({x:-270},300);
-		createjs.Tween.get(b5,{loop:false}).to({x:-135},300);
+		createjs.Tween.get(buttonContainer,{loop:false}).to({x:-540},300)
+		createjs.Tween.get(mapContainer,{loop:false}).to({x:-540},300)
 	} else {
-		createjs.Tween.get(mBG,{loop:false}).to({x:0},300);
-		createjs.Tween.get(b1,{loop:false}).to({x:0},300);
-		createjs.Tween.get(b2,{loop:false}).to({x:135},300);
-		createjs.Tween.get(b3,{loop:false}).to({x:270},300);
-		createjs.Tween.get(b5,{loop:false}).to({x:405},300);
+		createjs.Tween.get(buttonContainer,{loop:false}).to({x:0},300);
+		createjs.Tween.get(mapContainer,{loop:false}).to({x:0},300);
 	}
 	mapOpened = !mapOpened;
 }
@@ -136,6 +143,4 @@ function moveBuildUI(event) {
 	
 }
 
-function moveBuildPallet() {
 
-}
