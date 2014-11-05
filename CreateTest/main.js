@@ -17,7 +17,11 @@ function init() {
 		{id:"firstFloor",src:"assets/firstFloor.png"},
 		{id:"secondFloor",src:"assets/secondFloor.png"},
 		{id:"thirdFloor",src:"assets/thirdFloor.png"},
-		{id:"fifthFloor",src:"assets/fifthFloor.png"}]);
+		{id:"fifthFloor",src:"assets/fifthFloor.png"},
+		{id:"mapButtonOne",src:"assets/mapButtonOne.png"},
+		{id:"mapButtonTwo",src:"assets/mapButtonTwo.png"},
+		{id:"mapButtonThree",src:"assets/mapButtonThree.png"},
+		{id:"mapButtonFive",src:"assets/mapButtonFive.png"}]);
 }
 
 function handleComplete(event) {
