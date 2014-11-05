@@ -1,3 +1,7 @@
+//Game resize code
+//Aspect Ratio: 9:16
+
+
 var stage;
 var mapContainer;
 var buttonContainer;
