@@ -1,8 +1,10 @@
 var stage;
 var queue;
 var buildPalletOpened;
+var mapOpened;
 function init() {
 	buildPalletOpened = false;
+	mapOpened = false;
 	stage = new createjs.Stage("myCanvas");
 	queue = new createjs.LoadQueue(false);
 	queue.addEventListener("complete",handleComplete);
@@ -22,6 +24,8 @@ function handleComplete(event) {
 	makeBg();
 	initializeBuildPallet();
 	initializeBuildButton();
+	initializeMapBackground();
+	initializeMapButton();
 	createjs.Ticker.addEventListener("tick",tick);
 	
 }
@@ -34,6 +38,29 @@ function makeBg () {
 	//Draws initial background
 	var bpm = new createjs.Bitmap(queue.getResult("bg"));
 	stage.addChild(bpm);
+}
+
+function initializeMapButton() {
+	var mb = new createjs.Bitmap(queue.getResult("mapButton"));
+	stage.addChild(mb);
+	mb.addEventListener("click",moveMapUI);
+}
+
+function initializeMapBackground() {
+	var mapBG = new createjs.Bitmap(queue.getResult("mapBackground"));
+	mapBG.name = "mapBG";
+	stage.addChild(mapBG);
+	mapBG.x = -540;
+}
+
+function moveMapUI (event) {
+	var mBG = stage.getChildByName("mapBG");
+	if(mapOpened) {
+		createjs.Tween.get(mBG,{loop:false}).to({x:-540},300);
+	} else {
+		createjs.Tween.get(mBG,{loop:false}).to({x:0},300);
+	}
+	mapOpened = !mapOpened;
 }
 
 function initializeBuildButton() {
