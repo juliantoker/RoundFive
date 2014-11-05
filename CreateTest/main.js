@@ -133,7 +133,6 @@ function initializeBuildPallet () {
 }
 
 function moveBuildUI(event) {
-	console.log(event.target);
 	//Opens and closes the build UI
 	//Get a referrence to the buildPallet display object
 	var pallet;
@@ -151,6 +150,8 @@ function moveBuildUI(event) {
 	
 }
 function setCurrentFloor (event) {
+	resetFloorButtons();
+	event.target.alpha = 0.5;
 	currentFloor = buttonContainer.getChildIndex(event.target) - 1;
 	displayCurrentFloor();
 }
@@ -162,4 +163,9 @@ function displayCurrentFloor () {
 	mapContainer.children[currentFloor].alpha = 1;
 }
 
+function resetFloorButtons () {
+	for(i = 1; i < buttonContainer.children.length; i++) {
+		buttonContainer.children[i].alpha = 1;
+	}
+}
 
