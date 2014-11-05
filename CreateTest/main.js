@@ -6,7 +6,16 @@ function init() {
 	stage = new createjs.Stage("myCanvas");
 	queue = new createjs.LoadQueue(false);
 	queue.addEventListener("complete",handleComplete);
-	queue.loadManifest([{id:"bg",src:"assets/background.png"},{id:"buildButton",src:"assets/buildButton.png"},{id:"buildPallet",src:"assets/buildPallet.png"}]);
+	queue.loadManifest([
+		{id:"bg",src:"assets/background.png"},
+		{id:"buildButton",src:"assets/buildButton.png"},
+		{id:"buildPallet",src:"assets/buildPallet.png"},
+		{id:"mapButton",src:"assets/mapButton.png"},
+		{id:"mapBackground",src:"assets/mapBackground.png"},
+		{id:"firstFloor",src:"assets/firstFloor.png"},
+		{id:"secondFloor",src:"assets/secondFloor.png"},
+		{id:"thirdFloor",src:"assets/thirdFloor.png"},
+		{id:"fifthFloor",src:"assets/fifthFloor.png"}]);
 }
 
 function handleComplete(event) {
