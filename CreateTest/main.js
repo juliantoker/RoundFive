@@ -4,9 +4,11 @@ var buttonContainer;
 var queue;
 var buildPalletOpened;
 var mapOpened;
+var currentFloor;
 function init() {
 	buildPalletOpened = false;
 	mapOpened = false;
+	currentFloor = 0;
 	stage = new createjs.Stage("myCanvas");
 	mapContainer = new createjs.Container();
 	mapContainer.name = "maps";
@@ -62,9 +64,13 @@ function initializeMapBackground() {
 	stage.addChild(buttonContainer);
 	var mapBG = new createjs.Bitmap(queue.getResult("mapBackground"));
 	var buttonOne = new createjs.Bitmap(queue.getResult("mapButtonOne"));
+	buttonOne.addEventListener("click",setCurrentFloor);
 	var buttonTwo = new createjs.Bitmap(queue.getResult("mapButtonTwo"));
+	buttonTwo.addEventListener("click",setCurrentFloor);
 	var buttonThree = new createjs.Bitmap(queue.getResult("mapButtonThree"));
+	buttonThree.addEventListener("click",setCurrentFloor);
 	var buttonFive = new createjs.Bitmap(queue.getResult("mapButtonFive"));
+	buttonFive.addEventListener("click",setCurrentFloor);
 	mapBG.x = 0;
 	buttonOne.y = 825;
 	buttonTwo.y = 825;
@@ -96,6 +102,7 @@ function initializeMaps() {
 	f5.x = fx;
 	f5.y = fy;
 	mapContainer.addChild(f1,f2,f3,f5);
+	displayCurrentFloor();
 }
 
 function moveMapUI (event) {
@@ -126,6 +133,7 @@ function initializeBuildPallet () {
 }
 
 function moveBuildUI(event) {
+	console.log(event.target);
 	//Opens and closes the build UI
 	//Get a referrence to the buildPallet display object
 	var pallet;
@@ -141,6 +149,17 @@ function moveBuildUI(event) {
 	}
 	buildPalletOpened = !buildPalletOpened;
 	
+}
+function setCurrentFloor (event) {
+	currentFloor = buttonContainer.getChildIndex(event.target) - 1;
+	displayCurrentFloor();
+}
+
+function displayCurrentFloor () {
+	for(i = 0; i < mapContainer.children.length; i++) {
+		mapContainer.children[i].alpha = 0;
+	}
+	mapContainer.children[currentFloor].alpha = 1;
 }
 
 
