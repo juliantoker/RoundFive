@@ -71,7 +71,8 @@ function initializeMapButton() {
 }
 
 function initializeMapBackground() {
-	buttonContainer.x = -540;
+	buttonContainer.x = -canvas.width;
+	var buttonSize = 135;
 	stage.addChild(buttonContainer);
 	var mapBG = new createjs.Bitmap(queue.getResult("mapBackground"));
 	var buttonOne = new createjs.Bitmap(queue.getResult("mapButtonOne"));
@@ -83,14 +84,14 @@ function initializeMapBackground() {
 	var buttonFive = new createjs.Bitmap(queue.getResult("mapButtonFive"));
 	buttonFive.addEventListener("click",setCurrentFloor);
 	mapBG.x = 0;
-	buttonOne.y = 825;
-	buttonTwo.y = 825;
-	buttonThree.y = 825;
-	buttonFive.y = 825;
+	buttonOne.y = canvas.height - buttonSize;
+	buttonTwo.y = canvas.height - buttonSize;
+	buttonThree.y = canvas.height - buttonSize;
+	buttonFive.y = canvas.height - buttonSize;
 	buttonOne.x = 0;
-	buttonTwo.x = 135;
-	buttonThree.x = 270;
-	buttonFive.x = 405;
+	buttonTwo.x = buttonSize;
+	buttonThree.x = 2*buttonSize;
+	buttonFive.x = 3*buttonSize;
 	buttonContainer.addChild(mapBG,buttonOne,buttonTwo,buttonThree,buttonFive);
 
 }
