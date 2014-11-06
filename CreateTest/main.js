@@ -12,6 +12,7 @@ var buttonContainer;
 var bgScaleX; 
 var bgScaleY;
 var bbWidth; //width of build button
+var bpWidth; //width of pallet
 var queue;
 var buildPalletOpened;
 var mapOpened;
@@ -193,14 +194,18 @@ function initializeBuildPallet () {
 	var bp = new createjs.Bitmap(queue.getResult("buildPallet"));
 
 	//takes 20% of screen width when open
-	//var newWidth = 0.2* canvas.width;
+	bpWidth = 0.25* canvas.width;
+	bpHeight = canvas.height;
 
-	//newScaleX = newWidth/bp.getBounds().width;
-	//bp.scaleX = newScaleX;
+	newScaleX = bpWidth/bp.getBounds().width;
+	newScaleY = bpHeight/bp.getBounds().height;
+
+	bp.scaleX = newScaleX;
+	bp.scaleY = newScaleY;
 
 	bp.name = "buildPallet";
 	stage.addChild(bp);
-	bp.x = canvas.width + bp.getBounds().width;
+	bp.x = canvas.width + (bp.getBounds().width*newScaleX);
 	//createjs.Tween.get(bp,{loop:false}).to({x:430},300);
 }
 
@@ -215,10 +220,12 @@ function moveBuildUI(event) {
 	//If the build pallet is closed, open it
 	if(buildPalletOpened){
 		createjs.Tween.get(event.target,{loop:false}).to({x:canvas.width - bbWidth},300);
-		createjs.Tween.get(pallet,{loop:false}).to({x:canvas.width + pallet.getBounds().width},300);
+		//createjs.Tween.get(pallet,{loop:false}).to({x:canvas.width + pallet.getBounds().width},300);
+		createjs.Tween.get(pallet,{loop:false}).to({x:canvas.width + bpWidth},300);
 	} else {
 		createjs.Tween.get(event.target,{loop:false}).to({x:canvas.width - bbWidth},300);
-		createjs.Tween.get(pallet,{loop:false}).to({x:canvas.width - pallet.getBounds().width},300);
+		//createjs.Tween.get(pallet,{loop:false}).to({x:canvas.width - pallet.getBounds().width},300);
+		createjs.Tween.get(pallet,{loop:false}).to({x:canvas.width - bpWidth},300);
 	}
 	buildPalletOpened = !buildPalletOpened;
 	
