@@ -12,7 +12,11 @@ var queue;
 var buildPalletOpened;
 var mapOpened;
 var currentFloor;
+var canvas
 function init() {
+	canvas = document.getElementById("myCanvas");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 	buildPalletOpened = false;
 	mapOpened = false;
 	currentFloor = 0;

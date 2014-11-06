@@ -1,24 +1,18 @@
-/*body,html
+body,html
 {
-    height: 100%;
     margin: 0;
     padding: 0;
     color: black;
 }
 
 #gameArea{
-	width: 100%;
-    height: 100%;
     overflow: auto;
 }
 
 #gameArea canvas {
     vertical-align: top;
     display: block;
-    overflow: hidden;
 }
-
-*/
 
 body {
     overflow: hidden;
@@ -26,6 +20,16 @@ body {
 
 canvas {
     width:100%;
-    overflow: hidden;
 
 }
+
+/*canvas {
+    position: relative;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+}*/
