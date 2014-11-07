@@ -18,8 +18,9 @@ var canvasHeight;
 var queue;
 var buildPalletOpened;
 var mapOpened;
+var itemPool;
 var currentFloor;
-var canvas
+var canvas;
 function init() {
 	canvas = document.getElementById("myCanvas");
     canvas.width = window.innerWidth;
@@ -38,6 +39,7 @@ function init() {
 	queue.addEventListener("complete",handleComplete);
 	queue.loadManifest([
 		{id:"bg",src:"assets/background.png"},
+		{id:"ItemPool", src:"ItemPool.js"},
 		{id:"buildButton",src:"assets/buildButton.png"},
 		{id:"buildPallet",src:"assets/buildPallet.png"},
 		{id:"mapButton",src:"assets/mapButton.png"},
@@ -49,7 +51,13 @@ function init() {
 		{id:"mapButtonOne",src:"assets/mapButtonOne.png"},
 		{id:"mapButtonTwo",src:"assets/mapButtonTwo.png"},
 		{id:"mapButtonThree",src:"assets/mapButtonThree.png"},
-		{id:"mapButtonFive",src:"assets/mapButtonFive.png"}]);
+		{id:"mapButtonFive",src:"assets/mapButtonFive.png"}], true);
+}
+
+function InitializeItemPool(){
+	
+	itemPool = new ItemPool();
+	//itemPool.init();
 }
 
 function handleComplete(event) {
@@ -59,6 +67,7 @@ function handleComplete(event) {
 	initializeMapBackground();
 	initializeMapButton();
 	initializeMaps();
+	InitializeItemPool();
 	createjs.Ticker.addEventListener("tick",tick);
 	
 }
