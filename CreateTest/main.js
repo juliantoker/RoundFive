@@ -51,7 +51,6 @@ function init() {
 		{id:"mapButtonOne",src:"assets/mapButtonOne.png"},
 		{id:"mapButtonTwo",src:"assets/mapButtonTwo.png"},
 		{id:"mapButtonThree",src:"assets/mapButtonThree.png"},
-<<<<<<< HEAD
 		{id:"mapButtonFive",src:"assets/mapButtonFive.png"}], true);
 }
 
@@ -59,11 +58,6 @@ function InitializeItemPool(){
 	
 	itemPool = new ItemPool();
 	//itemPool.init();
-=======
-		{id:"mapButtonFive",src:"assets/mapButtonFive.png"}
-		{id:"prizeBackground",src:"assets/prizeBackground.png"},
-		{id:"prizeButton",src:"assets/prizeButton.png"}]);
->>>>>>> origin/master
 }
 
 function handleComplete(event) {
