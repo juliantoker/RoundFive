@@ -13,6 +13,8 @@ var bgScaleX;
 var bgScaleY;
 var bbWidth; //width of build button
 var bpWidth; //width of pallet
+var canvasWidth;
+var canvasHeight;
 var queue;
 var buildPalletOpened;
 var mapOpened;
@@ -22,6 +24,8 @@ function init() {
 	canvas = document.getElementById("myCanvas");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    canvasWidth = canvas.width;
+    canvasHeight = canvas.height;
 	buildPalletOpened = false;
 	mapOpened = false;
 	currentFloor = 0;
@@ -68,8 +72,8 @@ function makeBg () {
 	var bpm = new createjs.Bitmap(queue.getResult("bg"));
 	
 	//scale BG to fit screen
-	bgScaleY = canvas.height/bpm.getBounds().height;
-	bgScaleX = canvas.width/bpm.getBounds().width;
+	bgScaleY = canvasHeight/bpm.getBounds().height;
+	bgScaleX = canvasWidth/bpm.getBounds().width;
 
 	bpm.scaleY = bgScaleY;
 	bpm.scaleX = bgScaleX;
@@ -85,7 +89,7 @@ function initializeMapButton() {
 }
 
 function initializeMapBackground() {
-	buttonContainer.x = -canvas.width;
+	buttonContainer.x = -canvasWidth;
 	stage.addChild(buttonContainer);
 	
 	var mapBG = new createjs.Bitmap(queue.getResult("mapBackground"));
@@ -104,7 +108,7 @@ function initializeMapBackground() {
 
 	
 	//buttons need to be scaled along x to ensure that all 4 can fit on the screen
-	var newButtonSize = canvas.width/4; //fit 4 buttons on the screen
+	var newButtonSize = canvasWidth/4; //fit 4 buttons on the screen
 	var currentbuttonSize = buttonOne.getBounds().width;
 	var newScale = newButtonSize/currentbuttonSize;
 
@@ -120,10 +124,10 @@ function initializeMapBackground() {
 	buttonFive.scaleY *= newScale;
 
 	mapBG.x = 0;
-	buttonOne.y = canvas.height - newButtonSize;
-	buttonTwo.y = canvas.height - newButtonSize;
-	buttonThree.y = canvas.height - newButtonSize;
-	buttonFive.y = canvas.height - newButtonSize;
+	buttonOne.y = canvasHeight - newButtonSize;
+	buttonTwo.y = canvasHeight - newButtonSize;
+	buttonThree.y = canvasHeight - newButtonSize;
+	buttonFive.y = canvasHeight - newButtonSize;
 	buttonOne.x = 0;
 	buttonTwo.x = newButtonSize;
 	buttonThree.x = 2*newButtonSize;
@@ -139,8 +143,8 @@ function initializeMaps() {
 	var f3 = new createjs.Bitmap(queue.getResult("thirdFloor"));
 	var f5 = new createjs.Bitmap(queue.getResult("fifthFloor"));
 
-	var newWidth = 0.5 * canvas.width;
-	var newHeight = 0.58 * canvas.height;
+	var newWidth = 0.5 * canvasWidth;
+	var newHeight = 0.58 * canvasHeight;
 
 	mapScaleY = newHeight/f1.getBounds().height;
 	mapScaleX = newWidth/f1.getBounds().width;
@@ -154,8 +158,8 @@ function initializeMaps() {
 	f5.scaleY = mapScaleY;
 	f5.scaleX = mapScaleX;
 
-	var fx = canvas.width - newWidth*1.5;
-	var fy = canvas.height - newHeight*1.5;
+	var fx = canvasWidth - newWidth*1.5;
+	var fy = canvasHeight - newHeight*1.5;
 
 	f1.x = fx;
 	f1.y = fy;
@@ -184,7 +188,7 @@ function initializeBuildButton() {
 	var bb = new createjs.Bitmap(queue.getResult("buildButton"));
 	stage.addChild(bb);
 	bbWidth = bb.getBounds().width; //store width of build button for later positioning
-	bb.x = canvas.width - bb.getBounds().width;
+	bb.x = canvasWidth - bb.getBounds().width;
 	bb.addEventListener("click",moveBuildUI);
 	console.log("Added build listner");
 }
@@ -194,8 +198,8 @@ function initializeBuildPallet () {
 	var bp = new createjs.Bitmap(queue.getResult("buildPallet"));
 
 	//takes 20% of screen width when open
-	bpWidth = 0.25* canvas.width;
-	bpHeight = canvas.height;
+	bpWidth = 0.25* canvasWidth;
+	bpHeight = canvasHeight;
 
 	newScaleX = bpWidth/bp.getBounds().width;
 	newScaleY = bpHeight/bp.getBounds().height;
@@ -205,7 +209,7 @@ function initializeBuildPallet () {
 
 	bp.name = "buildPallet";
 	stage.addChild(bp);
-	bp.x = canvas.width + (bp.getBounds().width*newScaleX);
+	bp.x = canvasWidth + (bp.getBounds().width*newScaleX);
 	//createjs.Tween.get(bp,{loop:false}).to({x:430},300);
 }
 
@@ -219,42 +223,18 @@ function moveBuildUI(event) {
 	//If the build pallet is opened, close it
 	//If the build pallet is closed, open it
 	if(buildPalletOpened){
-		createjs.Tween.get(event.target,{loop:false}).to({x:canvas.width - bbWidth},300);
+		createjs.Tween.get(event.target,{loop:false}).to({x:canvasWidth - bbWidth},300);
 		//createjs.Tween.get(pallet,{loop:false}).to({x:canvas.width + pallet.getBounds().width},300);
-		createjs.Tween.get(pallet,{loop:false}).to({x:canvas.width + bpWidth},300);
+		createjs.Tween.get(pallet,{loop:false}).to({x:canvasWidth + bpWidth},300);
 	} else {
-		createjs.Tween.get(event.target,{loop:false}).to({x:canvas.width - bbWidth},300);
+		createjs.Tween.get(event.target,{loop:false}).to({x:canvasWidth - bbWidth},300);
 		//createjs.Tween.get(pallet,{loop:false}).to({x:canvas.width - pallet.getBounds().width},300);
-		createjs.Tween.get(pallet,{loop:false}).to({x:canvas.width - bpWidth},300);
+		createjs.Tween.get(pallet,{loop:false}).to({x:canvasWidth - bpWidth},300);
 	}
 	buildPalletOpened = !buildPalletOpened;
 	
 }
 
-// function moveBuildUI(event) {
-// 	console.log("Hit build button");
-// 	//Opens and closes the build UI
-// 	//Get a referrence to the buildPallet display object
-// 	var pallet;
-// 	pallet = stage.getChildByName("buildPallet");
-
-// 	var onScreenBB = canvas.width - bbWidth;
-// 	var onScreenBP = canvas.width - pallet.getBounds().width;
-
-// 	var offScreenBB = canvas.width + bbWidth;
-// 	var offScreenBP = canvas.width + pallet.getBounds().width;
-// 	//If the build pallet is opened, close it
-// 	//If the build pallet is closed, open it
-// 	if(buildPalletOpened){
-// 		//createjs.Tween.get(event.target,{loop:false}).to({x:500},300);
-// 		createjs.Tween.get(pallet,{loop:false}).to({x:offScreenBP},300);
-// 	} else {
-// 		//createjs.Tween.get(event.target,{loop:false}).to({x:390},300);
-// 		createjs.Tween.get(pallet,{loop:false}).to({x:onScreenBP},300);
-// 	}
-// 	buildPalletOpened = !buildPalletOpened;
-	
-// }
 
 function setCurrentFloor (event) {
 	console.log("set current floor called");
