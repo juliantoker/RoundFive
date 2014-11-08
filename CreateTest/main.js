@@ -51,7 +51,6 @@ function init() {
 		{id:"mapButtonOne",src:"assets/mapButtonOne.png"},
 		{id:"mapButtonTwo",src:"assets/mapButtonTwo.png"},
 		{id:"mapButtonThree",src:"assets/mapButtonThree.png"},
-
 		{id:"mapButtonFive",src:"assets/mapButtonFive.png"}], true);
 }
 
