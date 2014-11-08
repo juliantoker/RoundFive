@@ -8,6 +8,7 @@ document.addEventListener('touchmove', function(e) {
 var stage;
 var mapContainer;
 var buttonContainer;
+var prizeContainer;
 //for 560x960 px backgrounds
 var bgScaleX; 
 var bgScaleY;
@@ -18,6 +19,7 @@ var canvasHeight;
 var queue;
 var buildPalletOpened;
 var mapOpened;
+var prizeScreenOpened;
 var itemPool;
 var currentFloor;
 var canvas;
@@ -29,12 +31,15 @@ function init() {
     canvasHeight = canvas.height;
 	buildPalletOpened = false;
 	mapOpened = false;
+	prizeScreenOpened = false;
 	currentFloor = 0;
 	stage = new createjs.Stage("myCanvas");
 	mapContainer = new createjs.Container();
 	mapContainer.name = "maps";
 	buttonContainer = new createjs.Container();
 	buttonContainer.name = "buttons";
+	prizeContainer = new createjs.Container();
+	prizeContainer.name = "prize";
 	queue = new createjs.LoadQueue(false);
 	queue.addEventListener("complete",handleComplete);
 	queue.loadManifest([
@@ -71,6 +76,8 @@ function handleComplete(event) {
 	initializeMapButton();
 	initializeMaps();
 	InitializeItemPool();
+	initializePrizeBackground();
+	initializePrizeButton();
 	createjs.Ticker.addEventListener("tick",tick);
 	
 }
@@ -280,14 +287,26 @@ function initializePrizeBackground() {
 	var prizeBG = new createjs.Bitmap(queue.getResult("prizeBackground"));
 
 	//scale BG to fit screen
-	bgScaleY = canvasHeight/prizeBG.getBounds().height;
-	bgScaleX = canvasWidth/prizeBG.getBounds().width;
+	//bgScaleY = canvasHeight/prizeBG.getBounds().height;
+	//bgScaleX = canvasWidth/prizeBG.getBounds().width;
 
 	prizeBG.scaleY = bgScaleY;
 	prizeBG.scaleX = bgScaleX;
+	prizeContainer.addChild(prizeBG);
 }
 
 function initializePrizeButton () {
-	
+	var pb = new createjs.Bitmap(queue.getResult("prizeButton"));
+	stage.addChild(pb);
+	pb.x = canvasWidth/2 - (pb.getBounds().width/2);
+	pb.addEventListener("click",movePrizeUI);
 }
 
+function movePrizeUI (event) {
+	if (prizeScreenOpened) {
+		createjs.Tween.get(prizeContainer,{loop:false}).to({y:-canvasHeight},300);
+	} else {
+		createjs.Tween.get(prizeContainer,{loop:false}).to({y:0},300);
+	}
+	prizeScreenOpened = !prizeScreenOpened;
+}
