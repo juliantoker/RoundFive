@@ -8,6 +8,7 @@ document.addEventListener('touchmove', function(e) {
 var stage;
 var mapContainer;
 var buttonContainer;
+var prizeContainer;
 //for 560x960 px backgrounds
 var bgScaleX; 
 var bgScaleY;
@@ -266,3 +267,10 @@ function resetFloorButtons () {
 	}
 }
 
+function initializePrizeBackground() {
+	prizeContainer.y = -canvasHeight;
+}
+
+function initializePrizeButton () {
+	
+}
