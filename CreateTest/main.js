@@ -270,7 +270,20 @@ function resetFloorButtons () {
 }
 
 function initializePrizeBackground() {
+	
+	//position the prize background above the main viewport
 	prizeContainer.y = -canvasHeight;
+
+	//add the prizeContainer to the stage
+	stage.addChild(prizeContainer);
+	var prizeBG = new createjs.Bitmap(queue.getResult("prizeBackground"));
+
+	//scale BG to fit screen
+	bgScaleY = canvasHeight/prizeBG.getBounds().height;
+	bgScaleX = canvasWidth/prizeBG.getBounds().width;
+
+	prizeBG.scaleY = bgScaleY;
+	prizeBG.scaleX = bgScaleX;
 }
 
 function initializePrizeButton () {
