@@ -1,6 +1,6 @@
 // NOTE: comments focus mainly on CreateJS logic, not game mechanics.
 
-// (function() {
+ // (function() {
 
 	var c = createjs;
 	
@@ -14,7 +14,7 @@
 
 	//p.view;
 	
-	// p.view;
+	 p.myArray;
 	// p.width;
 	// p.height;
 	// p.spriteSheet;
@@ -46,7 +46,13 @@
 	function init()
 	{
 		console.log("Initiated : ");
+		this.myArray = [];
+		myArray[0] = 1;
+		myArray[1] = 2;
+
+		for(var i=0;i<this.myArray.length;i++)
+			console.log("element : " + i);
 	}
 	
 	//window.Game = Game;
-// })();
+ // })();
