@@ -8,7 +8,6 @@ document.addEventListener('touchmove', function(e) {
 var stage;
 var mapContainer;
 var buttonContainer;
-var prizeContainer;
 //for 560x960 px backgrounds
 var bgScaleX; 
 var bgScaleY;
@@ -52,9 +51,8 @@ function init() {
 		{id:"mapButtonOne",src:"assets/mapButtonOne.png"},
 		{id:"mapButtonTwo",src:"assets/mapButtonTwo.png"},
 		{id:"mapButtonThree",src:"assets/mapButtonThree.png"},
-		{id:"mapButtonFive",src:"assets/mapButtonFive.png"}],
-		{id:"prizeBackground",src:"assets/prizeBackground.png"}],
-		{id:"prizeButton",src:"assets/prizeButton.png"}] true);
+
+		{id:"mapButtonFive",src:"assets/mapButtonFive.png"}], true);
 }
 
 function InitializeItemPool(){
@@ -269,6 +267,7 @@ function resetFloorButtons () {
 	}
 }
 
+
 function initializePrizeBackground() {
 	
 	//position the prize background above the main viewport
@@ -289,3 +288,4 @@ function initializePrizeBackground() {
 function initializePrizeButton () {
 	
 }
+
