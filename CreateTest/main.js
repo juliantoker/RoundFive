@@ -54,6 +54,7 @@ function init() {
 		{id:"mapButtonFive",src:"assets/mapButtonFive.png"},
 		{id:"prizeBackground",src:"assets/prizeBackground.png"},
 		{id:"prizeButton",src:"assets/prizeButton.png"}], true);
+
 }
 
 function InitializeItemPool(){
