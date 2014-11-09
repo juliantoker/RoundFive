@@ -63,16 +63,24 @@ function init() {
 		{id:"mapButtonFive",src:"assets/mapButtonFive.png"},
 		{id:"prizeBackground",src:"assets/prizeBackground.png"},
 		{id:"prizeButton",src:"assets/prizeButton.png"},
-		{id:"catman",src:"assets/Characters/catman.png"}], true);
+		{id:"castle",src:"assets/Characters/castle.png"},
+		{id:"catman",src:"assets/Characters/catman.png"},
+		{id:"dragon",src:"assets/Characters/dragon.png"},
+		{id:"ghost",src:"assets/Characters/ghost.png"},
+		{id:"rabbit",src:"assets/Characters/rabbit.png"},
+		{id:"unicorn",src:"assets/Characters/unicorn.png"},
+		{id:"zombie",src:"assets/Characters/zombie.png"}], true);
 
 }
 
 function InitializeItemPool()
 {
-	itemPool = new ItemPool(6); //initialize an item pool of 6 objects
-	console.log("no of elements : " + itemPool.GetCount());
+	// itemPool = new ItemPool(6); //initialize an item pool of 6 objects
+	// console.log("no of elements : " + itemPool.GetCount());
 
-	GetItems();
+	// GetItems();
+
+	//----------------
 
 	// var newArray = [];
 	// newArray = itemPool.GetItems(12);

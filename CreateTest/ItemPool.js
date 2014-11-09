@@ -9,6 +9,16 @@ function ItemPool(size)
     for(var i=0;i<size;i++)
     	this.MyArray[i] = i;
 
+    var spriteNames = [
+    'castle',
+    'catman',
+    'dragon',
+    'ghost',
+    'rabbit',
+    'unicorn',
+    'zombie'
+	];
+
     this.GetCount = function() 
     {
         return this.MyArray.length;
@@ -48,10 +58,15 @@ function ItemPool(size)
     	}
 
     	return newItems;
-    	
-    	// for (var i = 0; i < newItems.length; i++) 
-    	// {
-     //    	console.log("new item : " + newItems[i]);
-    	// }
+	};
+
+	this.GetString = function(index)
+	{
+		var t = Number(index);
+		if(index < 0 )
+			return null;
+
+		console.log("returning : " + spriteNames[Number(index)]);
+		return (spriteNames[Number(index)]);
 	};
 }
