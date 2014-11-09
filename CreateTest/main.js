@@ -333,15 +333,30 @@ function initializePrizeButton () {
 	var pb = new createjs.Bitmap(queue.getResult("prizeButton"));
 	stage.addChild(pb);
 	pb.x = canvasWidth/2 - (pb.getBounds().width/2);
-	pb.addEventListener("click",movePrizeUI);
+	pb.addEventListener("click",enterPrizeCode);
 }
 
-function movePrizeUI (event) {
+function movePrizeUI () {
 	if (prizeScreenOpened) {
 		createjs.Tween.get(prizeContainer,{loop:false}).to({y:-canvasHeight},300);
 	} else {
 		createjs.Tween.get(prizeContainer,{loop:false}).to({y:0},300);
-		var userInput = prompt('Enter prize code.');
+		//var userInput = prompt('Enter prize code.');
 	}
 	prizeScreenOpened = !prizeScreenOpened;
+}
+
+function enterPrizeCode (event) {
+	var userInput = prompt('Enter prize code.');
+	if(checkPrizeCode(userInput)) {
+		//Open prize screen if a valid prize code is entered
+		movePrizeUI();
+	} else {
+		alert("Invalid prize code.");
+	}
+}
+
+function checkPrizeCode (prizeCode) {
+	//Returns true for a valid prize code
+	return true;
 }
