@@ -9,6 +9,7 @@ function Item(num) {
 	this.isTouched = false;
 	this.num = num;
 	this.onButtonPress = false;
+	this.inventoryPos = 0;
 	var loadString = "";
 	var sprite;
 
@@ -20,9 +21,10 @@ function Item(num) {
    //stage.enableMouseOver(0);
    // };
 
-   this.init = function() {
-
-   GetSprite();
+   this.init = function(position) 
+   {
+   		inventoryPos = position;
+   		GetSprite();
 
    };
 
@@ -31,12 +33,23 @@ function Item(num) {
 		loadString = itemPool.GetString(num);
 		console.log ("drawing : " + loadString);
 		sprite = new createjs.Bitmap(queue.getResult(loadString));
-		
-		sprite.scaleX = bgScaleX/2;
-		sprite.scaleY = bgScaleY/2;
 
-		sprite.x = canvasWidth/2;
-		sprite.y = canvasHeight/2;
+		//each slot in the build pallet is screenheight/9
+
+		var desiredHeight = canvasHeight/10; //making it a little smaller
+		var currentHeight = sprite.getBounds().height;
+
+		var scaleY = (canvasHeight/10)/sprite.getBounds().height;
+		var scaleX = (canvasHeight/10)/sprite.getBounds().width;
+
+		sprite.scaleY = scaleY;
+		sprite.scaleX = scaleX;
+
+		var pallet;
+		pallet = stage.getChildByName("buildPallet");
+
+		sprite.x = pallet.x/2;
+		sprite.y = (inventoryPos*(canvasHeight/10));
 		stage.addChild(sprite);
 
 		// sprite.addEventListener("click", handleClick);
