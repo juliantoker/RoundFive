@@ -1,9 +1,10 @@
 
-function ItemPool(size) { //gets initialized with a size provided in main
+function ItemPool(size) 
+{ //gets initialized with a size provided in main
 
     this.MyArray = [];
     this.size = size;
-    this.removeCount = 0; //number removed from the array
+    var removeCount = 0; //number removed from the array
 
     for(var i=0;i<size;i++)
     	this.MyArray[i] = i;
@@ -21,10 +22,10 @@ function ItemPool(size) { //gets initialized with a size provided in main
 			return;
     	}
 
-    	if((this.size - this.removeCount) < num) //there are less items left in the array than requested
+    	if((this.size - removeCount) < num) //there are less items left in the array than requested
     	{
     		console.log("Shortening!");
-    		num = this.size - this.removeCount;
+    		num = this.size - removeCount;
     	}
     		
 
@@ -40,7 +41,7 @@ function ItemPool(size) { //gets initialized with a size provided in main
     		{
     			this.MyArray[foundItem] = -1; //so that it doesn't get picked again
     			newItems[num-numberLeft] = foundItem; //starts from 0
-    			this.removeCount++;
+    			removeCount++;
     			numberLeft --;
     		}
 

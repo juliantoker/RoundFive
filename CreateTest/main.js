@@ -21,6 +21,7 @@ var buildPalletOpened;
 var mapOpened;
 var prizeScreenOpened;
 var itemPool;
+var inventory;
 var currentFloor;
 var canvas;
 function init() {
@@ -45,6 +46,8 @@ function init() {
 	queue.loadManifest([
 		{id:"bg",src:"assets/background.png"},
 		{id:"ItemPool", src:"ItemPool.js"},
+		{id:"Inventory", src:"Inventory.js"},
+		{id:"Item", src:"Item.js"},
 		{id:"buildButton",src:"assets/buildButton.png"},
 		{id:"buildPallet",src:"assets/buildPallet.png"},
 		{id:"mapButton",src:"assets/mapButton.png"},
@@ -58,38 +61,44 @@ function init() {
 		{id:"mapButtonThree",src:"assets/mapButtonThree.png"},
 		{id:"mapButtonFive",src:"assets/mapButtonFive.png"},
 		{id:"prizeBackground",src:"assets/prizeBackground.png"},
-		{id:"prizeButton",src:"assets/prizeButton.png"}], true);
+		{id:"prizeButton",src:"assets/prizeButton.png"},
+		{id:"catman",src:"assets/Characters/catman.png"}], true);
 
 }
 
 function InitializeItemPool()
 {
-	itemPool = new ItemPool(20); //initialize an item pool of 20 objects
+	itemPool = new ItemPool(6); //initialize an item pool of 6 objects
 	console.log("no of elements : " + itemPool.GetCount());
-	// itemPool.GetItems(3);
-	// itemPool.GetItems(3);
-	// itemPool.GetItems(3);
-	// itemPool.GetItems(3);
-	// itemPool.GetItems(3);
-	// itemPool.GetItems(3);
-	// itemPool.GetItems(3);
-	// itemPool.GetItems(3);
-	// itemPool.GetItems(3);
 
+	GetItems();
+
+	// var newArray = [];
+	// newArray = itemPool.GetItems(12);
+
+	// for (var i = 0; i < newArray.length; i++) 
+ //    {
+ //        console.log("new item : " + newArray[i]);
+ //    }
+}
+
+function InitializeInventory()
+{
+	inventory = new Inventory();
+	inventory.init();
+}
+
+function GetItems()
+{
 	var newArray = [];
-	newArray = itemPool.GetItems(12);
+	newArray = itemPool.GetItems(3);
 
 	for (var i = 0; i < newArray.length; i++) 
     {
         console.log("new item : " + newArray[i]);
     }
 
-}
 
-function GetItems()
-{
-	var newItems = [];
-	//itemPool.GetItems();
 }
 
 function handleComplete(event) {
@@ -99,9 +108,10 @@ function handleComplete(event) {
 	initializeMapBackground();
 	initializeMapButton();
 	initializeMaps();
-	InitializeItemPool();
+	//InitializeItemPool();
 	initializePrizeBackground();
 	initializePrizeButton();
+	InitializeInventory();
 	createjs.Ticker.addEventListener("tick",tick);
 	
 }
