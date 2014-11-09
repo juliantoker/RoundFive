@@ -1,58 +1,60 @@
-// NOTE: comments focus mainly on CreateJS logic, not game mechanics.
 
- // (function() {
+function ItemPool(size) {
+    //this.first = first;
+    //this.last = last;
 
-	var c = createjs;
-	
-	var ItemPool = function() 
-	{
-		console.log("Item pool initialized");
-		init();
-	}
-	var p = ItemPool.prototype;
-	c.EventDispatcher.initialize(p);
+    this.MyArray = [];
+    this.size = size;
+    this.removeCount = 0; //number removed from the array
 
-	//p.view;
-	
-	 p.myArray;
-	// p.width;
-	// p.height;
-	// p.spriteSheet;
-	// p.sprites;
-	// p.speed;
-	// p.terrainContainers;
-	// p.shot;
-	// p.hero;
-	// p.spritePool;
-	// p.dead;
-	// p.keyListener;
-	// p.tickListener;
-	// p.shotDelay;
-	// p.stats;
-	// p.kills;
-	// p.distance;
-	// p.hazards;
-	// p.score;
-	
-	 //p._inited;
+    for(var i=0;i<size;i++)
+    	this.MyArray[i] = i;
 
-	
-	// p.init = function() 
-	// {
-	// 	//var i = inte;
-	// 	console.log("Initiated : ");  
-	// }
+    this.GetCount = function() 
+    {
+        return this.MyArray.length;
+    };
 
-	function init()
-	{
-		console.log("Initiated : ");
-		this.myArray = [];
-		myArray[0] = 1;
-		myArray[1] = 2;
+    this.GetItems = function(num)
+    {
+    	if(this.removeCount == this.size)
+    	{
+			console.log("Array empty! Returning");
+			return;
+    	}
 
-		for(var i=0;i<this.myArray.length;i++)
-			console.log("element : " + i);
-	}
-	
-	//window.Game = Game;
- // })();
+    	if((this.size - this.removeCount) < num) //there are less items left in the array than requested
+    	{
+    		console.log("Shortening!");
+    		num = this.size - this.removeCount;
+    	}
+    		
+
+    	var numberLeft = num; //how many items are left to be found
+    	var newItems = [num]; //array to keep track of the found items
+    	var foundItem; //variable to store the found item
+
+    	while(numberLeft > 0)
+    	{
+    		foundItem = Math.floor(Math.random() * this.size); //random number from 0 to size - 1
+    		
+    		if(this.MyArray[foundItem] != -1)
+    		{
+    			this.MyArray[foundItem] = -1; //so that it doesn't get picked again
+    			newItems[num-numberLeft] = foundItem; //starts from 0
+    			this.removeCount++;
+    			numberLeft --;
+    		}
+
+    	}
+    	
+    	for (var i = 0; i < newItems.length; i++) 
+    	{
+        	console.log("new item : " + newItems[i]);
+    	}
+
+    //return sum;
+	};
+}
+
+

@@ -62,10 +62,25 @@ function init() {
 
 }
 
-function InitializeItemPool(){
-	
-	itemPool = new ItemPool();
-	//itemPool.init();
+function InitializeItemPool()
+{
+	itemPool = new ItemPool(20); //initialize an item pool of 20 objects
+	console.log("no of elements : " + itemPool.GetCount());
+	itemPool.GetItems(3);
+	itemPool.GetItems(3);
+	itemPool.GetItems(3);
+	itemPool.GetItems(3);
+	itemPool.GetItems(3);
+	itemPool.GetItems(3);
+	itemPool.GetItems(3);
+	itemPool.GetItems(3);
+	itemPool.GetItems(3);
+}
+
+function GetItems()
+{
+	var newItems = [];
+	//itemPool.GetItems();
 }
 
 function handleComplete(event) {
