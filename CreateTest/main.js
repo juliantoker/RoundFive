@@ -22,6 +22,7 @@ var mapOpened;
 var prizeScreenOpened;
 var itemPool;
 var inventory;
+var prizeCodes;
 var currentFloor;
 var canvas;
 function init() {
@@ -44,6 +45,11 @@ function init() {
 	prizeContainer.name = "prize";
 	queue = new createjs.LoadQueue(false);
 	queue.addEventListener("complete",handleComplete);
+	prizeCodes = [
+	"code1",
+	"code2",
+	"code3"
+	];
 	queue.loadManifest([
 		{id:"bg",src:"assets/background.png"},
 		{id:"ItemPool", src:"ItemPool.js"},
@@ -373,5 +379,11 @@ function enterPrizeCode (event) {
 
 function checkPrizeCode (prizeCode) {
 	//Returns true for a valid prize code
-	return true;
+	for(i = 0; i < prizeCodes.length; i++) {
+		var currentCode = prizeCodes[i];
+		if(prizeCode == currentCode) {
+			return true;
+		}
+	}
+	return false;
 }
