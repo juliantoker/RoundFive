@@ -66,15 +66,24 @@ function InitializeItemPool()
 {
 	itemPool = new ItemPool(20); //initialize an item pool of 20 objects
 	console.log("no of elements : " + itemPool.GetCount());
-	itemPool.GetItems(3);
-	itemPool.GetItems(3);
-	itemPool.GetItems(3);
-	itemPool.GetItems(3);
-	itemPool.GetItems(3);
-	itemPool.GetItems(3);
-	itemPool.GetItems(3);
-	itemPool.GetItems(3);
-	itemPool.GetItems(3);
+	// itemPool.GetItems(3);
+	// itemPool.GetItems(3);
+	// itemPool.GetItems(3);
+	// itemPool.GetItems(3);
+	// itemPool.GetItems(3);
+	// itemPool.GetItems(3);
+	// itemPool.GetItems(3);
+	// itemPool.GetItems(3);
+	// itemPool.GetItems(3);
+
+	var newArray = [];
+	newArray = itemPool.GetItems(12);
+
+	for (var i = 0; i < newArray.length; i++) 
+    {
+        console.log("new item : " + newArray[i]);
+    }
+
 }
 
 function GetItems()

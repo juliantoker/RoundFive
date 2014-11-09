@@ -1,7 +1,5 @@
 
-function ItemPool(size) {
-    //this.first = first;
-    //this.last = last;
+function ItemPool(size) { //gets initialized with a size provided in main
 
     this.MyArray = [];
     this.size = size;
@@ -47,14 +45,12 @@ function ItemPool(size) {
     		}
 
     	}
-    	
-    	for (var i = 0; i < newItems.length; i++) 
-    	{
-        	console.log("new item : " + newItems[i]);
-    	}
 
-    //return sum;
+    	return newItems;
+    	
+    	// for (var i = 0; i < newItems.length; i++) 
+    	// {
+     //    	console.log("new item : " + newItems[i]);
+    	// }
 	};
 }
-
-
