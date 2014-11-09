@@ -341,6 +341,7 @@ function movePrizeUI (event) {
 		createjs.Tween.get(prizeContainer,{loop:false}).to({y:-canvasHeight},300);
 	} else {
 		createjs.Tween.get(prizeContainer,{loop:false}).to({y:0},300);
+		var userInput = prompt('Enter prize code.');
 	}
 	prizeScreenOpened = !prizeScreenOpened;
 }
