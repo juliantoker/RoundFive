@@ -35,6 +35,7 @@ function init() {
 	prizeScreenOpened = false;
 	currentFloor = 0;
 	stage = new createjs.Stage("myCanvas");
+	createjs.Touch.enable(stage);
 	mapContainer = new createjs.Container();
 	mapContainer.name = "maps";
 	buttonContainer = new createjs.Container();
@@ -227,6 +228,7 @@ function initializeMaps() {
 }
 
 function moveMapUI (event) {
+
 	if(mapOpened) {
 		createjs.Tween.get(buttonContainer,{loop:false}).to({x:-540},300)
 		createjs.Tween.get(mapContainer,{loop:false}).to({x:-540},300)
@@ -237,14 +239,6 @@ function moveMapUI (event) {
 	mapOpened = !mapOpened;
 }
 
-function initializeBuildButton() {
-	var bb = new createjs.Bitmap(queue.getResult("buildButton"));
-	stage.addChild(bb);
-	bbWidth = bb.getBounds().width; //store width of build button for later positioning
-	bb.x = canvasWidth - bb.getBounds().width;
-	bb.addEventListener("click",moveBuildUI);
-	console.log("Added build listner");
-}
 
 function initializeBuildPallet () {
 	//makes build pallet and moves it into position off screen on the right.
@@ -266,7 +260,17 @@ function initializeBuildPallet () {
 	//createjs.Tween.get(bp,{loop:false}).to({x:430},300);
 }
 
-function moveBuildUI(event) {
+
+function initializeBuildButton() {
+	var bb = new createjs.Bitmap(queue.getResult("buildButton"));
+	stage.addChild(bb);
+	bbWidth = bb.getBounds().width; //store width of build button for later positioning
+	bb.x = canvasWidth - bb.getBounds().width;
+	bb.addEventListener("click", moveBuildUI);
+}
+
+function moveBuildUI(event) 
+{
 	console.log("hit build button");
 
 	//Opens and closes the build UI
@@ -275,19 +279,22 @@ function moveBuildUI(event) {
 	pallet = stage.getChildByName("buildPallet");
 	//If the build pallet is opened, close it
 	//If the build pallet is closed, open it
-	if(buildPalletOpened){
+	if(buildPalletOpened)
+	{
 		createjs.Tween.get(event.target,{loop:false}).to({x:canvasWidth - bbWidth},300);
 		//createjs.Tween.get(pallet,{loop:false}).to({x:canvas.width + pallet.getBounds().width},300);
 		createjs.Tween.get(pallet,{loop:false}).to({x:canvasWidth + bpWidth},300);
-	} else {
+	} else 
+	{
 		createjs.Tween.get(event.target,{loop:false}).to({x:canvasWidth - bbWidth},300);
 		//createjs.Tween.get(pallet,{loop:false}).to({x:canvas.width - pallet.getBounds().width},300);
 		createjs.Tween.get(pallet,{loop:false}).to({x:canvasWidth - bpWidth},300);
 	}
+
 	buildPalletOpened = !buildPalletOpened;
-	
 }
 
+   
 
 function setCurrentFloor (event) {
 	console.log("set current floor called");

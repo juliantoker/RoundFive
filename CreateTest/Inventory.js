@@ -21,8 +21,10 @@ function Inventory() {
         	var newItem = new Item(newArray[i]);
         	this.MyArray[i] = newItem;
         	console.log("new item : " + this.MyArray[i].num);
-        	this.MyArray[i].GetSprite();
-    	}		
+
+    	}	
+
+    	this.MyArray[0].GetSprite();	
 	}
 
 	
