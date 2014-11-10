@@ -26,6 +26,8 @@ var itemPool;
 var inventory;
 var prizeCodes;
 var currentFloor;
+var UIBarHeight;
+var UIOffset;
 var canvas;
 function init() {
 	canvas = document.getElementById("myCanvas");
@@ -37,6 +39,7 @@ function init() {
 	mapOpened = false;
 	prizeScreenOpened = false;
 	currentFloor = 0;
+	UIOffset = 0.05*canvasWidth;
 	stage = new createjs.Stage("myCanvas");
 	createjs.Touch.enable(stage);
 	mapContainer = new createjs.Container();
@@ -82,7 +85,8 @@ function init() {
 		{id:"buildPaletteFinal",src:"assets/buildPaletteFinal.png"},
 		{id:"mainUIBar",src:"assets/mainUIBar.png"},
 		{id:"mapIcon",src:"assets/mapIcon.png"},
-		{id:"prizeIcon",src:"assets/prizeIcon.png"}], true);
+		{id:"prizeIcon",src:"assets/prizeIcon.png"},
+		{id:"interimBackground",src:"assets/interimBackground.png"}], true);
 
 }
 
@@ -136,6 +140,7 @@ function GetItems()
 
 function handleComplete(event) {
 	makeBg();
+	initializeUIBar();
 	initializeBuildPallet();
 	initializeBuildButton();
 	initializeMapBackground();
@@ -155,7 +160,7 @@ function tick(event) {
 
 function makeBg () {
 	//Draws initial background
-	var bpm = new createjs.Bitmap(queue.getResult("bg"));
+	var bpm = new createjs.Bitmap(queue.getResult("interimBackground"));
 	
 	//scale BG to fit screen
 	bgScaleY = canvasHeight/bpm.getBounds().height;
@@ -169,8 +174,10 @@ function makeBg () {
 }
 
 function initializeMapButton() {
-	var mb = new createjs.Bitmap(queue.getResult("mapButton"));
+	var mb = new createjs.Bitmap(queue.getResult("mapIcon"));
 	stage.addChild(mb);
+	mb.y = mb.getBounds().height/4;
+	mb.x = UIOffset;
 	mb.addEventListener("click",moveMapUI);
 }
 
@@ -275,11 +282,11 @@ function moveMapUI (event) {
 
 function initializeBuildPallet () {
 	//makes build pallet and moves it into position off screen on the right.
-	var bp = new createjs.Bitmap(queue.getResult("buildPallet"));
+	var bp = new createjs.Bitmap(queue.getResult("buildPaletteFinal"));
 
 	//takes 20% of screen width when open
 	bpWidth = 0.25* canvasWidth;
-	bpHeight = canvasHeight;
+	bpHeight = canvasHeight - UIBarHeight;
 
 	newScaleX = bpWidth/bp.getBounds().width;
 	newScaleY = bpHeight/bp.getBounds().height;
@@ -290,15 +297,24 @@ function initializeBuildPallet () {
 	bp.name = "buildPallet";
 	stage.addChild(bp);
 	bp.x = canvasWidth + (bp.getBounds().width*newScaleX);
+	bp.y = UIBarHeight;
 	//createjs.Tween.get(bp,{loop:false}).to({x:430},300);
 }
 
+function initializeUIBar () {
+	var UIBar = new createjs.Bitmap(queue.getResult("mainUIBar"));
+	stage.addChild(UIBar);
+	UIBar.x = 0;
+	UIBarHeight = UIBar.getBounds().height;
+}
 
 function initializeBuildButton() {
-	var bb = new createjs.Bitmap(queue.getResult("buildButton"));
+	var bb = new createjs.Bitmap(queue.getResult("buildIcon"));
 	stage.addChild(bb);
+	bb.name = "buildButton";
 	bbWidth = bb.getBounds().width; //store width of build button for later positioning
-	bb.x = canvasWidth - bb.getBounds().width;
+	bb.x = canvasWidth - bb.getBounds().width - UIOffset;
+	bb.y = bb.getBounds().height/4;
 	bb.addEventListener("click", moveBuildUI);
 }
 
@@ -377,9 +393,11 @@ function initializePrizeBackground() {
 }
 
 function initializePrizeButton () {
-	var pb = new createjs.Bitmap(queue.getResult("prizeButton"));
+	var pb = new createjs.Bitmap(queue.getResult("prizeIcon"));
 	stage.addChild(pb);
-	pb.x = canvasWidth/2 - (pb.getBounds().width/2);
+	//pb.x = canvasWidth/2 - (pb.getBounds().width/2);
+	pb.x = stage.getChildByName("buildButton").x - pb.getBounds().width - UIOffset;
+	pb.y = pb.getBounds().height/4;
 	pb.addEventListener("click",enterPrizeCode);
 }
 
