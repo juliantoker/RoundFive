@@ -75,7 +75,12 @@ function init() {
 		{id:"ghost",src:"assets/Characters/ghost.png"},
 		{id:"rabbit",src:"assets/Characters/rabbit.png"},
 		{id:"unicorn",src:"assets/Characters/unicorn.png"},
-		{id:"zombie",src:"assets/Characters/zombie.png"}], true);
+		{id:"zombie",src:"assets/Characters/zombie.png"},
+		{id:"buildIcon",src:"assets/buildIcon.png"},
+		{id:"buildPaletteFinal",src:"assets/buildPaletteFinal.png"},
+		{id:"mainUIBar",src:"assets/mainUIBar.png"},
+		{id:"mapIcon",src:"assets/mapIcon.png"},
+		{id:"prizeIcon",src:"assets/prizeIcon.png"}], true);
 
 }
 
