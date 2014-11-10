@@ -16,7 +16,21 @@ function ItemPool(size)
     'ghost',
     'rabbit',
     'unicorn',
-    'zombie'
+    'zombie',
+    'astronaut',
+    'mushroom',
+    'person',
+    'shark',
+    'teapot',
+    'yellowtraffic',
+    'earthskyBG',
+    'halloweenBG',
+    'anchor',
+    'earthGround',
+    'fishboat',
+    'gravestone',
+    'skyscraper',
+    'tree'
 	];
 
     this.GetCount = function() 

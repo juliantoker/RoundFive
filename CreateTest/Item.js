@@ -51,7 +51,7 @@ function Item(num) {
 
 		//sprite.x = canvasWidth + bpWidth;
 		//sprite.x = canvasWidth + bpWidth;
-		sprite.y = (inventoryPos*(canvasHeight/10));
+		sprite.y = (inventoryPos*(canvasHeight/9));
 		//stage.addChild(sprite);
 
 		// // sprite.addEventListener("click", handleClick);
@@ -103,8 +103,6 @@ function Item(num) {
     		sprite.x = event.stageX - worldContainer.x;
     		sprite.y = event.stageY - worldContainer.y;	
     	}
-
-    	
  	};
 
  	//release sprite into the world

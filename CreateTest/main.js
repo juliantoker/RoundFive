@@ -53,10 +53,12 @@ function init() {
 	"code3"
 	];
 	queue.loadManifest([
+		//scripts
 		{id:"bg",src:"assets/background.png"},
 		{id:"ItemPool", src:"ItemPool.js"},
 		{id:"Inventory", src:"Inventory.js"},
 		{id:"Item", src:"Item.js"},
+		//UI and stuff
 		{id:"buildButton",src:"assets/buildButton.png"},
 		{id:"buildPallet",src:"assets/buildPallet.png"},
 		{id:"mapButton",src:"assets/mapButton.png"},
@@ -71,17 +73,34 @@ function init() {
 		{id:"mapButtonFive",src:"assets/mapButtonFive.png"},
 		{id:"prizeBackground",src:"assets/prizeBackground.png"},
 		{id:"prizeButton",src:"assets/prizeButton.png"},
-		{id:"castle",src:"assets/Characters/castle.png"},
+		{id:"buildIcon",src:"assets/buildIcon.png"},
+		{id:"buildPaletteFinal",src:"assets/buildPaletteFinal.png"},
+		{id:"mainUIBar",src:"assets/mainUIBar.png"},
+		{id:"mapIcon",src:"assets/mapIcon.png"},
+		//Backgrounds
+		{id:"earthskyBG",src:"assets/Backgrounds/earthskyBG.png"},
+		{id:"halloweenBG",src:"assets/Backgrounds/halloweenBG.png"},
+		//characters
 		{id:"catman",src:"assets/Characters/catman.png"},
 		{id:"dragon",src:"assets/Characters/dragon.png"},
 		{id:"ghost",src:"assets/Characters/ghost.png"},
 		{id:"rabbit",src:"assets/Characters/rabbit.png"},
 		{id:"unicorn",src:"assets/Characters/unicorn.png"},
 		{id:"zombie",src:"assets/Characters/zombie.png"},
-		{id:"buildIcon",src:"assets/buildIcon.png"},
-		{id:"buildPaletteFinal",src:"assets/buildPaletteFinal.png"},
-		{id:"mainUIBar",src:"assets/mainUIBar.png"},
-		{id:"mapIcon",src:"assets/mapIcon.png"},
+		{id:"astronaut",src:"assets/Characters/astronaut.png"},
+		{id:"mushroom",src:"assets/Characters/mushroom.png"},
+		{id:"person",src:"assets/Characters/person.png"},
+		{id:"shark",src:"assets/Characters/shark.png"},
+		{id:"teapot",src:"assets/Characters/teapot.png"},
+		{id:"yellowtraffic",src:"assets/Characters/yellowtraffic.png"},
+		//environments
+		{id:"castle",src:"assets/Environment/castle.png"},
+		{id:"anchor",src:"assets/Environment/anchor.png"},
+		{id:"earthGround",src:"assets/Environment/earthGround.png"},
+		{id:"fishboat",src:"assets/Environment/fishboat.png"},
+		{id:"gravestone",src:"assets/Environment/gravestone.png"},
+		{id:"skyscraper",src:"assets/Environment/skyscraper.png"},
+		{id:"tree",src:"assets/Environment/tree.png"},
 		{id:"prizeIcon",src:"assets/prizeIcon.png"}], true);
 
 }
