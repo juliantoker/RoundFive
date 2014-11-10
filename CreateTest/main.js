@@ -9,6 +9,8 @@ var stage;
 var mapContainer;
 var buttonContainer;
 var prizeContainer;
+var palletContainer;
+var worldContainer;
 //for 560x960 px backgrounds
 var bgScaleX; 
 var bgScaleY;
@@ -104,7 +106,18 @@ function InitializeItemPool()
 
 function InitializeInventory()
 {
-	inventory = new Inventory();
+	palletContainer = new createjs.Container();
+	palletContainer.name = "PalletContainer";
+	stage.addChild(palletContainer);
+    palletContainer.x = canvasWidth + bpWidth;
+
+    worldContainer = new createjs.Container();
+	worldContainer.name = "WorldContainer";
+	stage.addChild(worldContainer);
+   	worldContainer.x = canvasWidth - bpWidth;
+    //worldContainer.x = 0;
+
+    inventory = new Inventory();
 	inventory.init();
 }
 
@@ -228,6 +241,7 @@ function initializeMaps() {
 	f2.scaleX = mapScaleX;
 	f3.scaleY = mapScaleY;
 	f3.scaleX = mapScaleX;
+
 	f5.scaleY = mapScaleY;
 	f5.scaleX = mapScaleX;
 
@@ -292,6 +306,8 @@ function moveBuildUI(event)
 {
 	console.log("hit build button");
 
+	//palletContainer.x = canvasWidth + bpWidth;
+
 	//Opens and closes the build UI
 	//Get a referrence to the buildPallet display object
 	var pallet;
@@ -301,16 +317,21 @@ function moveBuildUI(event)
 	if(buildPalletOpened)
 	{
 		createjs.Tween.get(event.target,{loop:false}).to({x:canvasWidth - bbWidth},300);
-		//createjs.Tween.get(pallet,{loop:false}).to({x:canvas.width + pallet.getBounds().width},300);
 		createjs.Tween.get(pallet,{loop:false}).to({x:canvasWidth + bpWidth},300);
+		createjs.Tween.get(palletContainer,{loop:false}).to({x:canvasWidth + bpWidth},300);
 	} else 
 	{
 		createjs.Tween.get(event.target,{loop:false}).to({x:canvasWidth - bbWidth},300);
-		//createjs.Tween.get(pallet,{loop:false}).to({x:canvas.width - pallet.getBounds().width},300);
 		createjs.Tween.get(pallet,{loop:false}).to({x:canvasWidth - bpWidth},300);
+		createjs.Tween.get(palletContainer,{loop:false}).to({x:canvasWidth - bpWidth},300).call(PositionPalletContainer);
 	}
 
 	buildPalletOpened = !buildPalletOpened;
+}
+
+function PositionPalletContainer()
+{
+	inventory.PositionContainer();
 }
 
    

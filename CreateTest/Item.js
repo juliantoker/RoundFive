@@ -5,13 +5,13 @@
 
 function Item(num) {
 
-	this.inWorld = false;
 	this.isTouched = false;
 	this.num = num;
 	this.onButtonPress = false;
 	this.inventoryPos = 0;
 	var loadString = "";
 	var sprite;
+	var inWorld = false;
 
     /**
      * Turn off mouse interaction like "hover".
@@ -24,11 +24,12 @@ function Item(num) {
    this.init = function(position) 
    {
    		inventoryPos = position;
-   		GetSprite();
+   		AssignSprite();
 
    };
 
-	function GetSprite()
+   	//assigns a sprite to add to the item
+	function AssignSprite()
 	{
 		loadString = itemPool.GetString(num);
 		console.log ("drawing : " + loadString);
@@ -45,17 +46,32 @@ function Item(num) {
 		sprite.scaleY = scaleY;
 		sprite.scaleX = scaleX;
 
-		var pallet;
-		pallet = stage.getChildByName("buildPallet");
+		// var pallet;
+		// pallet = stage.getChildByName("buildPallet");
 
-		sprite.x = pallet.x/2;
+		//sprite.x = canvasWidth + bpWidth;
+		//sprite.x = canvasWidth + bpWidth;
 		sprite.y = (inventoryPos*(canvasHeight/10));
-		stage.addChild(sprite);
+		//stage.addChild(sprite);
 
-		// sprite.addEventListener("click", handleClick);
- 		sprite.addEventListener("mousedown", handlePress);
- 		sprite.addEventListener("mouseup", handleMouseUp);
-	
+		// // sprite.addEventListener("click", handleClick);
+ 	 	sprite.addEventListener("mousedown", handlePress);
+ 	// 		sprite.addEventListener("mouseup", handleMouseUp)
+ 	// 	};
+ 		
+
+ 		var container;
+		container = stage.getChildByName("PalletContainer");
+
+ 		container.addChild(sprite);			
+
+	};
+
+	//retrieves the sprite 
+	this.ReturnSprite = function()
+	{
+		console.log("i am an element");
+		return sprite;
 	};
 
 	// function handleClick(event)
@@ -65,19 +81,52 @@ function Item(num) {
 
  	function handlePress(event) 
  	{
+ 		console.log("touch me");
      // A mouse press happened.
      // Listen for mouse move while the mouse is down:
-     event.addEventListener("mousemove", handleMove);
+     	event.addEventListener("mousemove", handleMove);
+     	event.addEventListener("mouseup", handleMouseUp);
  	};
 
   	function handleMove(event) 
   	{
-     	event.target.x = event.stageX;
-    	event.target.y = event.stageY;
+     //  	event.target.x = event.stageX;
+    	// event.target.y = event.stageY;
+
+    	if(!inWorld)
+    	{
+    		sprite.x = event.stageX - palletContainer.x;
+    		sprite.y = event.stageY - palletContainer.y;	
+    	}
+    	else
+    	{
+    		sprite.x = event.stageX - worldContainer.x;
+    		sprite.y = event.stageY - worldContainer.y;	
+    	}
+
+    	
  	};
 
- 	function handleMouseUp(event) {
-  	stage.removeEventListener("stagemousemove", handleMouseMove);
+ 	//release sprite into the world
+ 	function handleMouseUp(event) 
+ 	{
+ 		if(!inWorld)
+ 		{
+ 			console.log("Removing from container");
+  			stage.removeEventListener("mousemove", handleMove);
+  			if(sprite.x < (0.75*canvasWidth))
+  			{
+
+  				inWorld = true;
+  				var container;
+				container = stage.getChildByName("PalletContainer");
+
+ 				container.removeChild(sprite);
+
+ 				worldContainer.addChild(sprite);
+				console.log("Added succesfully");
+  			}
+ 		}	
 	};
 
 	this.PrintID = function() 
