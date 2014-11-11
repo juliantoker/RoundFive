@@ -56,13 +56,20 @@ bmpAnimation.shadow = new createjs.Shadow("#454", 0, 5, 4);
 	bmpAnimation.currentFrame = 0;
 	stage.addChild(bmpAnimation);
 
+	bmpAnimation.addEventListener("mousedown", handlePress);
+
+	var container;
+	container = stage.getChildByName("PalletContainer");
+
+ 	container.addChild(sprite);
+
 	// var container;
 	// container = stage.getChildByName("WorldContainer");
 
  // 	container.addChild(bmpAnimation);
 
  	//You can move the spritesheet using tick
- 	
+
  	// createjs.Ticker.addEventListener("tick", tick);
  	// createjs.Ticker.setFPS(15);
 
@@ -129,62 +136,62 @@ bmpAnimation.shadow = new createjs.Shadow("#454", 0, 5, 4);
 	};
 
 	//retrieves the sprite 
-	// this.ReturnSprite = function()
-	// {
-	// 	console.log("i am an element");
-	// 	return sprite;
-	// };
+	this.ReturnSprite = function()
+	{
+		console.log("i am an element");
+		return sprite;
+	};
 
- // 	function handlePress(event) 
- // 	{
- // 		console.log("touch me");
- //     // A mouse press happened.
- //     // Listen for mouse move while the mouse is down:
- //     	event.addEventListener("mousemove", handleMove);
- //     	event.addEventListener("mouseup", handleMouseUp);
- // 	};
+ 	function handlePress(event) 
+ 	{
+ 		console.log("touch me");
+     // A mouse press happened.
+     // Listen for mouse move while the mouse is down:
+     	event.addEventListener("mousemove", handleMove);
+     	event.addEventListener("mouseup", handleMouseUp);
+ 	};
 
- //  	function handleMove(event) 
- //  	{
- //     //  	event.target.x = event.stageX;
- //    	// event.target.y = event.stageY;
+  	function handleMove(event) 
+  	{
+		bmpAnimation.x = event.stageX;
+    	bmpAnimation.y = event.stageY;
 
- //    	if(!inWorld)
- //    	{
- //    		sprite.x = event.stageX - palletContainer.x;
- //    		sprite.y = event.stageY - palletContainer.y;	
- //    	}
- //    	else
- //    	{
- //    		sprite.x = event.stageX - worldContainer.x;
- //    		sprite.y = event.stageY - worldContainer.y;	
- //    	}
- // 	};
+    	// if(!inWorld)
+    	// {
+    	// 	bmpAnimation.x = event.stageX - palletContainer.x;
+    	// 	bmpAnimation.y = event.stageY - palletContainer.y;	
+    	// }
+    	// else
+    	// {
+    	// 	bmpAnimation.x = event.stageX - worldContainer.x;
+    	// 	bmpAnimation.y = event.stageY - worldContainer.y;	
+    	// }
+ 	};
 
- // 	//release sprite into the world
- // 	function handleMouseUp(event) 
- // 	{
- // 		if(!inWorld)
- // 		{
- // 			console.log("Removing from container");
- //  			stage.removeEventListener("mousemove", handleMove);
- //  			if(sprite.x < (0.75*canvasWidth))
- //  			{
+ 	//release sprite into the world
+ 	function handleMouseUp(event) 
+ 	{
+ 		if(!inWorld)
+ 		{
+ 			console.log("Removing from container");
+  			stage.removeEventListener("mousemove", handleMove);
+  			if(bmpAnimation.x < (0.75*canvasWidth))
+  			{
 
- //  				inWorld = true;
- //  				var container;
-	// 			container = stage.getChildByName("PalletContainer");
+  				inWorld = true;
+  				var container;
+				container = stage.getChildByName("PalletContainer");
 
- // 				container.removeChild(sprite);
+ 				container.removeChild(bmpAnimation);
 
- // 				worldContainer.addChild(sprite);
-	// 			console.log("Added succesfully");
- //  			}
- // 		}	
-	// };
+ 			// 	worldContainer.addChild(bmpAnimation);
+				// console.log("Added succesfully");
+  			}
+ 		}	
+	};
 
-	// this.PrintID = function() 
- //    {
- //        //console.log("ID:" + this.num);
-	// };
+	this.PrintID = function() 
+    {
+        //console.log("ID:" + this.num);
+	};
 }

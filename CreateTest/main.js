@@ -43,12 +43,6 @@ function init() {
 	UIOffset = 0.05*canvasWidth;
 	stage = new createjs.Stage("myCanvas");
 	createjs.Touch.enable(stage);
-	mapContainer = new createjs.Container();
-	mapContainer.name = "maps";
-	buttonContainer = new createjs.Container();
-	buttonContainer.name = "buttons";
-	prizeContainer = new createjs.Container();
-	prizeContainer.name = "prize";
 	queue = new createjs.LoadQueue(false);
 	queue.addEventListener("complete",handleComplete);
 	prizeCodes = [
@@ -136,20 +130,28 @@ function InitializeItemPool()
  //    }
 }
 
-function InitializeInventory()
+function InitializeContainers()
 {
-	
-
+	buttonContainer = new createjs.Container();
+	buttonContainer.name = "buttons";
+	prizeContainer = new createjs.Container();
+	prizeContainer.name = "prize";
 	palletContainer = new createjs.Container();
 	palletContainer.name = "PalletContainer";
 	stage.addChild(palletContainer);
     palletContainer.x = canvasWidth + bpWidth;
+    
+	mapContainer = new createjs.Container();
+	mapContainer.name = "maps";
 
-    worldContainer = new createjs.Container();
+	worldContainer = new createjs.Container();
 	worldContainer.name = "WorldContainer";
 	stage.addChild(worldContainer);
-   	//worldContainer.x = canvasWidth - bpWidth;
+	//worldContainer.x = canvasWidth - bpWidth;
+}
 
+function InitializeInventory()
+{
    	var item1 = new Item();
 	item1.init();
 
@@ -171,6 +173,7 @@ function GetItems()
 }
 
 function handleComplete(event) {
+	InitializeContainers();
 	makeBg();
 	initializeUIBar();
 	initializeBuildPallet();
@@ -182,7 +185,6 @@ function handleComplete(event) {
 	initializePrizeButton();
 	InitializeInventory();
 	createjs.Ticker.addEventListener("tick",tick);
-	
 }
 
 function tick(event) {
