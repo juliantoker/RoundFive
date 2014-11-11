@@ -2,8 +2,8 @@
 
 function Inventory() {
 	
-	var itemCount = 0;
-	var itemPoolSize = 20;
+	var trophyCount = 0;
+	var trophyPoolSize = 20;
 	this.MyArray = [];
 	this.MyStaticArray = [];
 
@@ -11,42 +11,42 @@ function Inventory() {
 	this.init = function()
 	{
 		console.log("Inventory Built");	
-		itemPool = new ItemPool(itemPoolSize); //initialize an item pool of 6 objects
+		trophyPool = new TrophyPool(trophyPoolSize); //initialize an item pool of 6 objects
 		//this.PopulateInventory(9);
-		this.PopulateInventory(2);
-		this.PopulateInventoryStaticItems(6);
+		this.PopulateInventory(5);
+		//this.PopulateInventoryStaticItems(6);
 	};
 
 
 	this.PopulateInventory = function(count)
 	{
 		var newArray = [];
-		newArray = itemPool.GetItems(count); //gets 3 random numbers from the item pool
+		newArray = trophyPool.GetItems(count); //gets 3 random numbers from the item pool
 
 		for (var i = 0; i < newArray.length; i++) 
     	{
         	console.log("new item : " + newArray[i]);
-        	var newItem = new Item(newArray[i]); //the new Item knows its number
-        	this.MyArray[i] = newItem; //add it to inventory
+        	var newTrophy = new Trophy(newArray[i]); //the new Item knows its number
+        	this.MyArray[i] = newTrophy; //add it to inventory
         	//console.log("new item : " + this.MyArray[i].num);
         	this.MyArray[i].init(i); //initialize the 'item' element
     	}
 	};
 
-	this.PopulateInventoryStaticItems = function(count)
-	{
-		var newStaticArray = [];
-		newStaticArray = itemPool.GetItems(count); //gets 3 random numbers from the item pool
+	// this.PopulateInventoryStaticItems = function(count)
+	// {
+	// 	var newStaticArray = [];
+	// 	newStaticArray = itemPool.GetItems(count); //gets 3 random numbers from the item pool
 
-		for (var i = 0; i < newStaticArray.length; i++) 
-    	{
-        	console.log("new item : " + newStaticArray[i]);
-        	var newItem = new StaticItem(newStaticArray[i]); //the new Item knows its number
-        	this.MyStaticArray[i] = newItem; //add it to inventory
-        	//console.log("new item : " + this.MyArray[i].num);
-        	this.MyStaticArray[i].init(i); //initialize the 'item' element
-    	}
-	};
+	// 	for (var i = 0; i < newStaticArray.length; i++) 
+ //    	{
+ //        	console.log("new item : " + newStaticArray[i]);
+ //        	var newItem = new StaticItem(newStaticArray[i]); //the new Item knows its number
+ //        	this.MyStaticArray[i] = newItem; //add it to inventory
+ //        	//console.log("new item : " + this.MyArray[i].num);
+ //        	this.MyStaticArray[i].init(i); //initialize the 'item' element
+ //    	}
+	// };
 	
 
 	this.PositionContainer = function()

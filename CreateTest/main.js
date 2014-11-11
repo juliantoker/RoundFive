@@ -52,6 +52,10 @@ function init() {
 		{id:"TrophyPool", src:"TrophyPool.js"},
 		{id:"Inventory", src:"Inventory.js"},
 		{id:"Trophy", src:"Trophy.js"},
+		//Trophies
+		{id:"mediumTrophy", src:"assets/mediumTrophy.png"},
+		{id:"largeTrophy", src:"assets/largeTrophy.png"},
+		{id:"Trophy", src:"Trophy.js"},
 		//UI and stuff
 		{id:"mapBackground",src:"assets/mapBackground.png"},
 		{id:"firstFloor",src:"assets/firstFloor.png"},
@@ -63,7 +67,6 @@ function init() {
 		{id:"mapButtonThree",src:"assets/mapButtonThree.png"},
 		{id:"mapButtonFive",src:"assets/mapButtonFive.png"},
 		{id:"prizeBackground",src:"assets/prizeBackground.png"},
-		{id:"prizeBackground",src:"assets/prizeBackground2.png"},
 		{id:"buildIcon",src:"assets/buildIcon.png"},
 		{id:"buildPaletteFinal",src:"assets/buildPaletteFinal.png"},
 		{id:"mainUIBar",src:"assets/mainUIBar.png"},
@@ -115,8 +118,8 @@ function InitializeInventory()
    	//var item1 = new Item();
 	//item1.init();
 
- //    inventory = new Inventory();
-	// inventory.init();
+    inventory = new Inventory();
+	inventory.init();
 }
 
 function GetItems()
@@ -332,7 +335,7 @@ function initializePrizeButton () {
 	pb.x = canvasWidth - pb.getBounds().width - UIOffset;
 	pb.y = pb.getBounds().height/4;
 	pb.addEventListener("click",enterPrizeCode);
-	pb.addEventListener("click",movePrizeUI);
+	//pb.addEventListener("click",movePrizeUI);
 }
 
 function movePrizeUI () {

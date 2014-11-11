@@ -28,27 +28,56 @@ function Trophy(num) {
    	//assigns a sprite to add to the item
 	function AssignSprite()
 	{
-		loadString = itemPool.GetString(num);
-		console.log ("drawing : " + loadString);
-		sprite = new createjs.Bitmap(queue.getResult(loadString));
+		loadString = trophyPool.GetString(num);
+		//sprite = new createjs.Bitmap(queue.getResult(loadString));
+		if(inventoryPos < 4)
+			sprite = new createjs.Bitmap(queue.getResult("mediumTrophy"));
+		else
+			sprite = new createjs.Bitmap(queue.getResult("largeTrophy"));
 
 		//each slot in the build pallet is screenheight/9
 
-		var desiredHeight = canvasHeight/10; //making it a little smaller
-		var currentHeight = sprite.getBounds().height;
+		// var desiredHeight = canvasHeight/10; //making it a little smaller
+		// var currentHeight = sprite.getBounds().height;
 
-		var scaleY = (canvasHeight/10)/sprite.getBounds().height;
-		var scaleX = (canvasHeight/10)/sprite.getBounds().width;
+		// var scaleY = (canvasHeight/10)/sprite.getBounds().height;
+		// var scaleX = (canvasHeight/10)/sprite.getBounds().width;
+
+		if(inventoryPos < 4)
+		{
+			desiredWidth = canvasWidth/6;
+		}
+		else
+		{
+			desiredWidth = canvasWidth/3;	
+		}
+
+		var scaleY = (desiredWidth)/sprite.getBounds().height;
+		var scaleX = (desiredWidth)/sprite.getBounds().width;
 
 		sprite.scaleY = scaleY;
 		sprite.scaleX = scaleX;
 
+		 //var scaleY = (canvasHeight/10)/sprite.getBounds().height;
+		// var scaleX = (canvasHeight/10)/sprite.getBounds().width;
+
+		// sprite.scaleY = 0.6;
+		// sprite.scaleX = 0.6;
+
 		// var pallet;
 		// pallet = stage.getChildByName("buildPallet");
+		//console.log("Inventory pos : " + inventoryPos + " width : " + sprite.getBounds().width);
 
-		sprite.x = canvasWidth - bbWidth;
-		sprite.y = (inventoryPos+4)*(canvasHeight/10);
-		//sprite.y = (inventoryPos*(canvasHeight/10));
+		//sprite.x = canvasWidth - bbWidth;
+		// sprite.y = (inventoryPos)*(canvasHeight/10);
+
+		//sprite.x = inventoryPos*sprite.getBounds().width/2;
+		if(inventoryPos < 4)
+			sprite.x = canvasWidth*inventoryPos/5;
+		else
+			sprite.x = canvasWidth - sprite.getBounds().width/1.75;
+
+		sprite.y = UIBarHeight;
 		//stage.addChild(sprite);
 
 		// // sprite.addEventListener("click", handleClick);
@@ -56,10 +85,10 @@ function Trophy(num) {
  	// 		sprite.addEventListener("mouseup", handleMouseUp)
  	// 	};
  		
- 		var container;
-		container = stage.getChildByName("PalletContainer");
+ 	// 	var container;
+		// container = stage.getChildByName("PalletContainer");
 
- 		container.addChild(sprite);	
+ 	// 	container.addChild(sprite);	
  		stage.addChild(sprite);		
 
  		console.log("Drawn static item");
@@ -115,23 +144,23 @@ function Trophy(num) {
  	//release sprite into the world
  	function handleMouseUp(event) 
  	{
- 		if(!this.inWorld)
- 		{
- 			console.log("Removing from container");
-  			stage.removeEventListener("mousemove", handleMove);
-  			if(sprite.x < (0.75*canvasWidth))
-  			{
+ 		// if(!this.inWorld)
+ 		// {
+ 		// 	console.log("Removing from container");
+  	// 		stage.removeEventListener("mousemove", handleMove);
+  	// 		if(sprite.x < (0.75*canvasWidth))
+  	// 		{
 
-  				this.inWorld = true;
-  				var container;
-				container = stage.getChildByName("PalletContainer");
+  	// 			this.inWorld = true;
+  	// 			var container;
+			// 	container = stage.getChildByName("PalletContainer");
 
- 				container.removeChild(sprite);
+ 		// 		container.removeChild(sprite);
 
- 				worldContainer.addChild(sprite);
-				console.log("Added succesfully");
-  			}
- 		}	
+ 		// 		worldContainer.addChild(sprite);
+			// 	console.log("Added succesfully");
+  	// 		}
+ 		// }	
 	};
 
 	this.PrintID = function() 
