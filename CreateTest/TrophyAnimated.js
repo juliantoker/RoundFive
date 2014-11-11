@@ -1,6 +1,6 @@
 
 
-function Item(num) {
+function TrophyAnimated(num) {
 
 	var imgMonsterARun = new Image();
 	this.isTouched = false;

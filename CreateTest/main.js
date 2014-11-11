@@ -9,7 +9,6 @@ var stage;
 var mapContainer;
 var buttonContainer;
 var prizeContainer;
-var palletContainer;
 var worldContainer;
 //for 560x960 px backgrounds
 var bgScaleX; 
@@ -19,7 +18,6 @@ var bpWidth; //width of pallet
 var canvasWidth;
 var canvasHeight;
 var queue;
-var buildPalletOpened;
 var mapOpened;
 var prizeScreenOpened;
 var itemPool;
@@ -36,7 +34,6 @@ function init() {
     canvas.height = window.innerHeight;
     canvasWidth = canvas.width;
     canvasHeight = canvas.height;
-	buildPalletOpened = false;
 	mapOpened = false;
 	prizeScreenOpened = false;
 	currentFloor = 0;
@@ -52,16 +49,10 @@ function init() {
 	];
 	queue.loadManifest([
 		//scripts
-		{id:"bg",src:"assets/background.png"},
-		//{id:"SpriteSheet",src:"SpriteSheet.js"},
-		{id:"ItemPool", src:"ItemPool.js"},
+		{id:"TrophyPool", src:"TrophyPool.js"},
 		{id:"Inventory", src:"Inventory.js"},
-		{id:"Item", src:"Item.js"},
-		{id:"StaticItem", src:"StaticItem.js"},
+		{id:"Trophy", src:"Trophy.js"},
 		//UI and stuff
-		{id:"buildButton",src:"assets/buildButton.png"},
-		{id:"buildPallet",src:"assets/buildPallet.png"},
-		{id:"mapButton",src:"assets/mapButton.png"},
 		{id:"mapBackground",src:"assets/mapBackground.png"},
 		{id:"firstFloor",src:"assets/firstFloor.png"},
 		{id:"secondFloor",src:"assets/secondFloor.png"},
@@ -72,42 +63,11 @@ function init() {
 		{id:"mapButtonThree",src:"assets/mapButtonThree.png"},
 		{id:"mapButtonFive",src:"assets/mapButtonFive.png"},
 		{id:"prizeBackground",src:"assets/prizeBackground.png"},
-		{id:"prizeButton",src:"assets/prizeButton.png"},
-		{id:"buildIcon",src:"assets/buildIcon.png"},
-		{id:"buildPaletteFinal",src:"assets/buildPaletteFinal.png"},
-		{id:"mainUIBar",src:"assets/mainUIBar.png"},
-		{id:"mapIcon",src:"assets/mapIcon.png"},
-		//Backgrounds
-		{id:"earthskyBG",src:"assets/Backgrounds/earthskyBG.png"},
-		{id:"halloweenBG",src:"assets/Backgrounds/halloweenBG.png"},
-		//characters
-		{id:"catman",src:"assets/Characters/catman.png"},
-		{id:"dragon",src:"assets/Characters/dragon.png"},
-		{id:"ghost",src:"assets/Characters/ghost.png"},
-		{id:"rabbit",src:"assets/Characters/rabbit.png"},
-		{id:"unicorn",src:"assets/Characters/unicorn.png"},
-		{id:"zombie",src:"assets/Characters/zombie.png"},
-
-		{id:"astronaut",src:"assets/Characters/astronaut.png"},
-		{id:"mushroom",src:"assets/Characters/mushroom.png"},
-		{id:"person",src:"assets/Characters/person.png"},
-		{id:"shark",src:"assets/Characters/shark.png"},
-		{id:"teapot",src:"assets/Characters/teapot.png"},
-		{id:"yellowtraffic",src:"assets/Characters/yellowtraffic.png"},
-		//environments
-		{id:"castle",src:"assets/Environment/castle.png"},
-		{id:"anchor",src:"assets/Environment/anchor.png"},
-		{id:"earthGround",src:"assets/Environment/earthGround.png"},
-		{id:"fishboat",src:"assets/Environment/fishboat.png"},
-		{id:"gravestone",src:"assets/Environment/gravestone.png"},
-		{id:"skyscraper",src:"assets/Environment/skyscraper.png"},
-		{id:"tree",src:"assets/Environment/tree.png"},
-		{id:"prizeIcon",src:"assets/prizeIcon.png"},
-		{id:"buildIcon",src:"assets/buildIcon.png"},
-		{id:"buildPaletteFinal",src:"assets/buildPaletteFinal.png"},
 		{id:"mainUIBar",src:"assets/mainUIBar.png"},
 		{id:"mapIcon",src:"assets/mapIcon.png"},
 		{id:"prizeIcon",src:"assets/prizeIcon.png"},
+		{id:"buildIcon",src:"assets/buildIcon.png"},
+		{id:"buildPaletteFinal",src:"assets/buildPaletteFinal.png"},
 		{id:"interimBackground",src:"assets/interimBackground.png"}], true);
 
 
@@ -137,11 +97,6 @@ function InitializeContainers()
 	buttonContainer.name = "buttons";
 	prizeContainer = new createjs.Container();
 	prizeContainer.name = "prize";
-	palletContainer = new createjs.Container();
-	palletContainer.name = "PalletContainer";
-	
-	stage.addChild(palletContainer);
-    palletContainer.x = canvasWidth + bpWidth;
     
 	mapContainer = new createjs.Container();
 	mapContainer.name = "maps";
@@ -157,8 +112,8 @@ function InitializeInventory()
    	//var item1 = new Item();
 	//item1.init();
 
-    inventory = new Inventory();
-	inventory.init();
+ //    inventory = new Inventory();
+	// inventory.init();
 }
 
 function GetItems()
@@ -178,8 +133,6 @@ function handleComplete(event) {
 	InitializeContainers();
 	makeBg();
 	initializeUIBar();
-	initializeBuildPallet();
-	initializeBuildButton();
 	initializeMapBackground();
 	initializeMapButton();
 	initializeMaps();
@@ -308,7 +261,7 @@ function moveMapUI (event) {
 		createjs.Tween.get(buttonContainer,{loop:false}).to({x:-540},300);
 		createjs.Tween.get(mapContainer,{loop:false}).to({x:-540},300).call(ReAppearItems);
 	} else {
-		inventory.SetAllItemsAlpha(0);
+		//inventory.SetAllItemsAlpha(0);
 		createjs.Tween.get(buttonContainer,{loop:false}).to({x:0},300);
 		createjs.Tween.get(mapContainer,{loop:false}).to({x:0},300);
 	}
@@ -317,30 +270,8 @@ function moveMapUI (event) {
 
 	function ReAppearItems()
 	{
-		inventory.SetAllItemsAlpha(1);
+		//inventory.SetAllItemsAlpha(1);
 	}
-
-
-function initializeBuildPallet () {
-	//makes build pallet and moves it into position off screen on the right.
-	var bp = new createjs.Bitmap(queue.getResult("buildPaletteFinal"));
-
-	//takes 20% of screen width when open
-	bpWidth = 0.25* canvasWidth;
-	bpHeight = canvasHeight - UIBarHeight;
-
-	newScaleX = bpWidth/bp.getBounds().width;
-	newScaleY = bpHeight/bp.getBounds().height;
-
-	bp.scaleX = newScaleX;
-	bp.scaleY = newScaleY;
-
-	bp.name = "buildPallet";
-	stage.addChild(bp);
-	bp.x = canvasWidth + (bp.getBounds().width*newScaleX);
-	bp.y = UIBarHeight;
-	//createjs.Tween.get(bp,{loop:false}).to({x:430},300);
-}
 
 function initializeUIBar () {
 	var UIBar = new createjs.Bitmap(queue.getResult("mainUIBar"));
@@ -349,49 +280,6 @@ function initializeUIBar () {
 	UIBarHeight = UIBar.getBounds().height;
 }
 
-function initializeBuildButton() {
-	var bb = new createjs.Bitmap(queue.getResult("buildIcon"));
-	stage.addChild(bb);
-	bb.name = "buildButton";
-	bbWidth = bb.getBounds().width; //store width of build button for later positioning
-	bb.x = canvasWidth - bb.getBounds().width - UIOffset;
-	bb.y = bb.getBounds().height/4;
-	bb.addEventListener("click", moveBuildUI);
-}
-
-function moveBuildUI(event) 
-{
-	console.log("hit build button");
-
-	//palletContainer.x = canvasWidth + bpWidth;
-
-	//Opens and closes the build UI
-	//Get a referrence to the buildPallet display object
-	var pallet;
-	pallet = stage.getChildByName("buildPallet");
-	//If the build pallet is opened, close it
-	//If the build pallet is closed, open it
-	if(buildPalletOpened)
-	{
-		createjs.Tween.get(event.target,{loop:false}).to({x:canvasWidth - bbWidth},300);
-		createjs.Tween.get(pallet,{loop:false}).to({x:canvasWidth + bpWidth},300);
-		createjs.Tween.get(palletContainer,{loop:false}).to({x:canvasWidth + bpWidth},300);
-	} else 
-	{
-		createjs.Tween.get(event.target,{loop:false}).to({x:canvasWidth - bbWidth},300);
-		createjs.Tween.get(pallet,{loop:false}).to({x:canvasWidth - bpWidth},300);
-		createjs.Tween.get(palletContainer,{loop:false}).to({x:canvasWidth - bpWidth},300);
-	}
-
-	buildPalletOpened = !buildPalletOpened;
-}
-
-// function PositionPalletContainer()
-// {
-// 	inventory.PositionContainer();
-// }
-
-   
 
 function setCurrentFloor (event) {
 	console.log("set current floor called");
@@ -437,7 +325,8 @@ function initializePrizeButton () {
 	var pb = new createjs.Bitmap(queue.getResult("prizeIcon"));
 	stage.addChild(pb);
 	//pb.x = canvasWidth/2 - (pb.getBounds().width/2);
-	pb.x = stage.getChildByName("buildButton").x - pb.getBounds().width - UIOffset;
+	//bb.x = canvasWidth - bb.getBounds().width - UIOffset;
+	pb.x = canvasWidth - pb.getBounds().width - UIOffset;
 	pb.y = pb.getBounds().height/4;
 	pb.addEventListener("click",enterPrizeCode);
 }

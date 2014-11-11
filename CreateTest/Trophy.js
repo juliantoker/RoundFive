@@ -1,6 +1,6 @@
 
 
-function StaticItem(num) {
+function Trophy(num) {
 
 	this.inWorld = false;
 	this.isTouched = false;

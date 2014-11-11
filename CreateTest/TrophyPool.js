@@ -1,5 +1,5 @@
 
-function ItemPool(size) 
+function TrophyPool(size) 
 { //gets initialized with a size provided in main
 
     this.MyArray = [];
