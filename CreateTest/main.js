@@ -63,6 +63,9 @@ function init() {
 		{id:"mapButtonThree",src:"assets/mapButtonThree.png"},
 		{id:"mapButtonFive",src:"assets/mapButtonFive.png"},
 		{id:"prizeBackground",src:"assets/prizeBackground.png"},
+		{id:"prizeBackground",src:"assets/prizeBackground2.png"},
+		{id:"buildIcon",src:"assets/buildIcon.png"},
+		{id:"buildPaletteFinal",src:"assets/buildPaletteFinal.png"},
 		{id:"mainUIBar",src:"assets/mainUIBar.png"},
 		{id:"mapIcon",src:"assets/mapIcon.png"},
 		{id:"prizeIcon",src:"assets/prizeIcon.png"},
@@ -329,6 +332,7 @@ function initializePrizeButton () {
 	pb.x = canvasWidth - pb.getBounds().width - UIOffset;
 	pb.y = pb.getBounds().height/4;
 	pb.addEventListener("click",enterPrizeCode);
+	pb.addEventListener("click",movePrizeUI);
 }
 
 function movePrizeUI () {
