@@ -59,6 +59,7 @@ function init() {
 	queue.loadManifest([
 		//scripts
 		{id:"bg",src:"assets/background.png"},
+		//{id:"SpriteSheet",src:"SpriteSheet.js"},
 		{id:"ItemPool", src:"ItemPool.js"},
 		{id:"Inventory", src:"Inventory.js"},
 		{id:"Item", src:"Item.js"},
@@ -137,6 +138,8 @@ function InitializeItemPool()
 
 function InitializeInventory()
 {
+	
+
 	palletContainer = new createjs.Container();
 	palletContainer.name = "PalletContainer";
 	stage.addChild(palletContainer);
@@ -145,11 +148,13 @@ function InitializeInventory()
     worldContainer = new createjs.Container();
 	worldContainer.name = "WorldContainer";
 	stage.addChild(worldContainer);
-   	worldContainer.x = canvasWidth - bpWidth;
-    //worldContainer.x = 0;
+   	//worldContainer.x = canvasWidth - bpWidth;
 
-    inventory = new Inventory();
-	inventory.init();
+   	var item1 = new Item();
+	item1.init();
+
+    //inventory = new Inventory();
+	//inventory.init();
 }
 
 function GetItems()
@@ -173,7 +178,6 @@ function handleComplete(event) {
 	initializeMapBackground();
 	initializeMapButton();
 	initializeMaps();
-	//InitializeItemPool();
 	initializePrizeBackground();
 	initializePrizeButton();
 	InitializeInventory();
@@ -366,16 +370,16 @@ function moveBuildUI(event)
 	{
 		createjs.Tween.get(event.target,{loop:false}).to({x:canvasWidth - bbWidth},300);
 		createjs.Tween.get(pallet,{loop:false}).to({x:canvasWidth - bpWidth},300);
-		createjs.Tween.get(palletContainer,{loop:false}).to({x:canvasWidth - bpWidth},300).call(PositionPalletContainer);
+		createjs.Tween.get(palletContainer,{loop:false}).to({x:canvasWidth - bpWidth},300);
 	}
 
 	buildPalletOpened = !buildPalletOpened;
 }
 
-function PositionPalletContainer()
-{
-	inventory.PositionContainer();
-}
+// function PositionPalletContainer()
+// {
+// 	inventory.PositionContainer();
+// }
 
    
 

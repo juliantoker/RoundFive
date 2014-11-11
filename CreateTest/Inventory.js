@@ -10,8 +10,9 @@ function Inventory() {
 	this.init = function()
 	{
 		console.log("Inventory Built");	
-		itemPool = new ItemPool(itemPoolSize); //initialize an item pool of 6 objects
-		this.PopulateInventory(9);
+		//itemPool = new ItemPool(itemPoolSize); //initialize an item pool of 6 objects
+		//this.PopulateInventory(9);
+		//this.PopulateInventory(1);
 	};
 
 	this.PopulateInventory = function(count)
