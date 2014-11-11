@@ -1,7 +1,8 @@
-var imgMonsterARun = new Image();
+
 
 function Item(num) {
 
+	var imgMonsterARun = new Image();
 	this.isTouched = false;
 	this.num = num;
 	this.onButtonPress = false;
@@ -9,11 +10,14 @@ function Item(num) {
 	var loadString = "";
 	var sprite;
 	var inWorld = false;
+	var bmpAnimation;
 
    this.init = function(position) 
    {
+   		
    		canvas = document.getElementById("myCanvas");
    		inventoryPos = position;
+   		
    		//AssignSprite();
    		
    		imgMonsterARun.onload = createjs.handleImageLoad;
@@ -21,117 +25,104 @@ function Item(num) {
     	imgMonsterARun.src = "assets/MonsterARun.png";
 
     	var spriteSheet = new createjs.SpriteSheet({
-    // image to use
-    images: [imgMonsterARun], 
-    // width, height & registration point of each sprite
-    frames: {width: 64, height: 64, regX: 32, regY: 32}, 
-    animations: {    
-        walk: [0, 9, "walk"]
-    }
-	});
+    	// image to use
+    	images: [imgMonsterARun], 
+    	// width, height & registration point of each sprite
+    	frames: {width: 64, height: 64, regX: 32, regY: 32}, 
+    	animations: {    
+        	walk: [0, 9, "walk"]
+    	}
+		});
 
     	// create a BitmapAnimation instance to display and play back the sprite sheet:
 		bmpAnimation = new createjs.BitmapAnimation(spriteSheet);
 
-// start playing the first sequence:
-bmpAnimation.gotoAndPlay("walk");     //animate
+		// start playing the first sequence:
+		bmpAnimation.gotoAndPlay("walk");     //animate
     
-// set up a shadow. Note that shadows are ridiculously expensive. You could display hundreds
-// of animated rats if you disabled the shadow.
-bmpAnimation.shadow = new createjs.Shadow("#454", 0, 5, 4);
+		// set up a shadow. Note that shadows are ridiculously expensive. You could display hundreds
+		// of animated rats if you disabled the shadow.
+		//bmpAnimation.shadow = new createjs.Shadow("#454", 0, 5, 4);
 
-	bmpAnimation.name = "monster1";
-	bmpAnimation.direction = 90;
-	bmpAnimation.vX = 4;
-	// bmpAnimation.x = 16;
-	// bmpAnimation.y = 32;
+		bmpAnimation.name = "monster1";
+		bmpAnimation.direction = 90;
+		bmpAnimation.vX = 4;
 
-	bmpAnimation.x = canvasWidth/2;
-	bmpAnimation.y = canvasHeight/2;
+		//bmpAnimation.x = canvasWidth/2;
+		if(inventoryPos == 0)
+		{
+			console.log("Inventory pos : " + inventoryPos);
+			bmpAnimation.x = canvasWidth - bbWidth;
+			bmpAnimation.y = ((inventoryPos+1.5)*(canvasHeight/4));
+			//bmpAnimation.y = canvasHeight - (inventoryPos*(canvasHeight/4));
+		}
+		else if(inventoryPos == 1)
+		{
+			console.log("Inventory pos : " + inventoryPos);
+			bmpAnimation.x = canvasWidth - bbWidth;
+			bmpAnimation.y = ((inventoryPos)*(canvasHeight/4));
+		}
 
-	bmpAnimation.scaleX = 2;
-	bmpAnimation.scaleY = 2;
+
+		// var scaleY = (canvasHeight/10)/bmpAnimation.getBounds().height;
+		// var scaleX = (canvasHeight/10)/bmpAnimation.getBounds().height;
+
+		// bmpAnimation.scaleX = scaleX;
+		// bmpAnimation.scaleY = scaleY;
         
-	// have each monster start at a specific frame
-	bmpAnimation.currentFrame = 0;
-	stage.addChild(bmpAnimation);
+		bmpAnimation.addEventListener("mousedown", handlePress);
 
-	bmpAnimation.addEventListener("mousedown", handlePress);
+		// var container;
+		// container = stage.getChildByName("PalletContainer");
 
-	var container;
-	container = stage.getChildByName("PalletContainer");
+ 	// 	container.addChild(bmpAnimation);
 
- 	container.addChild(sprite);
+ 		// have each monster start at a specific frame
+		bmpAnimation.currentFrame = 0;
+		stage.addChild(bmpAnimation);
 
-	// var container;
-	// container = stage.getChildByName("WorldContainer");
+ 		//You can move the spritesheet using tick
 
- // 	container.addChild(bmpAnimation);
-
- 	//You can move the spritesheet using tick
-
- 	// createjs.Ticker.addEventListener("tick", tick);
- 	// createjs.Ticker.setFPS(15);
+ 		// createjs.Ticker.addEventListener("tick", tick);
+ 		// createjs.Ticker.setFPS(15);
 
  	console.log("reached this popint");
    		
    };
 
-   function tick() {
-    // Hit testing the screen width, otherwise our sprite would disappear
-    if (bmpAnimation.x >= canvasWidth - 16) {
-        // We've reached the right side of our screen
-        // We need to walk left now to go back to our initial position
-        bmpAnimation.direction = -90;
-    }
-
-    if (bmpAnimation.x < 16) {
-        // We've reached the left side of our screen
-        // We need to walk right now
-        bmpAnimation.direction = 90;
-    }
-
-    // Moving the sprite based on the direction & the speed
-    if (bmpAnimation.direction == 90) {
-        bmpAnimation.x += bmpAnimation.vX;
-    }
-    else {
-        bmpAnimation.x -= bmpAnimation.vX;
-    }
-
-    console.log("running");
-    // update the stage:
-    stage.update();
-}
-
+   this.SetAlpha = function(val)
+ 	{
+ 		console.log("setting : " + val);
+ 		bmpAnimation.alpha = val;
+ 	};
 
 
    	//assigns a sprite to add to the item
 	function AssignSprite()
 	{
-		loadString = itemPool.GetString(num);
-		console.log ("drawing : " + loadString);
-		sprite = new createjs.Bitmap(queue.getResult(loadString));
+		// loadString = itemPool.GetString(num);
+		// console.log ("drawing : " + loadString);
+		// sprite = new createjs.Bitmap(queue.getResult(loadString));
 
-		//each slot in the build pallet is screenheight/9
+		// //each slot in the build pallet is screenheight/9
 
-		var desiredHeight = canvasHeight/10; //making it a little smaller
-		var currentHeight = sprite.getBounds().height;
+		// var desiredHeight = canvasHeight/10; //making it a little smaller
+		// var currentHeight = sprite.getBounds().height;
 
-		var scaleY = (canvasHeight/10)/sprite.getBounds().height;
-		var scaleX = (canvasHeight/10)/sprite.getBounds().width;
+		// var scaleY = (canvasHeight/10)/sprite.getBounds().height;
+		// var scaleX = (canvasHeight/10)/sprite.getBounds().width;
 
-		sprite.scaleY = scaleY;
-		sprite.scaleX = scaleX;
+		// sprite.scaleY = scaleY;
+		// sprite.scaleX = scaleX;
 
-		sprite.y = (inventoryPos*(canvasHeight/9));
+		// sprite.y = (inventoryPos*(canvasHeight/9));
 
- 	 	sprite.addEventListener("mousedown", handlePress);
+ 	//  	sprite.addEventListener("mousedown", handlePress);
 
- 		var container;
-		container = stage.getChildByName("PalletContainer");
+ 	// 	var container;
+		// container = stage.getChildByName("PalletContainer");
 
- 		container.addChild(sprite);			
+ 	// 	container.addChild(sprite);			
 
 	};
 
@@ -179,12 +170,13 @@ bmpAnimation.shadow = new createjs.Shadow("#454", 0, 5, 4);
   			{
 
   				inWorld = true;
-  				var container;
-				container = stage.getChildByName("PalletContainer");
+  		// 		var container;
+				// container = stage.getChildByName("PalletContainer");
 
- 				container.removeChild(bmpAnimation);
+ 			// 	container.removeChild(bmpAnimation);
 
  			// 	worldContainer.addChild(bmpAnimation);
+ 			// 	stage.addChild(bmpAnimation);
 				// console.log("Added succesfully");
   			}
  		}	
@@ -195,3 +187,30 @@ bmpAnimation.shadow = new createjs.Shadow("#454", 0, 5, 4);
         //console.log("ID:" + this.num);
 	};
 }
+
+//    function tick() {
+//     // Hit testing the screen width, otherwise our sprite would disappear
+//     if (bmpAnimation.x >= canvasWidth - 16) {
+//         // We've reached the right side of our screen
+//         // We need to walk left now to go back to our initial position
+//         bmpAnimation.direction = -90;
+//     }
+
+//     if (bmpAnimation.x < 16) {
+//         // We've reached the left side of our screen
+//         // We need to walk right now
+//         bmpAnimation.direction = 90;
+//     }
+
+//     // Moving the sprite based on the direction & the speed
+//     if (bmpAnimation.direction == 90) {
+//         bmpAnimation.x += bmpAnimation.vX;
+//     }
+//     else {
+//         bmpAnimation.x -= bmpAnimation.vX;
+//     }
+
+//     console.log("running");
+//     // update the stage:
+//     stage.update();
+// }

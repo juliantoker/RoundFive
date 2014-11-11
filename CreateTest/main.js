@@ -57,6 +57,7 @@ function init() {
 		{id:"ItemPool", src:"ItemPool.js"},
 		{id:"Inventory", src:"Inventory.js"},
 		{id:"Item", src:"Item.js"},
+		{id:"StaticItem", src:"StaticItem.js"},
 		//UI and stuff
 		{id:"buildButton",src:"assets/buildButton.png"},
 		{id:"buildPallet",src:"assets/buildPallet.png"},
@@ -138,8 +139,9 @@ function InitializeContainers()
 	prizeContainer.name = "prize";
 	palletContainer = new createjs.Container();
 	palletContainer.name = "PalletContainer";
+	
 	stage.addChild(palletContainer);
-    palletContainer.x = canvasWidth + bpWidth;
+    //palletContainer.x = canvasWidth + bpWidth;
     
 	mapContainer = new createjs.Container();
 	mapContainer.name = "maps";
@@ -152,11 +154,11 @@ function InitializeContainers()
 
 function InitializeInventory()
 {
-   	var item1 = new Item();
-	item1.init();
+   	//var item1 = new Item();
+	//item1.init();
 
-    //inventory = new Inventory();
-	//inventory.init();
+    inventory = new Inventory();
+	inventory.init();
 }
 
 function GetItems()
@@ -303,14 +305,20 @@ function initializeMaps() {
 function moveMapUI (event) {
 
 	if(mapOpened) {
-		createjs.Tween.get(buttonContainer,{loop:false}).to({x:-540},300)
-		createjs.Tween.get(mapContainer,{loop:false}).to({x:-540},300)
+		createjs.Tween.get(buttonContainer,{loop:false}).to({x:-540},300);
+		createjs.Tween.get(mapContainer,{loop:false}).to({x:-540},300).call(ReAppearItems);
 	} else {
+		inventory.SetAllItemsAlpha(0);
 		createjs.Tween.get(buttonContainer,{loop:false}).to({x:0},300);
 		createjs.Tween.get(mapContainer,{loop:false}).to({x:0},300);
 	}
 	mapOpened = !mapOpened;
 }
+
+	function ReAppearItems()
+	{
+		inventory.SetAllItemsAlpha(1);
+	}
 
 
 function initializeBuildPallet () {
