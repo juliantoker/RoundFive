@@ -141,7 +141,7 @@ function InitializeContainers()
 	palletContainer.name = "PalletContainer";
 	
 	stage.addChild(palletContainer);
-    //palletContainer.x = canvasWidth + bpWidth;
+    palletContainer.x = canvasWidth + bpWidth;
     
 	mapContainer = new createjs.Container();
 	mapContainer.name = "maps";
@@ -149,7 +149,7 @@ function InitializeContainers()
 	worldContainer = new createjs.Container();
 	worldContainer.name = "WorldContainer";
 	stage.addChild(worldContainer);
-	//worldContainer.x = canvasWidth - bpWidth;
+	worldContainer.x = canvasWidth - bpWidth;
 }
 
 function InitializeInventory()

@@ -46,8 +46,8 @@ function StaticItem(num) {
 		// var pallet;
 		// pallet = stage.getChildByName("buildPallet");
 
-		sprite.x = canvasWidth/2;
-		sprite.y = canvasHeight/2;
+		sprite.x = canvasWidth - bbWidth;
+		sprite.y = (inventoryPos+4)*(canvasHeight/10);
 		//sprite.y = (inventoryPos*(canvasHeight/10));
 		//stage.addChild(sprite);
 
@@ -56,11 +56,12 @@ function StaticItem(num) {
  	// 		sprite.addEventListener("mouseup", handleMouseUp)
  	// 	};
  		
- 	// 	var container;
-		// container = stage.getChildByName("PalletContainer");
+ 		var container;
+		container = stage.getChildByName("PalletContainer");
 
- 	// 	container.addChild(sprite);	
+ 		container.addChild(sprite);	
  		stage.addChild(sprite);		
+
  		console.log("Drawn static item");
 	};
 
@@ -99,13 +100,13 @@ function StaticItem(num) {
 
     	if(!this.inWorld)
     	{
-    		sprite.x = event.stageX - palletContainer.x;
-    		sprite.y = event.stageY - palletContainer.y;	
+    		sprite.x = event.stageX;
+    		sprite.y = event.stageY;
     	}
     	else
     	{
-    		sprite.x = event.stageX - worldContainer.x;
-    		sprite.y = event.stageY - worldContainer.y;	
+    		sprite.x = event.stageX;
+    		sprite.y = event.stageY;
     	}
 
     	
@@ -122,13 +123,13 @@ function StaticItem(num) {
   			{
 
   				this.inWorld = true;
-  		// 		var container;
-				// container = stage.getChildByName("PalletContainer");
+  				var container;
+				container = stage.getChildByName("PalletContainer");
 
- 			// 	container.removeChild(sprite);
+ 				container.removeChild(sprite);
 
- 			// 	worldContainer.addChild(sprite);
-				// console.log("Added succesfully");
+ 				worldContainer.addChild(sprite);
+				console.log("Added succesfully");
   			}
  		}	
 	};
