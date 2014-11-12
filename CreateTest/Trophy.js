@@ -28,7 +28,7 @@ function Trophy(num) {
    	//assigns a sprite to add to the item
 	function AssignSprite()
 	{
-		loadString = trophyPool.GetString(num);
+		//loadString = trophyPool.GetString(num);
 		//sprite = new createjs.Bitmap(queue.getResult(loadString));
 		if(inventoryPos < 4)
 			sprite = new createjs.Bitmap(queue.getResult("mediumTrophy"));

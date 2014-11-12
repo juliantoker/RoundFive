@@ -20,8 +20,7 @@ var canvasHeight;
 var queue;
 var mapOpened;
 var prizeScreenOpened;
-var itemPool;
-var inventory;
+var trophyCase;
 var prizeCodes;
 var currentFloor;
 var UIBarHeight;
@@ -49,8 +48,7 @@ function init() {
 	];
 	queue.loadManifest([
 		//scripts
-		{id:"TrophyPool", src:"TrophyPool.js"},
-		{id:"Inventory", src:"Inventory.js"},
+		{id:"TrophyCase", src:"TrophyCase.js"},
 		{id:"Trophy", src:"Trophy.js"},
 		//Trophies
 		{id:"mediumTrophy", src:"assets/mediumTrophy.png"},
@@ -118,8 +116,8 @@ function InitializeInventory()
    	//var item1 = new Item();
 	//item1.init();
 
-    inventory = new Inventory();
-	inventory.init();
+    trophyCase = new TrophyCase();
+	trophyCase.init();
 }
 
 function GetItems()
@@ -267,7 +265,7 @@ function moveMapUI (event) {
 		createjs.Tween.get(buttonContainer,{loop:false}).to({x:-540},300);
 		createjs.Tween.get(mapContainer,{loop:false}).to({x:-540},300).call(ReAppearItems);
 	} else {
-		//inventory.SetAllItemsAlpha(0);
+		trophyCase.SetAllItemsAlpha(0);
 		createjs.Tween.get(buttonContainer,{loop:false}).to({x:0},300);
 		createjs.Tween.get(mapContainer,{loop:false}).to({x:0},300);
 	}
@@ -276,7 +274,7 @@ function moveMapUI (event) {
 
 	function ReAppearItems()
 	{
-		//inventory.SetAllItemsAlpha(1);
+		trophyCase.SetAllItemsAlpha(1);
 	}
 
 function initializeUIBar () {
