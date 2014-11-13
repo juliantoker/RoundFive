@@ -23,8 +23,8 @@ function TrophyCase() {
 		//alert( "username = " + sessionStorage.getItem("Trophy total"));
 		
 		
-		for(var i=0;i<trophyTotal;i++)
-    		MyArray[i] = i;
+		// for(var i=0;i<trophyTotal;i++)
+  //   		MyArray[i] = i;
 
 		//this.DrawAllTrophies();
 		// this.UnlockTrophy(0);
@@ -176,9 +176,9 @@ function TrophyCase() {
 	this.SetAllItemsAlpha = function(val)
 	{
 		console.log("hit inventory : " + val);
-		for(var i = 0; i < this.MyArray.length; i++)
+		for(var i = 0; i < MyArray.length; i++)
 		{
-			this.MyArray[i].SetAlpha(val);
+			MyArray[i].SetAlpha(val);
 			// child.x = 0;	
 		}
 	};
