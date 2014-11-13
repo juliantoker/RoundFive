@@ -1,13 +1,19 @@
 
 
-function Trophy(num) {
+function Trophy(rowNo, colNo) {
 
 	this.inWorld = false;
 	this.isTouched = false;
-	this.num = num;
+	//this.num = num;
 	this.onButtonPress = false;
-	this.inventoryPos = 0;
+	
+	this.inPos;
+	var inventoryPos = 0;
 	var loadString = "";
+	var shelfHeight = (canvasHeight - UIBarHeight)/6;
+	console.log("canvas height : " + canvasHeight + " height : " + shelfHeight);
+	var rowNo = rowNo; 
+	var colNo = colNo; 
 	var sprite;
 
     /**
@@ -18,9 +24,11 @@ function Trophy(num) {
    //stage.enableMouseOver(0);
    // };
 
-   this.init = function(position) 
+   this.init = function() 
    {
-   		inventoryPos = position;
+   		//this.inPos = position;
+   		//inventoryPos = this.inPos;
+   		console.log("inventory pos : " + inventoryPos);
    		AssignSprite();
 
    };
@@ -30,10 +38,12 @@ function Trophy(num) {
 	{
 		//loadString = trophyPool.GetString(num);
 		//sprite = new createjs.Bitmap(queue.getResult(loadString));
-		if(inventoryPos < 4)
+		//if(inventoryPos < 4)
 			sprite = new createjs.Bitmap(queue.getResult("mediumTrophy"));
-		else
-			sprite = new createjs.Bitmap(queue.getResult("largeTrophy"));
+		// else
+		// 	sprite = new createjs.Bitmap(queue.getResult("largeTrophy"));
+
+		
 
 		//each slot in the build pallet is screenheight/9
 
@@ -43,14 +53,16 @@ function Trophy(num) {
 		// var scaleY = (canvasHeight/10)/sprite.getBounds().height;
 		// var scaleX = (canvasHeight/10)/sprite.getBounds().width;
 
-		if(inventoryPos < 4)
-		{
-			desiredWidth = canvasWidth/6;
-		}
-		else
-		{
-			desiredWidth = canvasWidth/3;	
-		}
+		desiredWidth = (canvasWidth)/6;
+
+		// if(inventoryPos < 4)
+		// {
+		// 	desiredWidth = (canvasWidth)/6;
+		// }
+		// else
+		// {
+		// 	desiredWidth = canvasWidth/3;	
+		// }
 
 		var scaleY = (desiredWidth)/sprite.getBounds().height;
 		var scaleX = (desiredWidth)/sprite.getBounds().width;
@@ -72,16 +84,15 @@ function Trophy(num) {
 		// sprite.y = (inventoryPos)*(canvasHeight/10);
 
 		//sprite.x = inventoryPos*sprite.getBounds().width/2;
-		if(inventoryPos < 4)
-			sprite.x = canvasWidth*inventoryPos/5;
-		else
-			sprite.x = canvasWidth - sprite.getBounds().width/1.75;
+		//if(inventoryPos < 4)
+			sprite.x = canvasWidth*colNo/5;
+		// else
+		// 	sprite.x = canvasWidth - sprite.getBounds().width/2;
 
-		sprite.y = UIBarHeight;
-		//stage.addChild(sprite);
+		sprite.y = (rowNo*shelfHeight)+UIBarHeight;
 
 		// // sprite.addEventListener("click", handleClick);
- 	 	sprite.addEventListener("mousedown", handlePress);
+ 	 	//sprite.addEventListener("mousedown", handlePress);
  	// 		sprite.addEventListener("mouseup", handleMouseUp)
  	// 	};
  		
@@ -91,15 +102,19 @@ function Trophy(num) {
  	// 	container.addChild(sprite);	
  		stage.addChild(sprite);		
 
- 		console.log("Drawn static item");
+ 		console.log("rowPos : " + rowNo);
+ 		console.log("colPos : " + colNo);
+
+
+ 		//console.log("Drawn static item : " + shelfPos);
 	};
 
-	//retrieves the sprite 
-	this.ReturnSprite = function()
-	{
-		console.log("i am an element");
-		return sprite;
-	};
+	// //retrieves the sprite 
+	// this.ReturnSprite = function()
+	// {
+	// 	console.log("i am an element");
+	// 	return sprite;
+	// };
 
 	//function SetAlpha(val)
 	this.SetAlpha = function(val)
@@ -113,58 +128,58 @@ function Trophy(num) {
  //    	console.log("clicked");
  // 	}
 
- 	function handlePress(event) 
- 	{
- 		console.log("touch me");
-     // A mouse press happened.
-     // Listen for mouse move while the mouse is down:
-     	event.addEventListener("mousemove", handleMove);
-     	event.addEventListener("mouseup", handleMouseUp);
- 	};
+ // 	function handlePress(event) 
+ // 	{
+ // 		console.log("touch me");
+ //     // A mouse press happened.
+ //     // Listen for mouse move while the mouse is down:
+ //     	event.addEventListener("mousemove", handleMove);
+ //     	event.addEventListener("mouseup", handleMouseUp);
+ // 	};
 
-  	function handleMove(event) 
-  	{
-     //  	event.target.x = event.stageX;
-    	// event.target.y = event.stageY;
+ //  	function handleMove(event) 
+ //  	{
+ //     //  	event.target.x = event.stageX;
+ //    	// event.target.y = event.stageY;
 
-    	if(!this.inWorld)
-    	{
-    		sprite.x = event.stageX;
-    		sprite.y = event.stageY;
-    	}
-    	else
-    	{
-    		sprite.x = event.stageX;
-    		sprite.y = event.stageY;
-    	}
+ //    	if(!this.inWorld)
+ //    	{
+ //    		sprite.x = event.stageX;
+ //    		sprite.y = event.stageY;
+ //    	}
+ //    	else
+ //    	{
+ //    		sprite.x = event.stageX;
+ //    		sprite.y = event.stageY;
+ //    	}
 
     	
- 	};
+ // 	};
 
- 	//release sprite into the world
- 	function handleMouseUp(event) 
- 	{
- 		// if(!this.inWorld)
- 		// {
- 		// 	console.log("Removing from container");
-  	// 		stage.removeEventListener("mousemove", handleMove);
-  	// 		if(sprite.x < (0.75*canvasWidth))
-  	// 		{
+ // 	//release sprite into the world
+ // 	function handleMouseUp(event) 
+ // 	{
+ // 		// if(!this.inWorld)
+ // 		// {
+ // 		// 	console.log("Removing from container");
+ //  	// 		stage.removeEventListener("mousemove", handleMove);
+ //  	// 		if(sprite.x < (0.75*canvasWidth))
+ //  	// 		{
 
-  	// 			this.inWorld = true;
-  	// 			var container;
-			// 	container = stage.getChildByName("PalletContainer");
+ //  	// 			this.inWorld = true;
+ //  	// 			var container;
+	// 		// 	container = stage.getChildByName("PalletContainer");
 
- 		// 		container.removeChild(sprite);
+ // 		// 		container.removeChild(sprite);
 
- 		// 		worldContainer.addChild(sprite);
-			// 	console.log("Added succesfully");
-  	// 		}
- 		// }	
-	};
+ // 		// 		worldContainer.addChild(sprite);
+	// 		// 	console.log("Added succesfully");
+ //  	// 		}
+ // 		// }	
+	// };
 
-	this.PrintID = function() 
-    {
-        //console.log("ID:" + this.num);
-	};
+	// this.PrintID = function() 
+ //    {
+ //        //console.log("ID:" + this.num);
+	// };
 }

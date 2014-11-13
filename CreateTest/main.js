@@ -46,6 +46,11 @@ function init() {
 	"code2",
 	"code3"
 	];
+	redeemTrophies = [
+	3,
+	9,
+	1
+	];
 	queue.loadManifest([
 		//scripts
 		{id:"TrophyCase", src:"TrophyCase.js"},
@@ -348,21 +353,24 @@ function movePrizeUI () {
 
 function enterPrizeCode (event) {
 	var userInput = prompt('Enter prize code.');
-	if(checkPrizeCode(userInput)) {
+	var redeemCode = checkPrizeCode(userInput);
+	if(redeemCode >= 0) 
+	{
 		//Open prize screen if a valid prize code is entered
-		movePrizeUI();
+		//movePrizeUI();
+		console.log("Trophy redeemed = " + redeemTrophies[redeemCode]);
+		trophyCase.UnlockTrophy(redeemTrophies[redeemCode]);
 	} else {
 		alert("Invalid prize code.");
 	}
 }
 
-function checkPrizeCode (prizeCode) {
+function checkPrizeCode (userInput) {
 	//Returns true for a valid prize code
 	for(i = 0; i < prizeCodes.length; i++) {
-		var currentCode = prizeCodes[i];
-		if(prizeCode == currentCode) {
-			return true;
+		if(userInput == prizeCodes[i]) {
+			return i;
 		}
 	}
-	return false;
+	return -1;
 }
