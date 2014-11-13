@@ -11,7 +11,7 @@ function Trophy(rowNo, colNo) {
 	var inventoryPos = 0;
 	var loadString = "";
 	var shelfHeight = (canvasHeight - UIBarHeight)/6;
-	console.log("canvas height : " + canvasHeight + " height : " + shelfHeight);
+	//console.log("canvas height : " + canvasHeight + " height : " + shelfHeight);
 	var rowNo = rowNo; 
 	var colNo = colNo; 
 	var sprite;
@@ -28,7 +28,7 @@ function Trophy(rowNo, colNo) {
    {
    		//this.inPos = position;
    		//inventoryPos = this.inPos;
-   		console.log("inventory pos : " + inventoryPos);
+   		//console.log("inventory pos : " + inventoryPos);
    		AssignSprite();
 
    };

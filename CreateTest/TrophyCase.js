@@ -2,7 +2,7 @@
 function TrophyCase() {
 	var trophyTotal = 30; //total
 	var trophyCount = 0 //collected so far;
-	this.MyArray = [];
+	var MyArray = [];
 	var rowTotal = 6;
 	var colTotal = 5;
 
@@ -28,30 +28,100 @@ function TrophyCase() {
 		//trophyPool = new TrophyPool(trophyPoolSize); //initialize an item pool of 6 objects
 		
 		for(var i=0;i<trophyTotal;i++)
-    		this.MyArray[i] = i;
+    		MyArray[i] = i;
 
 		//this.DrawAllTrophies();
 		// this.UnlockTrophy(0);
-		// this.UnlockTrophy(2);
-		// this.LoadTrophies();
+		//this.UnlockTrophy(2);
+		//this.UnlockTrophy(17);
+		LoadTrophies();
+
+
+		//DrawTrophy(0);
 		// this.UnlockTrophy(7);
 		// this.UnlockTrophy(22);
 		// this.UnlockTrophy(29);
 	};
 
-	this.SaveTrophies = function()
+	this.SaveTrophies = function(trophyNo)
 	{
-		unlockedTrophies.push(i);
+		//unlockedTrophies.join(trophyNo);
+		unlockedTrophies[unlockedTrophies.length] = trophyNo;
+		console.log("Saving : " + trophyNo);
 		sessionStorage.setItem("UnlockedTrophies", unlockedTrophies);
-	}
+		console.log(sessionStorage.getItem("UnlockedTrophies"));
+	};
 
-	this.LoadTrophies = function()
+
+	function LoadTrophies()
 	{
 		var loadedTrophies = [];
 		loadedTrophies = sessionStorage.getItem("UnlockedTrophies");
+		if(loadedTrophies == null)
+			return;
 
-		for(j=0;j < loadedTrophies.length - 1;j++)
-        		console.log("unlocked : " + unlockedTrophies[j]);
+		var res = loadedTrophies.split(",");
+
+		for(i=0;i < res.length;i++)
+		{
+			console.log("unlocked : " + res[i]);
+			//DrawTrophy(res[i]);
+			var colNo = 0;
+			var rowNo = 0;
+
+			for(j = 0; j < trophyTotal; j++)
+			{
+				console.log("IN LOOP");
+				if(colNo > (colTotal - 1))
+				{
+					rowNo++;
+					colNo = 0;
+				}
+
+				if(j == res[i])
+				{
+					console.log("Found at : " + rowNo + "," + colNo);
+					var newTrophy = new Trophy(rowNo, colNo); //the new trophy knows its number
+        			MyArray[j] = newTrophy; //add it to the case array
+        			MyArray[j].init(); //initialize the trophy
+				}
+				
+			
+				colNo++;
+			}
+			//setTimeout(function() { this.DrawTrophy(res[i]); }, 1000);
+        
+         	//DrawTrophy(i);
+		// this.DrawTrophy(1);
+		// this.DrawTrophy(22);
+		}
+	};
+
+	function DrawTrophy(drawNo)
+	{
+		console.log("DRAW TROPHY CALLED " + drawNo);
+		var colNo = 0;
+		var rowNo = 0;
+
+		for(i = 0; i < trophyTotal; i++)
+		{
+			if(colNo > (colTotal - 1))
+			{
+				rowNo++;
+				colNo = 0;
+			}
+
+			if(i == drawNo)
+			{
+				console.log("Found at : " + rowNo + "," + colNo);
+				var newTrophy = new Trophy(rowNo, colNo); //the new trophy knows its number
+        		MyArray[i] = newTrophy; //add it to the case array
+        		MyArray[i].init(); //initialize the trophy
+			}
+				
+			
+			colNo++;
+		}
 	}
 
 
@@ -99,8 +169,8 @@ function TrophyCase() {
 			{
 				console.log("Found at : " + rowNo + "," + colNo);
 				var newTrophy = new Trophy(rowNo, colNo); //the new trophy knows its number
-        		this.MyArray[i] = newTrophy; //add it to the case array
-        		this.MyArray[i].init(); //initialize the trophy
+        		MyArray[i] = newTrophy; //add it to the case array
+        		MyArray[i].init(); //initialize the trophy
         		this.SaveTrophies(i);
 
 
@@ -111,7 +181,7 @@ function TrophyCase() {
 			
 			colNo++;
 		}
-	}
+	};
 
 	this.SetAllItemsAlpha = function(val)
 	{
