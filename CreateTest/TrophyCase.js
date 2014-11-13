@@ -22,10 +22,6 @@ function TrophyCase() {
 		// Access some stored data
 		//alert( "username = " + sessionStorage.getItem("Trophy total"));
 		
-
-
-
-		//trophyPool = new TrophyPool(trophyPoolSize); //initialize an item pool of 6 objects
 		
 		for(var i=0;i<trophyTotal;i++)
     		MyArray[i] = i;
@@ -71,7 +67,6 @@ function TrophyCase() {
 
 			for(j = 0; j < trophyTotal; j++)
 			{
-				console.log("IN LOOP");
 				if(colNo > (colTotal - 1))
 				{
 					rowNo++;
@@ -89,11 +84,6 @@ function TrophyCase() {
 			
 				colNo++;
 			}
-			//setTimeout(function() { this.DrawTrophy(res[i]); }, 1000);
-        
-         	//DrawTrophy(i);
-		// this.DrawTrophy(1);
-		// this.DrawTrophy(22);
 		}
 	};
 
@@ -125,26 +115,26 @@ function TrophyCase() {
 	}
 
 
-	this.DrawAllTrophies = function(count)
-	{
-		for (var i = 0; i < trophyTotal; i++) 
-    	{
-    		//next row
-    		if(i%5 == 0 && i >1)
-    		{
-    			rowNo += 1;
-    			colNo = 0;
-    		}
+	// this.DrawAllTrophies = function(count)
+	// {
+	// 	for (var i = 0; i < trophyTotal; i++) 
+ //    	{
+ //    		//next row
+ //    		if(i%5 == 0 && i >1)
+ //    		{
+ //    			rowNo += 1;
+ //    			colNo = 0;
+ //    		}
 
-    		console.log("row no : " + rowNo + " col No : " + colNo); 
+ //    		console.log("row no : " + rowNo + " col No : " + colNo); 
     			
-        	var newTrophy = new Trophy(rowNo, colNo); //the new trophy knows its number
-        	this.MyArray[i] = newTrophy; //add it to the case array
-        	this.MyArray[i].init(); //initialize the trophy
+ //        	var newTrophy = new Trophy(rowNo, colNo); //the new trophy knows its number
+ //        	MyArray[i] = newTrophy; //add it to the case array
+ //        	MyArray[i].init(); //initialize the trophy
 
-        	colNo += 1;
-    	}
-	};
+ //        	colNo += 1;
+ //    	}
+	// };
 
 	this.UnlockTrophy = function(unlockNo)
 	{
