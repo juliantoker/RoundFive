@@ -1,10 +1,10 @@
 
 function TrophyCase() {
-	var trophyTotal = 30; //total
+	var trophyTotal = 50; //total
 	var trophyCount = 0 //collected so far;
 	var MyArray = [];
 	var rowTotal = 6;
-	var colTotal = 5;
+	var colTotal = 4;
 
 	var rowNo = 0;
 	var colNo = 0;
@@ -15,8 +15,11 @@ function TrophyCase() {
 
 	var sprite;
 	var touchY;
-	var deltaY
+	var deltaY;
 	var minDrag = 10;
+
+	var shelfTotal = 10; //for 50 total trophies and 5 per shelf
+	var shelfBufferY; //buffer between shelves to prevent bunching up
 	
 	this.init = function()
 	{
@@ -24,7 +27,8 @@ function TrophyCase() {
 
 		sprite = bpm;
 
-		trophyContainer.addChild(sprite);
+		//TO GET BG TO SCROLL TOO, ADD THIS LINE BACK
+		//trophyContainer.addChild(sprite);
 
 
 		//SAVE LOAD WORKING
@@ -35,11 +39,13 @@ function TrophyCase() {
 		
 		// for(var i=0;i<trophyTotal;i++)
   //   		MyArray[i] = i;
-
-		//this.DrawAllTrophies();
-		 this.UnlockTrophy(0);
-		this.UnlockTrophy(2);
-		this.UnlockTrophy(17);
+   		shelfDistance = (canvasHeight - UIBarHeight)/5; 
+   		console.log("Shelf distance : " + shelfDistance);
+  		this.DrawAllShelves()
+		this.DrawAllTrophies();
+		//  this.UnlockTrophy(0);
+		// this.UnlockTrophy(2);
+		// this.UnlockTrophy(17);
 		//LoadTrophies();
 
 		//sprite.addEventListener("click", handleClick);
@@ -169,27 +175,62 @@ function TrophyCase() {
 		}
 	}
 
+	this.DrawAllShelves = function()
+	{
+		var trophyHeight = (canvasWidth)/6;
 
-	// this.DrawAllTrophies = function(count)
-	// {
-	// 	for (var i = 0; i < trophyTotal; i++) 
- //    	{
- //    		//next row
- //    		if(i%5 == 0 && i >1)
- //    		{
- //    			rowNo += 1;
- //    			colNo = 0;
- //    		}
+		for (var i = 0; i < shelfTotal; i++) 
+    	{
+    		var shelf = new createjs.Bitmap(queue.getResult("shelf"));
+    		//shelf.y = UIBarHeight+(i*shelfHeight)+trophyHeight;
+    		shelf.y = UIBarHeight+(i*shelfDistance)+trophyHeight;
 
- //    		console.log("row no : " + rowNo + " col No : " + colNo); 
+    		shelf.scaleX = bgScaleX;
+
+    		trophyContainer.addChild(shelf);
+    	}
+	};
+
+
+	this.DrawAllTrophies = function(count)
+	{
+		// for (var i = 0; i < trophyTotal; i++) 
+  //   	{
+  //   		//next row
+  //   		if(i%5 == 0 && i >1)
+  //   		{
+  //   			rowNo += 1;
+  //   			colNo = 0;
+  //   		}
+
+  //   		console.log("row no : " + rowNo + " col No : " + colNo); 
     			
- //        	var newTrophy = new Trophy(rowNo, colNo); //the new trophy knows its number
- //        	MyArray[i] = newTrophy; //add it to the case array
- //        	MyArray[i].init(); //initialize the trophy
+  //       	var newTrophy = new Trophy(rowNo, colNo); //the new trophy knows its number
+  //       	MyArray[i] = newTrophy; //add it to the case array
+  //       	MyArray[i].init(); //initialize the trophy
 
- //        	colNo += 1;
- //    	}
-	// };
+  //       	colNo += 1;
+  //   	}
+
+		var colNo = 0;
+		var rowNo = 0;
+
+  		for(i=0;i < trophyTotal;i++)
+		{
+			if(colNo > (colTotal - 1))
+				{
+					rowNo++;
+					colNo = 0;
+				}
+
+			var newTrophy = new Trophy(rowNo, colNo); //the new trophy knows its number
+        	MyArray[i] = newTrophy; //add it to the case array
+        	MyArray[i].init();
+        	colNo++;
+		}
+
+		console.log("all drawn");
+	};
 
 	this.UnlockTrophy = function(unlockNo)
 	{

@@ -27,9 +27,10 @@ var trophyCase;
 var prizeCodes;
 var currentFloor;
 var UIBarHeight;
-var UIOffset;
+var buttonScale;
 var canvas;
 var bpm;
+var shelfDistance;
 
 function init() {
 	canvas = document.getElementById("myCanvas");
@@ -37,10 +38,10 @@ function init() {
     canvas.height = window.innerHeight;
     canvasWidth = canvas.width;
     canvasHeight = canvas.height;
+    UIBarHeight = canvasHeight/7;
 	mapOpened = false;
 	prizeScreenOpened = false;
 	currentFloor = 0;
-	UIOffset = 0.05*canvasWidth;
 	stage = new createjs.Stage("myCanvas");
 	createjs.Touch.enable(stage);
 	queue = new createjs.LoadQueue(false);
@@ -64,6 +65,7 @@ function init() {
 		{id:"largeTrophy", src:"assets/largeTrophy.png"},
 		{id:"Trophy", src:"Trophy.js"},
 		//UI and stuff
+		{id:"shelf", src:"assets/shelf.png"},
 		{id:"mapBackground",src:"assets/mapBackground.png"},
 		{id:"firstFloor",src:"assets/firstFloor.png"},
 		{id:"secondFloor",src:"assets/secondFloor.png"},
@@ -81,7 +83,7 @@ function init() {
 		{id:"prizeIcon",src:"assets/prizeIcon.png"},
 		{id:"buildIcon",src:"assets/buildIcon.png"},
 		{id:"buildPaletteFinal",src:"assets/buildPaletteFinal.png"},
-		{id:"interimBackground",src:"assets/interimBackground.png"}], true);
+		{id:"trophyScreenBG",src:"assets/trophyScreenBG.png"}], true);
 
 
 }
@@ -177,7 +179,7 @@ function tick(event) {
 
 function makeBg () {
 	//Draws initial background
-	bpm = new createjs.Bitmap(queue.getResult("interimBackground"));
+	bpm = new createjs.Bitmap(queue.getResult("trophyScreenBG"));
 	
 	//scale BG to fit screen
 	bgScaleY = canvasHeight/bpm.getBounds().height;
@@ -193,8 +195,14 @@ function makeBg () {
 function initializeMapButton() {
 	mb = new createjs.Bitmap(queue.getResult("mapIcon"));
 	//stage.addChild(mb);
-	mb.y = mb.getBounds().height/4;
-	mb.x = UIOffset;
+	
+	buttonScale = ((2*UIBarHeight)/3)/mb.getBounds().height; 
+	mb.scaleY = buttonScale;
+	mb.scaleX = buttonScale;
+
+	mb.x = (mb.getBounds().width*buttonScale*0.25);
+	mb.y = UIBarHeight/6;
+
 	mb.addEventListener("click",moveMapUI);
 }
 
@@ -304,10 +312,11 @@ function moveMapUI (event) {
 
 function initializeUIBar () {
 	var UIBar = new createjs.Bitmap(queue.getResult("mainUIBar"));
+	UIBar.scaleY = UIBarHeight/UIBar.getBounds().height; //1/7th of total height
+	//UIBarHeight = UIBar.getBounds().height;
 	UIContainer.addChild(UIBar);
 	//buttonContainer
 	//UIBar.x = 0;
-	UIBarHeight = UIBar.getBounds().height;
 }
 
 
@@ -354,10 +363,14 @@ function initializePrizeBackground() {
 function initializePrizeButton () {
 	pb = new createjs.Bitmap(queue.getResult("prizeIcon"));
 	//stage.addChild(pb);
-	//pb.x = canvasWidth/2 - (pb.getBounds().width/2);
-	//bb.x = canvasWidth - bb.getBounds().width - UIOffset;
-	pb.x = canvasWidth - pb.getBounds().width - UIOffset;
-	pb.y = pb.getBounds().height/4;
+
+	buttonScale = ((2*UIBarHeight)/3)/pb.getBounds().height; 
+	pb.scaleY = buttonScale;
+	pb.scaleX = buttonScale;
+
+	pb.x = canvasWidth - (pb.getBounds().width*buttonScale*1.25);
+	pb.y = UIBarHeight/6;
+	//pb.y = pb.getBounds().height/4;
 	pb.addEventListener("click",enterPrizeCode);
 	//pb.addEventListener("click",movePrizeUI);
 }

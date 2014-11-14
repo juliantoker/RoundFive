@@ -10,7 +10,6 @@ function Trophy(rowNo, colNo) {
 	this.inPos;
 	var inventoryPos = 0;
 	var loadString = "";
-	var shelfHeight = (canvasHeight - UIBarHeight)/6;
 	//console.log("canvas height : " + canvasHeight + " height : " + shelfHeight);
 	var rowNo = rowNo; 
 	var colNo = colNo; 
@@ -48,26 +47,7 @@ function Trophy(rowNo, colNo) {
 		// else
 		// 	sprite = new createjs.Bitmap(queue.getResult("largeTrophy"));
 
-		
-
-		//each slot in the build pallet is screenheight/9
-
-		// var desiredHeight = canvasHeight/10; //making it a little smaller
-		// var currentHeight = sprite.getBounds().height;
-
-		// var scaleY = (canvasHeight/10)/sprite.getBounds().height;
-		// var scaleX = (canvasHeight/10)/sprite.getBounds().width;
-
 		desiredWidth = (canvasWidth)/6;
-
-		// if(inventoryPos < 4)
-		// {
-		// 	desiredWidth = (canvasWidth)/6;
-		// }
-		// else
-		// {
-		// 	desiredWidth = canvasWidth/3;	
-		// }
 
 		var scaleY = (desiredWidth)/sprite.getBounds().height;
 		var scaleX = (desiredWidth)/sprite.getBounds().width;
@@ -75,51 +55,20 @@ function Trophy(rowNo, colNo) {
 		sprite.scaleY = scaleY;
 		sprite.scaleX = scaleX;
 
-		 //var scaleY = (canvasHeight/10)/sprite.getBounds().height;
-		// var scaleX = (canvasHeight/10)/sprite.getBounds().width;
-
-		// sprite.scaleY = 0.6;
-		// sprite.scaleX = 0.6;
-
-		// var pallet;
-		// pallet = stage.getChildByName("buildPallet");
-		//console.log("Inventory pos : " + inventoryPos + " width : " + sprite.getBounds().width);
-
-		//sprite.x = canvasWidth - bbWidth;
-		// sprite.y = (inventoryPos)*(canvasHeight/10);
-
-		//sprite.x = inventoryPos*sprite.getBounds().width/2;
-		//if(inventoryPos < 4)
-		sprite.x = canvasWidth*colNo/5;
+		sprite.x = colNo * desiredWidth;
+		//sprite.x = canvasWidth*colNo/5;
 		// else
 		// 	sprite.x = canvasWidth - sprite.getBounds().width/2;
+		//var shelfHeight = shelfDistance;
 
-		sprite.y = (rowNo*shelfHeight)+UIBarHeight;
+		sprite.y = (rowNo*shelfDistance)+UIBarHeight;
 
-		// // sprite.addEventListener("click", handleClick);
- 	 	//sprite.addEventListener("mousedown", handlePress);
- 	// 		sprite.addEventListener("mouseup", handleMouseUp)
- 	// 	};
- 		
- 	// 	var container;
-		// container = stage.getChildByName("PalletContainer");
-
- 	// 	container.addChild(sprite);	
- 		//stage.addChild(sprite);		
-
- 		console.log("rowPos : " + rowNo);
- 		console.log("colPos : " + colNo);
+ 		console.log("sprite x : " + sprite.x);
+ 		console.log("sprite y : " + sprite.y);
 
 
  		//console.log("Drawn static item : " + shelfPos);
 	};
-
-	// //retrieves the sprite 
-	// this.ReturnSprite = function()
-	// {
-	// 	console.log("i am an element");
-	// 	return sprite;
-	// };
 
 	//function SetAlpha(val)
 	this.SetAlpha = function(val)
