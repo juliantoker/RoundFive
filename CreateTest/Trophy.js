@@ -61,7 +61,7 @@ function Trophy(rowNo, colNo) {
 		// 	sprite.x = canvasWidth - sprite.getBounds().width/2;
 		//var shelfHeight = shelfDistance;
 
-		sprite.y = (rowNo*shelfDistance)+UIBarHeight;
+		sprite.y = (rowNo*shelfDistance)+UIBarHeight + shelfSize/3;
 
  		console.log("sprite x : " + sprite.x);
  		console.log("sprite y : " + sprite.y);

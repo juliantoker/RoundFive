@@ -14,6 +14,7 @@ var trophyContainer;
 //for 560x960 px backgrounds
 var mb;
 var pb;
+var gb;
 var bgScaleX; 
 var bgScaleY;
 var bbWidth; //width of build button
@@ -31,6 +32,7 @@ var buttonScale;
 var canvas;
 var bpm;
 var shelfDistance;
+var shelfSize; //vertical size of shelves to prevent bunching up
 
 function init() {
 	canvas = document.getElementById("myCanvas");
@@ -77,6 +79,8 @@ function init() {
 		{id:"mapButtonFive",src:"assets/mapButtonFive.png"},
 		{id:"prizeBackground",src:"assets/prizeBackground.png"},
 		{id:"buildIcon",src:"assets/buildIcon.png"},
+		{id:"galleryIcon",src:"assets/galleryIcon.png"},
+		{id:"galleryCloseIcon",src:"assets/galleryCloseIcon.png"},
 		{id:"buildPaletteFinal",src:"assets/buildPaletteFinal.png"},
 		{id:"mainUIBar",src:"assets/mainUIBar.png"},
 		{id:"mapIcon",src:"assets/mapIcon.png"},
@@ -134,6 +138,8 @@ function AddContainersToStage()
 	stage.addChild(buttonContainer);
 	stage.addChild(mb);
 	stage.addChild(pb);
+	stage.addChild(gb);
+	stage.addChild(mapContainer);
 }
 
 function InitializeInventory()
@@ -167,6 +173,7 @@ function handleComplete(event) {
 	initializeMaps();
 	initializePrizeBackground();
 	initializePrizeButton();
+	initializeGalleryButton();
 	InitializeInventory();
 	AddContainersToStage();
 	
@@ -204,6 +211,20 @@ function initializeMapButton() {
 	mb.y = UIBarHeight/6;
 
 	mb.addEventListener("click",moveMapUI);
+}
+
+function initializeGalleryButton() {
+	gb = new createjs.Bitmap(queue.getResult("galleryIcon"));
+	//stage.addChild(mb);
+	
+	buttonScale = ((2*UIBarHeight)/3)/gb.getBounds().height; 
+	gb.scaleY = buttonScale;
+	gb.scaleX = buttonScale;
+
+	gb.x = canvasWidth/2 - (gb.getBounds().width*buttonScale)/2;
+	gb.y = UIBarHeight/6;
+
+	//gb.addEventListener("click",moveMapUI);
 }
 
 function initializeMapBackground() {
@@ -255,7 +276,6 @@ function initializeMapBackground() {
 
 function initializeMaps() {
 	mapContainer.x = -540;
-	stage.addChild(mapContainer);
 	var f1 = new createjs.Bitmap(queue.getResult("firstFloor"));
 	var f2 = new createjs.Bitmap(queue.getResult("secondFloor"));
 	var f3 = new createjs.Bitmap(queue.getResult("thirdFloor"));

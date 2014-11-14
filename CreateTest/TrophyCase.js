@@ -17,15 +17,19 @@ function TrophyCase() {
 	var touchY;
 	var deltaY;
 	var minDrag = 10;
-
+	var bottomDragLimit;
 	var shelfTotal = 10; //for 50 total trophies and 5 per shelf
-	var shelfBufferY; //buffer between shelves to prevent bunching up
 	
 	this.init = function()
 	{
 		console.log("Inventory Built");	
 
 		sprite = bpm;
+
+		bottomDragLimit = -sprite.getBounds().height * bgScaleY * 1.5;
+
+		var shelf = new createjs.Bitmap(queue.getResult("shelf"));
+		shelfSize = shelf.getBounds().height;
 
 		//TO GET BG TO SCROLL TOO, ADD THIS LINE BACK
 		//trophyContainer.addChild(sprite);
@@ -85,9 +89,18 @@ function TrophyCase() {
   		if(deltaY > minDrag)
   		{
   			if(event.stageY > touchY)//moving down
-  				trophyContainer.y += deltaY;
+  			{
+  				if(trophyContainer.y <= 0)
+  					trophyContainer.y += deltaY;
+  			}
+  				
   			else
-  				trophyContainer.y -= deltaY;
+  			{
+  				console.log("trop conta : " + trophyContainer.y);
+  				if(trophyContainer.y >= bottomDragLimit)
+  					trophyContainer.y -= deltaY;
+  			}
+  				
 
   			touchY = event.stageY;
   		}
@@ -178,6 +191,7 @@ function TrophyCase() {
 	this.DrawAllShelves = function()
 	{
 		var trophyHeight = (canvasWidth)/6;
+		console.log("Shelf size : " + shelfSize);
 
 		for (var i = 0; i < shelfTotal; i++) 
     	{
@@ -274,7 +288,8 @@ function TrophyCase() {
 		console.log("hit inventory : " + val);
 		for(var i = 0; i < MyArray.length; i++)
 		{
-			MyArray[i].SetAlpha(val);
+			if(MyArray[i] != undefined)
+				MyArray[i].SetAlpha(val);
 			// child.x = 0;	
 		}
 	};
