@@ -9,8 +9,11 @@ var stage;
 var mapContainer;
 var buttonContainer;
 var prizeContainer;
-var worldContainer;
+var UIContainer;
+var trophyContainer;
 //for 560x960 px backgrounds
+var mb;
+var pb;
 var bgScaleX; 
 var bgScaleY;
 var bbWidth; //width of build button
@@ -26,6 +29,7 @@ var currentFloor;
 var UIBarHeight;
 var UIOffset;
 var canvas;
+var bpm;
 
 function init() {
 	canvas = document.getElementById("myCanvas");
@@ -102,7 +106,10 @@ function InitializeItemPool()
 
 function InitializeContainers()
 {
-	buttonContainer = new createjs.Container();
+	trophyContainer = new createjs.Container();
+ 	trophyContainer.name = "TrophyContainer";
+
+ 	buttonContainer = new createjs.Container();
 	buttonContainer.name = "buttons";
 	prizeContainer = new createjs.Container();
 	prizeContainer.name = "prize";
@@ -110,10 +117,21 @@ function InitializeContainers()
 	mapContainer = new createjs.Container();
 	mapContainer.name = "maps";
 
-	worldContainer = new createjs.Container();
-	worldContainer.name = "WorldContainer";
-	stage.addChild(worldContainer);
-	worldContainer.x = canvasWidth - bpWidth;
+	UIContainer = new createjs.Container();
+	UIContainer.name = "UI";
+ 	//trophyContainer.x = canvasWidth/2;
+
+	console.log("containers made");
+	// worldContainer.x = canvasWidth - bpWidth;
+}
+
+function AddContainersToStage()
+{
+	stage.addChild(trophyContainer);
+	stage.addChild(UIContainer);
+	stage.addChild(buttonContainer);
+	stage.addChild(mb);
+	stage.addChild(pb);
 }
 
 function InitializeInventory()
@@ -148,6 +166,8 @@ function handleComplete(event) {
 	initializePrizeBackground();
 	initializePrizeButton();
 	InitializeInventory();
+	AddContainersToStage();
+	
 	createjs.Ticker.addEventListener("tick",tick);
 }
 
@@ -157,7 +177,7 @@ function tick(event) {
 
 function makeBg () {
 	//Draws initial background
-	var bpm = new createjs.Bitmap(queue.getResult("interimBackground"));
+	bpm = new createjs.Bitmap(queue.getResult("interimBackground"));
 	
 	//scale BG to fit screen
 	bgScaleY = canvasHeight/bpm.getBounds().height;
@@ -171,8 +191,8 @@ function makeBg () {
 }
 
 function initializeMapButton() {
-	var mb = new createjs.Bitmap(queue.getResult("mapIcon"));
-	stage.addChild(mb);
+	mb = new createjs.Bitmap(queue.getResult("mapIcon"));
+	//stage.addChild(mb);
 	mb.y = mb.getBounds().height/4;
 	mb.x = UIOffset;
 	mb.addEventListener("click",moveMapUI);
@@ -180,7 +200,7 @@ function initializeMapButton() {
 
 function initializeMapBackground() {
 	buttonContainer.x = -canvasWidth;
-	stage.addChild(buttonContainer);
+
 	
 	var mapBG = new createjs.Bitmap(queue.getResult("mapBackground"));
 	//scale map BG
@@ -284,8 +304,9 @@ function moveMapUI (event) {
 
 function initializeUIBar () {
 	var UIBar = new createjs.Bitmap(queue.getResult("mainUIBar"));
-	stage.addChild(UIBar);
-	UIBar.x = 0;
+	UIContainer.addChild(UIBar);
+	//buttonContainer
+	//UIBar.x = 0;
 	UIBarHeight = UIBar.getBounds().height;
 }
 
@@ -331,8 +352,8 @@ function initializePrizeBackground() {
 }
 
 function initializePrizeButton () {
-	var pb = new createjs.Bitmap(queue.getResult("prizeIcon"));
-	stage.addChild(pb);
+	pb = new createjs.Bitmap(queue.getResult("prizeIcon"));
+	//stage.addChild(pb);
 	//pb.x = canvasWidth/2 - (pb.getBounds().width/2);
 	//bb.x = canvasWidth - bb.getBounds().width - UIOffset;
 	pb.x = canvasWidth - pb.getBounds().width - UIOffset;

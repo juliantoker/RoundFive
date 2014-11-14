@@ -10,12 +10,22 @@ function TrophyCase() {
 	var colNo = 0;
 
 	var unlockedTrophies = []; 
+
+	var dragged = false;
+
+	var sprite;
+	var touchY;
+	var deltaY
+	var minDrag = 10;
 	
 	this.init = function()
 	{
 		console.log("Inventory Built");	
 
-		
+		sprite = bpm;
+
+		trophyContainer.addChild(sprite);
+
 
 		//SAVE LOAD WORKING
 		//sessionStorage.setItem("Trophy total", trophyTotal);
@@ -27,16 +37,61 @@ function TrophyCase() {
   //   		MyArray[i] = i;
 
 		//this.DrawAllTrophies();
-		// this.UnlockTrophy(0);
-		//this.UnlockTrophy(2);
-		//this.UnlockTrophy(17);
-		LoadTrophies();
+		 this.UnlockTrophy(0);
+		this.UnlockTrophy(2);
+		this.UnlockTrophy(17);
+		//LoadTrophies();
+
+		//sprite.addEventListener("click", handleClick);
+ 		sprite.addEventListener("mousedown", handlePress);
+ 	 	sprite.addEventListener("mouseup", handleMouseUp);
+ 	// 	};
 
 
 		//DrawTrophy(0);
-		// this.UnlockTrophy(7);
+		//this.UnlockTrophy(7);
 		// this.UnlockTrophy(22);
 		// this.UnlockTrophy(29);
+	};
+
+	// function handleClick(event)
+	// {
+ //    	dragged = true;
+ // 	}
+
+	function handlePress(event) 
+ 	{
+ 		console.log("touch me");
+     	// A mouse press happened.
+     	// Listen for mouse move while the mouse is down:
+     	dragged = true;
+     	touchY = event.stageY;
+     	event.addEventListener("mousemove", handleMove);
+     	event.addEventListener("mouseup", handleMouseUp);
+ 	};
+
+  	function handleMove(event) 
+  	{
+  		deltaY = Math.abs(event.stageY - touchY);
+
+  		//trophyContainer = stage.getChildByName("TrophyContainer");
+  		
+  		if(deltaY > minDrag)
+  		{
+  			if(event.stageY > touchY)//moving down
+  				trophyContainer.y += deltaY;
+  			else
+  				trophyContainer.y -= deltaY;
+
+  			touchY = event.stageY;
+  		}
+ 	};
+
+ 	//release sprite into the world
+ 	function handleMouseUp(event) 
+ 	{
+ 		dragged = false;
+ 		console.log("Dragged distance : " + (event.stageY - touchY));
 	};
 
 	this.SaveTrophies = function(trophyNo)
@@ -189,4 +244,6 @@ function TrophyCase() {
     {
         console.log("called");
 	};
+
+
 }

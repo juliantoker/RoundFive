@@ -39,7 +39,12 @@ function Trophy(rowNo, colNo) {
 		//loadString = trophyPool.GetString(num);
 		//sprite = new createjs.Bitmap(queue.getResult(loadString));
 		//if(inventoryPos < 4)
-			sprite = new createjs.Bitmap(queue.getResult("mediumTrophy"));
+		sprite = new createjs.Bitmap(queue.getResult("mediumTrophy"));
+
+		//tro = tropyContainer;
+
+		// tropyContainer = stage.getChildByName("tropyContainer");
+		trophyContainer.addChild(sprite);
 		// else
 		// 	sprite = new createjs.Bitmap(queue.getResult("largeTrophy"));
 
@@ -85,7 +90,7 @@ function Trophy(rowNo, colNo) {
 
 		//sprite.x = inventoryPos*sprite.getBounds().width/2;
 		//if(inventoryPos < 4)
-			sprite.x = canvasWidth*colNo/5;
+		sprite.x = canvasWidth*colNo/5;
 		// else
 		// 	sprite.x = canvasWidth - sprite.getBounds().width/2;
 
@@ -100,7 +105,7 @@ function Trophy(rowNo, colNo) {
 		// container = stage.getChildByName("PalletContainer");
 
  	// 	container.addChild(sprite);	
- 		stage.addChild(sprite);		
+ 		//stage.addChild(sprite);		
 
  		console.log("rowPos : " + rowNo);
  		console.log("colPos : " + colNo);
