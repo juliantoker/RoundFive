@@ -42,8 +42,10 @@ function Trophy(rowNo, colNo) {
 
 		//tro = tropyContainer;
 
+		//galleryContainer = stage.getChildByName("galleryContainer");
+
 		// tropyContainer = stage.getChildByName("tropyContainer");
-		trophyContainer.addChild(sprite);
+		galleryContainer.addChild(sprite);
 		// else
 		// 	sprite = new createjs.Bitmap(queue.getResult("largeTrophy"));
 

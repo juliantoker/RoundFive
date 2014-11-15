@@ -9,8 +9,9 @@ var stage;
 var mapContainer;
 var buttonContainer;
 var prizeContainer;
+var galleryContainer;
 var UIContainer;
-var trophyContainer;
+//var trophyContainer;
 //for 560x960 px backgrounds
 var mb;
 var pb;
@@ -23,6 +24,7 @@ var canvasWidth;
 var canvasHeight;
 var queue;
 var mapOpened;
+var galleryOpened;
 var prizeScreenOpened;
 var trophyCase;
 var prizeCodes;
@@ -31,6 +33,7 @@ var UIBarHeight;
 var buttonScale;
 var canvas;
 var bpm;
+var galleryBG;
 var shelfDistance;
 var shelfSize; //vertical size of shelves to prevent bunching up
 
@@ -81,6 +84,7 @@ function init() {
 		{id:"buildIcon",src:"assets/buildIcon.png"},
 		{id:"galleryIcon",src:"assets/galleryIcon.png"},
 		{id:"galleryCloseIcon",src:"assets/galleryCloseIcon.png"},
+		{id:"galleryBG",src:"assets/galleryBG.png"},
 		{id:"buildPaletteFinal",src:"assets/buildPaletteFinal.png"},
 		{id:"mainUIBar",src:"assets/mainUIBar.png"},
 		{id:"mapIcon",src:"assets/mapIcon.png"},
@@ -112,14 +116,31 @@ function InitializeItemPool()
 
 function InitializeContainers()
 {
-	trophyContainer = new createjs.Container();
- 	trophyContainer.name = "TrophyContainer";
+	// trophyContainer = new createjs.Container();
+ // 	trophyContainer.name = "TrophyContainer";
+
+ 	galleryContainer = new createjs.Container();
+	galleryContainer.name = "gallery";
+	galleryContainer.y = -3*canvasHeight; //placing off screen
+
+	galleryBG = new createjs.Bitmap(queue.getResult("galleryBG"));
+	
+	//scale BG to fit screen
+	bgScaleY = canvasHeight/galleryBG.getBounds().height;
+	bgScaleX = canvasWidth/galleryBG.getBounds().width;
+
+	galleryBG.scaleY = bgScaleY;
+	galleryBG.scaleX = bgScaleX;
+
+	galleryContainer.addChild(galleryBG);
+
 
  	buttonContainer = new createjs.Container();
 	buttonContainer.name = "buttons";
 	prizeContainer = new createjs.Container();
 	prizeContainer.name = "prize";
-    
+	
+
 	mapContainer = new createjs.Container();
 	mapContainer.name = "maps";
 
@@ -133,7 +154,7 @@ function InitializeContainers()
 
 function AddContainersToStage()
 {
-	stage.addChild(trophyContainer);
+	stage.addChild(galleryContainer);
 	stage.addChild(UIContainer);
 	stage.addChild(buttonContainer);
 	stage.addChild(mb);
@@ -224,7 +245,25 @@ function initializeGalleryButton() {
 	gb.x = canvasWidth/2 - (gb.getBounds().width*buttonScale)/2;
 	gb.y = UIBarHeight/6;
 
-	//gb.addEventListener("click",moveMapUI);
+	galleryOpened = false;
+	gb.addEventListener("click",moveGallery);
+}
+
+function moveGallery (event) {
+
+	console.log("Galler moved");
+
+	if(galleryOpened) {
+		//createjs.Tween.get(trophyContainer,{loop:false}).to({x:-540},300);
+		//createjs.Tween.get(galleryContainer,{loop:false}).to({x:0},canvasHeight*3);
+		createjs.Tween.get(galleryContainer,{loop:false}).to({y:-canvasHeight*3},300);
+	} else 
+	{
+		//createjs.Tween.get(buttonContainer,{loop:false}).to({x:0},300);
+		createjs.Tween.get(galleryContainer,{loop:false}).to({y:0},300);
+		//createjs.Tween.get(galleryContainer,{loop:false}).to({x:0},canvasHeight/2);
+	}
+	galleryOpened = !galleryOpened;
 }
 
 function initializeMapBackground() {

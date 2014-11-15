@@ -11,8 +11,6 @@ function TrophyCase() {
 
 	var unlockedTrophies = []; 
 
-	var dragged = false;
-
 	var sprite;
 	var touchY;
 	var deltaY;
@@ -32,7 +30,7 @@ function TrophyCase() {
 		shelfSize = shelf.getBounds().height;
 
 		//TO GET BG TO SCROLL TOO, ADD THIS LINE BACK
-		//trophyContainer.addChild(sprite);
+		//galleryContainer.addChild(sprite);
 
 
 		//SAVE LOAD WORKING
@@ -74,31 +72,31 @@ function TrophyCase() {
  		console.log("touch me");
      	// A mouse press happened.
      	// Listen for mouse move while the mouse is down:
-     	dragged = true;
-     	touchY = event.stageY;
-     	event.addEventListener("mousemove", handleMove);
-     	event.addEventListener("mouseup", handleMouseUp);
+     	if(galleryOpened)
+     	{
+     		touchY = event.stageY;
+     		event.addEventListener("mousemove", handleMove);
+     		event.addEventListener("mouseup", handleMouseUp);
+     	}
  	};
 
   	function handleMove(event) 
   	{
   		deltaY = Math.abs(event.stageY - touchY);
-
-  		//trophyContainer = stage.getChildByName("TrophyContainer");
   		
   		if(deltaY > minDrag)
   		{
   			if(event.stageY > touchY)//moving down
   			{
-  				if(trophyContainer.y <= 0)
-  					trophyContainer.y += deltaY;
+  				if(galleryContainer.y <= 0)
+  					galleryContainer.y += deltaY;
   			}
   				
   			else
   			{
-  				console.log("trop conta : " + trophyContainer.y);
-  				if(trophyContainer.y >= bottomDragLimit)
-  					trophyContainer.y -= deltaY;
+  				console.log("trop conta : " + galleryContainer.y);
+  				if(galleryContainer.y >= bottomDragLimit)
+  					galleryContainer.y -= deltaY;
   			}
   				
 
@@ -109,7 +107,6 @@ function TrophyCase() {
  	//release sprite into the world
  	function handleMouseUp(event) 
  	{
- 		dragged = false;
  		console.log("Dragged distance : " + (event.stageY - touchY));
 	};
 
@@ -163,7 +160,6 @@ function TrophyCase() {
 
 	function DrawTrophy(drawNo)
 	{
-		console.log("DRAW TROPHY CALLED " + drawNo);
 		var colNo = 0;
 		var rowNo = 0;
 
@@ -201,7 +197,7 @@ function TrophyCase() {
 
     		shelf.scaleX = bgScaleX;
 
-    		trophyContainer.addChild(shelf);
+    		//trophyContainer.addChild(shelf);
     	}
 	};
 
