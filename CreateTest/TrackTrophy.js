@@ -1,13 +1,6 @@
+function TrackTrophy(rowNo, colNo) {
 
 
-function Trophy(rowNo, colNo) {
-
-	this.inWorld = false;
-	this.isTouched = false;
-	//this.num = num;
-	this.onButtonPress = false;
-	
-	this.inPos;
 	var inventoryPos = 0;
 	var loadString = "";
 	//console.log("canvas height : " + canvasHeight + " height : " + shelfHeight);
@@ -38,16 +31,10 @@ function Trophy(rowNo, colNo) {
 		//loadString = trophyPool.GetString(num);
 		//sprite = new createjs.Bitmap(queue.getResult(loadString));
 		//if(inventoryPos < 4)
+		console.log("Initializing track tropghy");
 		sprite = new createjs.Bitmap(queue.getResult("mediumTrophy"));
 
-		//tro = tropyContainer;
-
-		//galleryContainer = stage.getChildByName("galleryContainer");
-
-		// tropyContainer = stage.getChildByName("tropyContainer");
-		galleryContainer.addChild(sprite);
-		// else
-		// 	sprite = new createjs.Bitmap(queue.getResult("largeTrophy"));
+		trackContainer.addChild(sprite);
 
 		desiredWidth = (canvasWidth)/6;
 
@@ -58,12 +45,13 @@ function Trophy(rowNo, colNo) {
 		sprite.scaleX = scaleX;
 
 		sprite.x = colNo * desiredWidth;
-		//sprite.x = canvasWidth*colNo/5;
-		// else
-		// 	sprite.x = canvasWidth - sprite.getBounds().width/2;
-		//var shelfHeight = shelfDistance;
+		
 
 		sprite.y = (rowNo*shelfDistance)+UIBarHeight + shelfSize/3;
+
+ 		console.log("sprite x : " + sprite.x);
+ 		console.log("sprite y : " + sprite.y);
+
 
  		//console.log("Drawn static item : " + shelfPos);
 	};

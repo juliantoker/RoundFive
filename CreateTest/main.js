@@ -10,6 +10,7 @@ var mapContainer;
 var buttonContainer;
 var prizeContainer;
 var galleryContainer;
+var trackContainer;
 var UIContainer;
 //var trophyContainer;
 //for 560x960 px backgrounds
@@ -66,12 +67,14 @@ function init() {
 		//scripts
 		{id:"TrophyCase", src:"TrophyCase.js"},
 		{id:"Trophy", src:"Trophy.js"},
+		{id:"TrackTrophy", src:"TrackTrophy.js"},
 		//Trophies
 		{id:"mediumTrophy", src:"assets/mediumTrophy.png"},
 		{id:"largeTrophy", src:"assets/largeTrophy.png"},
 		{id:"Trophy", src:"Trophy.js"},
 		//UI and stuff
 		{id:"shelf", src:"assets/shelf.png"},
+		{id:"longShelf", src:"assets/longShelf.png"},
 		{id:"mapBackground",src:"assets/mapBackground.png"},
 		{id:"firstFloor",src:"assets/firstFloor.png"},
 		{id:"secondFloor",src:"assets/secondFloor.png"},
@@ -133,8 +136,10 @@ function InitializeContainers()
 	galleryBG.scaleY = bgScaleY;
 	galleryBG.scaleX = bgScaleX;
 
+	galleryBG.y = -canvasHeight*3;
+
 	//testing
-	galleryContainer.addChild(galleryBG);
+	//galleryContainer.addChild(galleryBG);
 
 
  	buttonContainer = new createjs.Container();
@@ -142,6 +147,8 @@ function InitializeContainers()
 	prizeContainer = new createjs.Container();
 	prizeContainer.name = "prize";
 	
+	trackContainer = new createjs.Container();
+	trackContainer.name = "trackContainer";
 
 	mapContainer = new createjs.Container();
 	mapContainer.name = "maps";
@@ -178,6 +185,9 @@ function GetItems()
 
 function AddContainersToStage()
 {
+	stage.addChild(trackContainer);
+	stage.addChild(galleryBG); //gallery is on top of BG when it is opened
+	//galleryBG.visible = false; //hide it on top
 	stage.addChild(galleryContainer);
 	stage.addChild(UIContainer);
 	stage.addChild(buttonContainer);
@@ -221,8 +231,6 @@ function makeBg () {
 	bpm.scaleX = bgScaleX;
 
 	stage.addChild(bpm);
-	stage.addChild(galleryBG); //gallery is on top of BG when it is opened
-	galleryBG.visible = false; //hide it on top
 	//stage.update();
 }
 
@@ -269,6 +277,7 @@ function moveGalleryIn (event) {
 	if(!galleryOpened) 
 	{
 		//createjs.Tween.get(buttonContainer,{loop:false}).to({x:0},300);
+		createjs.Tween.get(galleryBG,{loop:false}).to({y:0},300);
 		createjs.Tween.get(galleryContainer,{loop:false}).to({y:0},300).call(OpenGallery);
 		//createjs.Tween.get(galleryContainer,{loop:false}).to({x:0},canvasHeight/2);
 
@@ -278,7 +287,7 @@ function moveGalleryIn (event) {
 
 function OpenGallery()
 {
-	galleryBG.visible = true;
+	//galleryBG.visible = true;
 	gb.visible = !gb.isVisible();
 	closegb.visible = true;
 }
@@ -292,6 +301,7 @@ function moveGalleryOut (event) {
 		
 		//createjs.Tween.get(trophyContainer,{loop:false}).to({x:-540},300);
 		//createjs.Tween.get(galleryContainer,{loop:false}).to({x:0},canvasHeight*3);
+		createjs.Tween.get(galleryBG,{loop:false}).to({y:-canvasHeight*3},300);
 		createjs.Tween.get(galleryContainer,{loop:false}).to({y:-canvasHeight*3},300).call(CloseGallery);
 
 		galleryOpened = false;
@@ -300,7 +310,7 @@ function moveGalleryOut (event) {
 
 function CloseGallery()
 {
-	galleryBG.visible = false;
+	//galleryBG.visible = false;
 	gb.visible = true;
 	closegb.visible = false;
 }
