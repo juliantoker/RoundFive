@@ -16,6 +16,7 @@ var UIContainer;
 var mb;
 var pb;
 var gb;
+//var closegb;
 var bgScaleX; 
 var bgScaleY;
 var bbWidth; //width of build button
@@ -132,6 +133,7 @@ function InitializeContainers()
 	galleryBG.scaleY = bgScaleY;
 	galleryBG.scaleX = bgScaleX;
 
+	//testing
 	galleryContainer.addChild(galleryBG);
 
 
@@ -150,17 +152,6 @@ function InitializeContainers()
 
 	console.log("containers made");
 	// worldContainer.x = canvasWidth - bpWidth;
-}
-
-function AddContainersToStage()
-{
-	stage.addChild(galleryContainer);
-	stage.addChild(UIContainer);
-	stage.addChild(buttonContainer);
-	stage.addChild(mb);
-	stage.addChild(pb);
-	stage.addChild(gb);
-	stage.addChild(mapContainer);
 }
 
 function InitializeInventory()
@@ -183,6 +174,19 @@ function GetItems()
     }
 
 
+}
+
+function AddContainersToStage()
+{
+	stage.addChild(galleryContainer);
+	stage.addChild(UIContainer);
+	stage.addChild(buttonContainer);
+	stage.addChild(mb);
+	stage.addChild(pb);
+	stage.addChild(gb);
+	stage.addChild(closegb);
+	closegb.visible = false;
+	stage.addChild(mapContainer);
 }
 
 function handleComplete(event) {
@@ -217,6 +221,8 @@ function makeBg () {
 	bpm.scaleX = bgScaleX;
 
 	stage.addChild(bpm);
+	stage.addChild(galleryBG); //gallery is on top of BG when it is opened
+	galleryBG.visible = false; //hide it on top
 	//stage.update();
 }
 
@@ -236,7 +242,6 @@ function initializeMapButton() {
 
 function initializeGalleryButton() {
 	gb = new createjs.Bitmap(queue.getResult("galleryIcon"));
-	//stage.addChild(mb);
 	
 	buttonScale = ((2*UIBarHeight)/3)/gb.getBounds().height; 
 	gb.scaleY = buttonScale;
@@ -245,25 +250,59 @@ function initializeGalleryButton() {
 	gb.x = canvasWidth/2 - (gb.getBounds().width*buttonScale)/2;
 	gb.y = UIBarHeight/6;
 
+	closegb = new createjs.Bitmap(queue.getResult("galleryCloseIcon"));
+	closegb.scaleY = gb.scaleY;
+	closegb.scaleX = gb.scaleX;
+
+	closegb.x =canvasWidth/2 - (closegb.getBounds().width*buttonScale)/2;
+	closegb.y = gb.y;
+
 	galleryOpened = false;
-	gb.addEventListener("click",moveGallery);
+	closegb.addEventListener("click",moveGalleryOut);
+	gb.addEventListener("click",moveGalleryIn);
 }
 
-function moveGallery (event) {
+function moveGalleryIn (event) {
 
-	console.log("Galler moved");
+	console.log("Gallery IN");
 
-	if(galleryOpened) {
-		//createjs.Tween.get(trophyContainer,{loop:false}).to({x:-540},300);
-		//createjs.Tween.get(galleryContainer,{loop:false}).to({x:0},canvasHeight*3);
-		createjs.Tween.get(galleryContainer,{loop:false}).to({y:-canvasHeight*3},300);
-	} else 
+	if(!galleryOpened) 
 	{
 		//createjs.Tween.get(buttonContainer,{loop:false}).to({x:0},300);
-		createjs.Tween.get(galleryContainer,{loop:false}).to({y:0},300);
+		createjs.Tween.get(galleryContainer,{loop:false}).to({y:0},300).call(OpenGallery);
 		//createjs.Tween.get(galleryContainer,{loop:false}).to({x:0},canvasHeight/2);
+
+		galleryOpened = true;
 	}
-	galleryOpened = !galleryOpened;
+}
+
+function OpenGallery()
+{
+	galleryBG.visible = true;
+	gb.visible = !gb.isVisible();
+	closegb.visible = true;
+}
+
+function moveGalleryOut (event) {
+
+	console.log("Gallery OUT");
+
+	if(galleryOpened) 
+	{
+		
+		//createjs.Tween.get(trophyContainer,{loop:false}).to({x:-540},300);
+		//createjs.Tween.get(galleryContainer,{loop:false}).to({x:0},canvasHeight*3);
+		createjs.Tween.get(galleryContainer,{loop:false}).to({y:-canvasHeight*3},300).call(CloseGallery);
+
+		galleryOpened = false;
+	} 
+}
+
+function CloseGallery()
+{
+	galleryBG.visible = false;
+	gb.visible = true;
+	closegb.visible = false;
 }
 
 function initializeMapBackground() {

@@ -62,6 +62,17 @@ function TrophyCase() {
 		// this.UnlockTrophy(29);
 	};
 
+	function OpenGallery()
+	{
+		console.log("open gallery called");
+		galleryContainer.removeChild(galleryBG);
+	}
+
+	function CloseGallery()
+	{
+		galleryContainer.addChild(galleryBG);
+	}
+
 	// function handleClick(event)
 	// {
  //    	dragged = true;
