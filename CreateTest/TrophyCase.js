@@ -3,9 +3,10 @@ function TrophyCase() {
 	var trophyTotal = 50; //total
 	var trophyCount = 0 //collected so far;
 	var trophyHeight;
+	var largeTrophyHeight;
 	var MyArray = [];
-	var rowTotal = 6;
-	var colTotal = 5;
+	var rowTotal = 5;
+	var colTotal = 6;
 
 	var rowNo = 0;
 	var colNo = 0;
@@ -20,7 +21,7 @@ function TrophyCase() {
 	var shelfTotal = 10; //for 50 total trophies and 5 per shelf
 
 	var longShelfTotal = 2;
-	var normalShelfTotal = 2;
+	var normalShelfTotal = 8;
 	
 	this.init = function()
 	{
@@ -34,6 +35,7 @@ function TrophyCase() {
 		shelfSize = shelf.getBounds().height;
 
 		trophyHeight = (canvasWidth)/6;
+		largeTrophyHeight = (canvasWidth)/4;
 
 		//TO GET BG TO SCROLL TOO, ADD THIS LINE BACK
 		//galleryContainer.addChild(sprite);
@@ -50,7 +52,7 @@ function TrophyCase() {
    		shelfDistance = (canvasHeight - UIBarHeight)/5; 
    		console.log("Shelf distance : " + shelfDistance);
   		this.DrawAllGalleryShelves();
-		this.DrawAllGalleryTrophies();
+		//this.DrawAllGalleryTrophies();
 
 		//  this.UnlockTrophy(0);
 		// this.UnlockTrophy(2);
@@ -82,7 +84,7 @@ function TrophyCase() {
     		else
     			var longshelf = new createjs.Bitmap(queue.getResult("shelf"));
 
-    		longshelf.y = UIBarHeight+trophyHeight+(i*shelfDistance);
+    		longshelf.y = UIBarHeight+largeTrophyHeight+(i*shelfDistance);
 
     		longshelf.scaleX = bgScaleX;
     		longshelf.scaleY = 0.75;
@@ -98,11 +100,23 @@ function TrophyCase() {
 		var colNo = 0;
 		var rowNo = 0;
 
-  		for(i=0;i < 3;i++)
+  		for(i=0;i < 14;i++)
 		{
+			if((i < 8 && colNo > 3) || (i==8) || (i > 8 && colNo > 5))
+			{
+				rowNo++;
+				colNo = 0;
+			}
+
 			var trackTrophy = new TrackTrophy(rowNo, colNo); //the new trophy knows its number
+			// if(i>1)
+			// 	trackTrophy.ColorSprite();
         	//MyArray[i] = trackTrophy; //add it to the case array
-        	trackTrophy.init();
+        	if(i < 8)
+        		trackTrophy.init("Large",i);
+        	else
+        		trackTrophy.init("Normal");
+
         	colNo++;
 
         	//trackContainer.addChild(trackTrophy);
@@ -113,7 +127,6 @@ function TrophyCase() {
 
 	function handlePress(event) 
  	{
- 		console.log("touch me");
      	// A mouse press happened.
      	// Listen for mouse move while the mouse is down:
      	if(galleryOpened)
@@ -250,11 +263,10 @@ function TrophyCase() {
 			if(i == unlockNo)
 			{
 				console.log("Found at : " + rowNo + "," + colNo);
-				var newTrophy = new Trophy(rowNo, colNo); //the new trophy knows its number
+				var newTrophy = new Trophy(rowNo, colNo, i); //the new trophy knows its number
         		MyArray[i] = newTrophy; //add it to the case array
         		MyArray[i].init(); //initialize the trophy
         		this.SaveTrophies(i);
-
 
         		// for(j=0;j<unlockedTrophies.length;j++)
         		// 	console.log("unlocked : " + unlockedTrophies[j]);

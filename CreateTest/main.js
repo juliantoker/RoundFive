@@ -54,24 +54,117 @@ function init() {
 	queue = new createjs.LoadQueue(false);
 	queue.addEventListener("complete",handleComplete);
 	prizeCodes = [
-	"code1",
-	"code2",
-	"code3"
+	"108",
+	"134",
+	"930",
+	"059",
+	"695",
+	"510",
+	"404",
+	"713",
+	"088",
+	"679",
+	"979",
+	"024",
+	"422",
+	"481",
+	"259",
+	"108",
+	"270",
+	"428",
+	"369",
+	"779",
+	"839",
+	"908",
+	"767",
+	"889",
+	"307",
+	"208",
+	"222",
+	"991",
+	"397",
+	"097",
+	"523",
+	"279",
+	"410",
+	"188",
+	"479",
+	"608",
+	"887",
+	"733",
+	"048",
+	"810",
+	"308",
+	"877",
+	"764",
+	"483",
+	"257",
+	"423",
+	"401",
+	"987",
+	"495",
+	"161"
 	];
-	redeemTrophies = [
-	3,
-	9,
-	1
-	];
+	redeemTrophies = []; //initialized in code
 	queue.loadManifest([
 		//scripts
 		{id:"TrophyCase", src:"TrophyCase.js"},
 		{id:"Trophy", src:"Trophy.js"},
 		{id:"TrackTrophy", src:"TrackTrophy.js"},
-		//Trophies
+		//Placeholder Trophies
 		{id:"mediumTrophy", src:"assets/mediumTrophy.png"},
 		{id:"largeTrophy", src:"assets/largeTrophy.png"},
-		{id:"Trophy", src:"Trophy.js"},
+		//Real trophies
+		{id:"trophy0", src:"assets/Trophies/trophy0.png"},
+		{id:"trophy1", src:"assets/Trophies/trophy1.png"},
+		{id:"trophy2", src:"assets/Trophies/trophy2.png"},
+		{id:"trophy3", src:"assets/Trophies/trophy3.png"},
+		{id:"trophy4", src:"assets/Trophies/trophy4.png"},
+		{id:"trophy5", src:"assets/Trophies/trophy5.png"},
+		{id:"trophy6", src:"assets/Trophies/trophy6.png"},
+		{id:"trophy7", src:"assets/Trophies/trophy7.png"},
+		{id:"trophy8", src:"assets/Trophies/trophy8.png"},
+		{id:"trophy9", src:"assets/Trophies/trophy9.png"},
+		{id:"trophy10", src:"assets/Trophies/trophy10.png"},
+		{id:"trophy11", src:"assets/Trophies/trophy11.png"},
+		{id:"trophy12", src:"assets/Trophies/trophy12.png"},
+		{id:"trophy13", src:"assets/Trophies/trophy13.png"},
+		{id:"trophy14", src:"assets/Trophies/trophy14.png"},
+		{id:"trophy15", src:"assets/Trophies/trophy15.png"},
+		{id:"trophy16", src:"assets/Trophies/trophy16.png"},
+		{id:"trophy17", src:"assets/Trophies/trophy17.png"},
+		{id:"trophy18", src:"assets/Trophies/trophy18.png"},
+		//{id:"trophy19", src:"assets/Trophies/trophy19.png"},
+		{id:"trophy20", src:"assets/Trophies/trophy20.png"},
+		{id:"trophy21", src:"assets/Trophies/trophy21.png"},
+		{id:"trophy22", src:"assets/Trophies/trophy22.png"},
+		{id:"trophy23", src:"assets/Trophies/trophy23.png"},
+		// {id:"trophy24", src:"assets/Trophies/trophy24.png"},
+		// {id:"trophy25", src:"assets/Trophies/trophy25.png"},
+		// {id:"trophy26", src:"assets/Trophies/trophy26.png"},
+		// {id:"trophy27", src:"assets/Trophies/trophy27.png"},
+		// {id:"trophy28", src:"assets/Trophies/trophy28.png"},
+		// {id:"trophy29", src:"assets/Trophies/trophy29.png"},
+		// {id:"trophy30", src:"assets/Trophies/trophy30.png"},
+		// {id:"trophy31", src:"assets/Trophies/trophy31.png"},
+		// {id:"trophy32", src:"assets/Trophies/trophy32.png"},
+		// {id:"trophy33", src:"assets/Trophies/trophy33.png"},
+		// {id:"trophy34", src:"assets/Trophies/trophy34.png"},
+		// {id:"trophy35", src:"assets/Trophies/trophy35.png"},
+		// {id:"trophy36", src:"assets/Trophies/trophy36.png"},
+		// {id:"trophy37", src:"assets/Trophies/trophy37.png"},
+		// {id:"trophy38", src:"assets/Trophies/trophy38.png"},
+		// {id:"trophy39", src:"assets/Trophies/trophy39.png"},
+		// {id:"trophy40", src:"assets/Trophies/trophy40.png"},
+		// {id:"trophy41", src:"assets/Trophies/trophy41.png"},
+		// {id:"trophy42", src:"assets/Trophies/trophy42.png"},
+		// {id:"trophy43", src:"assets/Trophies/trophy43.png"},
+		// {id:"trophy44", src:"assets/Trophies/trophy44.png"},
+		// {id:"trophy45", src:"assets/Trophies/trophy45.png"},
+		// {id:"trophy46", src:"assets/Trophies/trophy46.png"},
+		// {id:"trophy47", src:"assets/Trophies/trophy47.png"},
+		// {id:"trophy48", src:"assets/Trophies/trophy48.png"},
+		// {id:"trophy49", src:"assets/Trophies/trophy49.png"},
 		//UI and stuff
 		{id:"shelf", src:"assets/shelf.png"},
 		{id:"longShelf", src:"assets/longShelf.png"},
@@ -179,8 +272,6 @@ function GetItems()
     {
         console.log("new item : " + newArray[i]);
     }
-
-
 }
 
 function AddContainersToStage()
@@ -335,30 +426,31 @@ function initializeMapBackground() {
 
 	
 	//buttons need to be scaled along x to ensure that all 4 can fit on the screen
-	var newButtonSize = canvasWidth/4; //fit 4 buttons on the screen
-	var currentbuttonSize = buttonOne.getBounds().width;
-	var newScale = newButtonSize/currentbuttonSize;
+	var desiredSizeY = canvasHeight/8;
+	var desiredSizeX = canvasWidth/4;
+	var newScaleX = desiredSizeX/buttonOne.getBounds().width;
+	var newScaleY = desiredSizeY/buttonOne.getBounds().height;
 
 	//apply the new scale along y axis
-	buttonOne.scaleX *= newScale;
-	buttonTwo.scaleX *= newScale;
-	buttonThree.scaleX *= newScale;
-	buttonFive.scaleX *= newScale;
+	buttonOne.scaleX *= newScaleX;
+	buttonTwo.scaleX *= newScaleX;
+	buttonThree.scaleX *= newScaleX;
+	buttonFive.scaleX *= newScaleX;
 
-	buttonOne.scaleY *= newScale;
-	buttonTwo.scaleY *= newScale;
-	buttonThree.scaleY *= newScale;
-	buttonFive.scaleY *= newScale;
+	buttonOne.scaleY *= newScaleY;
+	buttonTwo.scaleY *= newScaleY;
+	buttonThree.scaleY *= newScaleY;
+	buttonFive.scaleY *= newScaleY;
 
 	mapBG.x = 0;
-	buttonOne.y = canvasHeight - newButtonSize;
-	buttonTwo.y = canvasHeight - newButtonSize;
-	buttonThree.y = canvasHeight - newButtonSize;
-	buttonFive.y = canvasHeight - newButtonSize;
+	buttonOne.y = canvasHeight - desiredSizeY;
+	buttonTwo.y = canvasHeight - desiredSizeY;
+	buttonThree.y = canvasHeight - desiredSizeY;
+	buttonFive.y = canvasHeight - desiredSizeY;
 	buttonOne.x = 0;
-	buttonTwo.x = newButtonSize;
-	buttonThree.x = 2*newButtonSize;
-	buttonFive.x = 3*newButtonSize;
+	buttonTwo.x = desiredSizeX;
+	buttonThree.x = 2*desiredSizeX;
+	buttonFive.x = 3*desiredSizeX;
 	buttonContainer.addChild(mapBG,buttonOne,buttonTwo,buttonThree,buttonFive);
 }
 
@@ -369,10 +461,14 @@ function initializeMaps() {
 	var f3 = new createjs.Bitmap(queue.getResult("thirdFloor"));
 	var f5 = new createjs.Bitmap(queue.getResult("fifthFloor"));
 
-	var newWidth = 0.5 * canvasWidth;
-	var newHeight = 0.58 * canvasHeight;
+	var maxMapHeight = canvasHeight - UIBarHeight - canvasHeight/8;
+	console.log("Max map height : " + maxMapHeight);
 
-	mapScaleY = newHeight/f1.getBounds().height;
+	var desiredHeight = maxMapHeight*0.95;
+	var newWidth = 0.6 * canvasWidth;
+	//var newHeight = 0.58 * canvasHeight;
+
+	mapScaleY = desiredHeight/f1.getBounds().height;
 	mapScaleX = newWidth/f1.getBounds().width;
 
 	f1.scaleY *= mapScaleY;
@@ -381,12 +477,13 @@ function initializeMaps() {
 	f2.scaleX = mapScaleX;
 	f3.scaleY = mapScaleY;
 	f3.scaleX = mapScaleX;
-
 	f5.scaleY = mapScaleY;
 	f5.scaleX = mapScaleX;
 
-	var fx = canvasWidth - newWidth*1.5;
-	var fy = canvasHeight - newHeight*1.5;
+	//var fx = canvasWidth - newWidth*1.5;
+	var fx = canvasWidth/2 - newWidth/2;
+	// var fy = canvasHeight -desiredHeight*1.5;
+	var fy = canvasHeight/2 - desiredHeight/2;
 
 	f1.x = fx;
 	f1.y = fy;
@@ -413,7 +510,19 @@ function moveMapUI (event) {
 	mapOpened = !mapOpened;
 }
 
-	function ReAppearItems()
+function openMapToFloor(floorNo)
+{
+	moveMapUI();
+	currentFloor = floorNo;
+	console.log("Current floor : "+currentFloor);
+	console.log("set current floor called");
+	resetFloorButtons();
+	//event.target.alpha = 0.5;
+	// currentFloor = buttonContainer.getChildIndex(event.target) - 1;
+	displayCurrentFloor();
+}
+
+function ReAppearItems()
 	{
 		trophyCase.SetAllItemsAlpha(1);
 	}
@@ -481,6 +590,10 @@ function initializePrizeButton () {
 	//pb.y = pb.getBounds().height/4;
 	pb.addEventListener("click",enterPrizeCode);
 	//pb.addEventListener("click",movePrizeUI);
+
+	//Initialize redeem strings
+	for(var i = 0; i < prizeCodes.length; i++)
+		redeemTrophies[i] = i;
 }
 
 function movePrizeUI () {
@@ -494,6 +607,7 @@ function movePrizeUI () {
 }
 
 function enterPrizeCode (event) {
+	console.log("prize string length : " + prizeCodes.length);
 	var userInput = prompt('Enter prize code.');
 	var redeemCode = checkPrizeCode(userInput);
 	if(redeemCode >= 0) 
