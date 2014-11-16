@@ -11,6 +11,7 @@ var buttonContainer;
 var prizeContainer;
 var galleryContainer;
 var trackContainer;
+var mapPointerContainer; //this is for showing map pointers
 var UIContainer;
 //var trophyContainer;
 //for 560x960 px backgrounds
@@ -38,6 +39,7 @@ var bpm;
 var galleryBG;
 var shelfDistance;
 var shelfSize; //vertical size of shelves to prevent bunching up
+var mapPointers = []; //keeps track of which map pointer trophies are on shelf
 
 function init() {
 	canvas = document.getElementById("myCanvas");
@@ -54,29 +56,31 @@ function init() {
 	queue = new createjs.LoadQueue(false);
 	queue.addEventListener("complete",handleComplete);
 	prizeCodes = [
-	"108",
-	"134",
+	"108", //track 0
+	"134",//track 1
 	"930",
-	"059",
+	"059", //track 0
 	"695",
 	"510",
 	"404",
-	"713",
-	"088",
-	"679",
-	"979",
-	"024",
+	"713",//track 1
+	"088", //track 0
+	"679",//track 1
+	"979", //track 0
+	//10
+	"024",//track 1
 	"422",
 	"481",
 	"259",
-	"108",
-	"270",
+	"108",//track 1
+	"270", //track 0
 	"428",
 	"369",
 	"779",
 	"839",
-	"908",
-	"767",
+	//20
+	"908", //track 0
+	"767", //track 1
 	"889",
 	"307",
 	"208",
@@ -85,6 +89,7 @@ function init() {
 	"397",
 	"097",
 	"523",
+	//30
 	"279",
 	"410",
 	"188",
@@ -95,6 +100,7 @@ function init() {
 	"048",
 	"810",
 	"308",
+	//40
 	"877",
 	"764",
 	"483",
@@ -104,6 +110,11 @@ function init() {
 	"987",
 	"495",
 	"161"
+	//49
+	];
+	tracks = [
+	"0,3,8,10,12,16,21",
+	"1,7,9,11,15,22"
 	];
 	redeemTrophies = []; //initialized in code
 	queue.loadManifest([
@@ -243,6 +254,9 @@ function InitializeContainers()
 	trackContainer = new createjs.Container();
 	trackContainer.name = "trackContainer";
 
+	mapPointerContainer = new createjs.Container();
+	mapPointerContainer.name = "mapPointerContainer";
+
 	mapContainer = new createjs.Container();
 	mapContainer.name = "maps";
 
@@ -277,6 +291,7 @@ function GetItems()
 function AddContainersToStage()
 {
 	stage.addChild(trackContainer);
+	stage.addChild(mapPointerContainer);
 	stage.addChild(galleryBG); //gallery is on top of BG when it is opened
 	//galleryBG.visible = false; //hide it on top
 	stage.addChild(galleryContainer);

@@ -1,4 +1,4 @@
-function TrackTrophy(rowNo, colNo) {
+function TrackTrophy(rowNo, colNo, pIndex) {
 
 
 	var inventoryPos = 0;
@@ -9,6 +9,7 @@ function TrackTrophy(rowNo, colNo) {
 	var sprite;
 	var largeTrophyNo;
 
+	var index = pIndex;
 	var type;
 
 	//*********************************************************************************
@@ -32,6 +33,7 @@ function TrackTrophy(rowNo, colNo) {
    		//console.log("inventory pos : " + inventoryPos);
    		type = trophyType;
    		AssignSprite();
+   		
    };
 
    this.init = function(trophyType, LargeTrophyNo) 
@@ -51,16 +53,30 @@ function TrackTrophy(rowNo, colNo) {
 		if(type == "Large")
 			sprite = new createjs.Bitmap("assets/largeTrophy.png");
 		else
-			sprite = new createjs.Bitmap("assets/mediumTrophy.png");
-
+		{
+			//if(index != undefined)
+			//{
+				var loadString = "trophy"+pIndex;
+				sprite = new createjs.Bitmap(queue.getResult(loadString));
+			//}
+			//sprite = new createjs.Bitmap("assets/mediumTrophy.png");
+			
+		}
+			
+		if(type != "MapPointer")
+		{
 		sprite.image.onload = function () {
                 sprite.cache(0, 0, this.width, this.height);
                 trackContainer.addChild(sprite);
                 sprite.filters = [filters[0]];
             	sprite.updateCache();
             }
+        }
 
-		trackContainer.addChild(sprite);
+        if(type != "MapPointer") //map pointer trophies are added to the mapPointerContainer
+			trackContainer.addChild(sprite);
+		else
+			mapPointerContainer.addChild(sprite);
 
 		if(type == "Large")
 			desiredWidth = (canvasWidth)/4;
@@ -100,8 +116,7 @@ function TrackTrophy(rowNo, colNo) {
 
  	function handlePress(event) 
  	{
- 		console.log("touched track trophy");
-
+ 		//ADDS TROPHIES TO THE MAP CONTAINER 
  		if(!galleryOpened)
  		{
  			if(type != "Large") //small trophy opens map
@@ -110,12 +125,36 @@ function TrackTrophy(rowNo, colNo) {
  			}
  			else //large trophy opens track
  			{
+ 				//CLEAR ALL CURRENTLY DISPLAYED MAP POINTERS, IF ANY
+ 				mapPointerContainer.removeAllChildren();
+
+
  				console.log("Large trophy no : " + largeTrophyNo);
+
+ 				var colNo = 0;
+ 				var rowNo = 2;
+
+ 				var res = tracks[largeTrophyNo].split(",");
+
+				for(i=0;i < res.length;i++)
+				{
+					console.log("Drawing : " + res[i]);
+					var loadString = "trophy" + res[i];
+        		
+					var trackTrophy = new TrackTrophy(rowNo, colNo, res[i]); //the new trophy knows its number
+					
+        			trackTrophy.init("MapPointer");
+							
+					colNo++;
+				}
+
+
  			}
- 			
  		}
      		
  	};
+
+
 
 	// function handleClick(event)
 	// {

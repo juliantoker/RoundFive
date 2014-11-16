@@ -1,6 +1,6 @@
 
 
-function Trophy(rowNo, colNo) {
+function Trophy(rowNo, colNo, index) {
 
 	this.inWorld = false;
 	this.isTouched = false;
@@ -13,7 +13,10 @@ function Trophy(rowNo, colNo) {
 	//console.log("canvas height : " + canvasHeight + " height : " + shelfHeight);
 	var rowNo = rowNo; 
 	var colNo = colNo; 
+	var index = index;
 	var sprite;
+
+	console.log("YAY ALIVE!!");
 
     /**
      * Turn off mouse interaction like "hover".
@@ -25,6 +28,7 @@ function Trophy(rowNo, colNo) {
 
    this.init = function() 
    {
+   		console.log("index : " + index);
    		//this.inPos = position;
    		//inventoryPos = this.inPos;
    		//console.log("inventory pos : " + inventoryPos);
@@ -35,19 +39,13 @@ function Trophy(rowNo, colNo) {
    	//assigns a sprite to add to the item
 	function AssignSprite()
 	{
-		//loadString = trophyPool.GetString(num);
-		//sprite = new createjs.Bitmap(queue.getResult(loadString));
-		//if(inventoryPos < 4)
-		sprite = new createjs.Bitmap(queue.getResult("mediumTrophy"));
 
-		//tro = tropyContainer;
+		var loadString = "trophy"+index;
+		sprite = new createjs.Bitmap(queue.getResult(loadString));
 
-		//galleryContainer = stage.getChildByName("galleryContainer");
 
-		// tropyContainer = stage.getChildByName("tropyContainer");
 		galleryContainer.addChild(sprite);
-		// else
-		// 	sprite = new createjs.Bitmap(queue.getResult("largeTrophy"));
+
 
 		desiredWidth = (canvasWidth)/6;
 

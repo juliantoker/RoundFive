@@ -100,7 +100,7 @@ function TrophyCase() {
 		var colNo = 0;
 		var rowNo = 0;
 
-  		for(i=0;i < 14;i++)
+  		for(i=0;i < 8;i++)
 		{
 			if((i < 8 && colNo > 3) || (i==8) || (i > 8 && colNo > 5))
 			{
@@ -239,7 +239,7 @@ function TrophyCase() {
 			
 			colNo++;
 		}
-	}
+	};
 
 	this.UnlockTrophy = function(unlockNo)
 	{
