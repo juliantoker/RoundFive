@@ -1,17 +1,17 @@
 
+var unlockedTrophies = []; 
+
 function TrophyCase() {
 	var trophyTotal = 50; //total
 	var trophyCount = 0 //collected so far;
 	var trophyHeight;
 	var largeTrophyHeight;
-	var MyArray = [];
+	var MyArray = []; //keeps track of all trophies on screen
 	var rowTotal = 5;
 	var colTotal = 6;
 
 	var rowNo = 0;
 	var colNo = 0;
-
-	var unlockedTrophies = []; 
 
 	var sprite;
 	var touchY;
@@ -57,7 +57,7 @@ function TrophyCase() {
 		//  this.UnlockTrophy(0);
 		// this.UnlockTrophy(2);
 		// this.UnlockTrophy(17);
-		//LoadTrophies();
+		LoadTrophies();
 
 		//sprite.addEventListener("click", handleClick);
  		sprite.addEventListener("mousedown", handlePress);
@@ -167,23 +167,22 @@ function TrophyCase() {
  		console.log("Dragged distance : " + (event.stageY - touchY));
 	};
 
-	this.SaveTrophies = function(trophyNo)
-	{
-		//unlockedTrophies.join(trophyNo);
-		unlockedTrophies[unlockedTrophies.length] = trophyNo;
-		console.log("Saving : " + trophyNo);
-		sessionStorage.setItem("UnlockedTrophies", unlockedTrophies);
-		console.log(sessionStorage.getItem("UnlockedTrophies"));
-	};
-
-
 	function LoadTrophies()
 	{
 		var loadedTrophies = [];
 		loadedTrophies = sessionStorage.getItem("UnlockedTrophies");
 		if(loadedTrophies == null)
+		{
+			console.log("nothing loaded, returning");
 			return;
-
+		}
+		// else
+		// {
+		// 	var test = loadedTrophies.split(",");
+		// 	for(t = 0; t< test.length; t++)
+		// 		console.log("PReviously SAVED : " + t);
+		// }
+			
 		var res = loadedTrophies.split(",");
 
 		for(i=0;i < res.length;i++)
@@ -193,6 +192,7 @@ function TrophyCase() {
 			var colNo = 0;
 			var rowNo = 0;
 
+			//this is to plcae the trophy correctly
 			for(j = 0; j < trophyTotal; j++)
 			{
 				if(colNo > (colTotal - 1))
@@ -201,12 +201,14 @@ function TrophyCase() {
 					colNo = 0;
 				}
 
+				//if(j == res[i] && res[j] != undefined)
 				if(j == res[i])
 				{
 					console.log("Found at : " + rowNo + "," + colNo);
-					var newTrophy = new Trophy(rowNo, colNo); //the new trophy knows its number
-        			MyArray[j] = newTrophy; //add it to the case array
-        			MyArray[j].init(); //initialize the trophy
+					var newTrophy = new Trophy(rowNo, colNo,j); //the new trophy knows its number
+        			MyArray[i] = newTrophy; //add it to the case array
+        			MyArray[i].init(); //initialize the trophy
+        			unlockedTrophies[unlockedTrophies.length] = j; //add to list of all unlocked trophies
 				}
 				
 			
@@ -215,31 +217,31 @@ function TrophyCase() {
 		}
 	};
 
-	function DrawTrophy(drawNo)
-	{
-		var colNo = 0;
-		var rowNo = 0;
+	// function DrawTrophy(drawNo)
+	// {
+	// 	var colNo = 0;
+	// 	var rowNo = 0;
 
-		for(i = 0; i < trophyTotal; i++)
-		{
-			if(colNo > (colTotal - 1))
-			{
-				rowNo++;
-				colNo = 0;
-			}
+	// 	for(i = 0; i < trophyTotal; i++)
+	// 	{
+	// 		if(colNo > (colTotal - 1))
+	// 		{
+	// 			rowNo++;
+	// 			colNo = 0;
+	// 		}
 
-			if(i == drawNo)
-			{
-				console.log("Found at : " + rowNo + "," + colNo);
-				var newTrophy = new Trophy(rowNo, colNo); //the new trophy knows its number
-        		MyArray[i] = newTrophy; //add it to the case array
-        		MyArray[i].init(); //initialize the trophy
-			}
+	// 		if(i == drawNo)
+	// 		{
+	// 			console.log("Found at : " + rowNo + "," + colNo);
+	// 			var newTrophy = new Trophy(rowNo, colNo); //the new trophy knows its number
+ //        		MyArray[i] = newTrophy; //add it to the case array
+ //        		MyArray[i].init(); //initialize the trophy
+	// 		}
 				
 			
-			colNo++;
-		}
-	};
+	// 		colNo++;
+	// 	}
+	// };
 
 	this.UnlockTrophy = function(unlockNo)
 	{
@@ -247,6 +249,16 @@ function TrophyCase() {
 		{
 			console.log("Out of range");
 			return;
+		}
+
+		for(a=0;a<unlockedTrophies.length;a++)
+		{
+			if(unlockedTrophies[a] == unlockNo)
+			{
+				console.log("ALREADY UNLOCKED!");
+				return;
+			}
+				
 		}
 
 		colNo = 0;
@@ -266,7 +278,7 @@ function TrophyCase() {
 				var newTrophy = new Trophy(rowNo, colNo, i); //the new trophy knows its number
         		MyArray[i] = newTrophy; //add it to the case array
         		MyArray[i].init(); //initialize the trophy
-        		this.SaveTrophies(i);
+        		this.SaveTrophies(unlockNo);
 
         		// for(j=0;j<unlockedTrophies.length;j++)
         		// 	console.log("unlocked : " + unlockedTrophies[j]);
@@ -275,7 +287,29 @@ function TrophyCase() {
 			
 			colNo++;
 		}
+
+		//check if the unlocked trophy belongs to the currently open track
+		var currentTrack = tracks[currentTrackOpen];
+		var res = currentTrack.split(",");
+
+				for(i=0;i < res.length;i++)
+				{
+					if(res[i] == unlockNo) //present in the current track
+						this.UpdateCurrentTrack();
+				}
+
 	};
+
+	this.SaveTrophies = function(trophyNo)
+	{
+		console.log("UnlockedTrophiesLength : " + unlockedTrophies.length);
+		//unlockedTrophies.join(trophyNo);
+		unlockedTrophies[unlockedTrophies.length] = trophyNo;
+		console.log("Saving : " + trophyNo);
+		sessionStorage.setItem("UnlockedTrophies", unlockedTrophies);
+		console.log(sessionStorage.getItem("UnlockedTrophies"));
+	};
+
 
 	this.DrawAllGalleryShelves = function()
 	{
@@ -312,6 +346,31 @@ function TrophyCase() {
 		}
 	};
 
+	//this function is called if the correct track is open when the code is entered
+	this.UpdateCurrentTrack = function()
+ 	{
+ 		console.log("IN THIS SAME TRACK, THOUGH");
+ 		//CLEAR ALL CURRENTLY DISPLAYED MAP POINTERS, IF ANY
+		mapPointerContainer.removeAllChildren();
+		
+		var colNo = 0;
+		var rowNo = 2;
+
+		var res = tracks[currentTrackOpen].split(",");
+
+		for(i=0;i < res.length;i++)
+		{
+			console.log("Drawing : " + res[i]);
+			var loadString = "trophy" + res[i];
+	
+			var trackTrophy = new TrackTrophy(rowNo, colNo, res[i]); //the new trophy knows its number
+		
+			trackTrophy.init("MapPointer");
+				
+			colNo++;
+		}
+ 	}
+
 	this.SetAllItemsAlpha = function(val)
 	{
 		console.log("hit inventory : " + val);
@@ -325,10 +384,10 @@ function TrophyCase() {
 
 	//GetItems();
 
-	this.RemoveFromInventory = function() 
-    {
-        console.log("called");
-	};
+	// this.RemoveFromInventory = function() 
+ //    {
+ //        console.log("called");
+	// };
 
 
 }

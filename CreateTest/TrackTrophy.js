@@ -57,20 +57,35 @@ function TrackTrophy(rowNo, colNo, pIndex) {
 			//if(index != undefined)
 			//{
 				var loadString = "trophy"+pIndex;
-				sprite = new createjs.Bitmap(queue.getResult(loadString));
+				//sprite = new createjs.Bitmap(queue.getResult(loadString));
+				sprite = new createjs.Bitmap("assets/Trophies/" + loadString + ".png");
 			//}
 			//sprite = new createjs.Bitmap("assets/mediumTrophy.png");
 			
 		}
-			
-		if(type != "MapPointer")
+
+		var alreadyUnlocked = false;
+
+		//if trophy not unlocked yet, display in grey
+		for(var i = 0; i < unlockedTrophies.length; i++)
 		{
-		sprite.image.onload = function () {
+			if(unlockedTrophies[i] == pIndex)
+			{
+				alreadyUnlocked = true;
+				console.log("Chosen one : " + pIndex);
+			}
+				
+		}
+			
+		//if(type != "MapPointer")
+		if(!alreadyUnlocked)
+		{
+				sprite.image.onload = function () {
                 sprite.cache(0, 0, this.width, this.height);
-                trackContainer.addChild(sprite);
+                //trackContainer.addChild(sprite);
                 sprite.filters = [filters[0]];
             	sprite.updateCache();
-            }
+             }
         }
 
         if(type != "MapPointer") //map pointer trophies are added to the mapPointerContainer
@@ -121,15 +136,17 @@ function TrackTrophy(rowNo, colNo, pIndex) {
  		{
  			if(type != "Large") //small trophy opens map
  			{
- 				openMapToFloor(3); //0 corresponds to floor 1, 1-2, 2-3, 3-5	
+ 				var mapTopOpen = Math.floor((Math.random() * 3));
+ 				//openMapToFloor(mapTopOpen); //0 corresponds to floor 1, 1-2, 2-3, 3-5	
+ 				console.log("MAP TO OPEN : " + mapTopOpen);
+ 				openMapToFloor(mapTopOpen);
  			}
  			else //large trophy opens track
  			{
  				//CLEAR ALL CURRENTLY DISPLAYED MAP POINTERS, IF ANY
  				mapPointerContainer.removeAllChildren();
-
-
- 				console.log("Large trophy no : " + largeTrophyNo);
+ 				currentTrackOpen = largeTrophyNo; //currentTrackOpen now marks the currently open track
+ 				console.log("current track open : " + largeTrophyNo);
 
  				var colNo = 0;
  				var rowNo = 2;
@@ -153,7 +170,6 @@ function TrackTrophy(rowNo, colNo, pIndex) {
  		}
      		
  	};
-
 
 
 	// function handleClick(event)

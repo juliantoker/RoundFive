@@ -27,6 +27,11 @@ var canvasWidth;
 var canvasHeight;
 var queue;
 var mapOpened;
+var mapMarker;
+var buttonOne;
+var buttonTwo;
+var buttonThree;
+var buttonFive;
 var galleryOpened;
 var prizeScreenOpened;
 var trophyCase;
@@ -40,6 +45,7 @@ var galleryBG;
 var shelfDistance;
 var shelfSize; //vertical size of shelves to prevent bunching up
 var mapPointers = []; //keeps track of which map pointer trophies are on shelf
+var currentTrackOpen;
 
 function init() {
 	canvas = document.getElementById("myCanvas");
@@ -56,64 +62,64 @@ function init() {
 	queue = new createjs.LoadQueue(false);
 	queue.addEventListener("complete",handleComplete);
 	prizeCodes = [
-	"108", //track 0
-	"134",//track 1
-	"930",
-	"059", //track 0
-	"695",
-	"510",
-	"404",
-	"713",//track 1
-	"088", //track 0
-	"679",//track 1
-	"979", //track 0
+	"5P4", //track 0
+	"4W0",//track 1
+	"6A1",
+	"3D1",//track 0
+	"5R1",
+	"2K3",
+	"0C1",
+	"6B9",//track 1
+	"2H9",//track 0
+	"7A0",
+	"8Z1",
 	//10
-	"024",//track 1
-	"422",
-	"481",
-	"259",
-	"108",//track 1
-	"270", //track 0
-	"428",
-	"369",
-	"779",
-	"839",
+	"1P6",//track 1
+	"2O1",//track 0
+	"9G6",
+	"2N3",
+	"5L9",//track 1
+	"2H6",//track 0
+	"7P1",
+	"9O7",
+	"6L9",
+	"6X1",
 	//20
-	"908", //track 0
-	"767", //track 1
-	"889",
-	"307",
-	"208",
-	"222",
-	"991",
-	"397",
-	"097",
-	"523",
+	"7T7",//track 0
+	"2Y6",//track 1
+	"5A5",
+	"5Z1",
+	"5l1",
+	"3P5",
+	"6X7",
+	"0A9",
+	"4H6",
+	"1I3",
 	//30
-	"279",
-	"410",
-	"188",
-	"479",
-	"608",
-	"887",
-	"733",
-	"048",
-	"810",
-	"308",
+	"9F1",
+	"5N9",
+	"4D2",
+	"6H0",
+	"8A7",
+	"3W4",
+	"5U1",
+	"1S5",
+	"5B5",
+	"0B7",
 	//40
-	"877",
-	"764",
-	"483",
-	"257",
-	"423",
-	"401",
-	"987",
-	"495",
-	"161"
+	"6L7",
+	"3D7",
+	"9C1",
+	"4S7",
+	"8A8",
+	"4R5",
+	"4M6",
+	"7D2",
+	"4S8",
 	//49
 	];
 	tracks = [
-	"0,3,8,10,12,16,21",
+	"0,3,8,10,12,16",
 	"1,7,9,11,15,22"
 	];
 	redeemTrophies = []; //initialized in code
@@ -145,7 +151,7 @@ function init() {
 		{id:"trophy16", src:"assets/Trophies/trophy16.png"},
 		{id:"trophy17", src:"assets/Trophies/trophy17.png"},
 		{id:"trophy18", src:"assets/Trophies/trophy18.png"},
-		//{id:"trophy19", src:"assets/Trophies/trophy19.png"},
+		{id:"trophy19", src:"assets/Trophies/trophy18.png"}, //************************CHANGE THIS TO TROPHY 19 WHEN ITS READY************************
 		{id:"trophy20", src:"assets/Trophies/trophy20.png"},
 		{id:"trophy21", src:"assets/Trophies/trophy21.png"},
 		{id:"trophy22", src:"assets/Trophies/trophy22.png"},
@@ -177,6 +183,7 @@ function init() {
 		// {id:"trophy48", src:"assets/Trophies/trophy48.png"},
 		// {id:"trophy49", src:"assets/Trophies/trophy49.png"},
 		//UI and stuff
+		{id:"mapMarker", src:"assets/mapMarker.png"},
 		{id:"shelf", src:"assets/shelf.png"},
 		{id:"longShelf", src:"assets/longShelf.png"},
 		{id:"mapBackground",src:"assets/mapBackground.png"},
@@ -430,13 +437,13 @@ function initializeMapBackground() {
 	mapBG.scaleY = bgScaleY;
 	mapBG.scaleX = bgScaleX;
 
-	var buttonOne = new createjs.Bitmap(queue.getResult("mapButtonOne"));
+	buttonOne = new createjs.Bitmap(queue.getResult("mapButtonOne"));
 	buttonOne.addEventListener("click",setCurrentFloor);
-	var buttonTwo = new createjs.Bitmap(queue.getResult("mapButtonTwo"));
+	buttonTwo = new createjs.Bitmap(queue.getResult("mapButtonTwo"));
 	buttonTwo.addEventListener("click",setCurrentFloor);
-	var buttonThree = new createjs.Bitmap(queue.getResult("mapButtonThree"));
+	buttonThree = new createjs.Bitmap(queue.getResult("mapButtonThree"));
 	buttonThree.addEventListener("click",setCurrentFloor);
-	var buttonFive = new createjs.Bitmap(queue.getResult("mapButtonFive"));
+	buttonFive = new createjs.Bitmap(queue.getResult("mapButtonFive"));
 	buttonFive.addEventListener("click",setCurrentFloor);
 
 	
@@ -486,6 +493,15 @@ function initializeMaps() {
 	mapScaleY = desiredHeight/f1.getBounds().height;
 	mapScaleX = newWidth/f1.getBounds().width;
 
+	mapMarker = new createjs.Bitmap(queue.getResult("mapMarker"));
+	mapMarker.scaleX = (newWidth/6)/mapMarker.getBounds().width; //1/10th the size of the map
+	mapMarker.scaleY = mapMarker.scaleX;
+
+	mapMarker.x = canvasWidth/2 - newWidth/2;
+	mapMarker.y = canvasHeight/2 - desiredHeight/2;
+
+	//stage.addChild(mapMarker);
+
 	f1.scaleY *= mapScaleY;
 	f1.scaleX *= mapScaleX;
 	f2.scaleY = mapScaleY;
@@ -508,7 +524,7 @@ function initializeMaps() {
 	f3.y = fy;
 	f5.x = fx;
 	f5.y = fy;
-	mapContainer.addChild(f1,f2,f3,f5);
+	mapContainer.addChild(f1,f2,f3,f5,mapMarker);
 	displayCurrentFloor();
 }
 
@@ -527,13 +543,20 @@ function moveMapUI (event) {
 
 function openMapToFloor(floorNo)
 {
+	console.log("FLOOR NO : " + floorNo);
 	moveMapUI();
 	currentFloor = floorNo;
-	console.log("Current floor : "+currentFloor);
-	console.log("set current floor called");
 	resetFloorButtons();
-	//event.target.alpha = 0.5;
-	// currentFloor = buttonContainer.getChildIndex(event.target) - 1;
+	
+	if(floorNo == 0)
+		buttonOne.alpha = 0.5;
+	else if(floorNo == 1)
+		buttonTwo.alpha = 0.5;
+	else if(floorNo == 2)
+		buttonThree.alpha = 0.5;
+	else if(floorNo == 3)
+		buttonFive.alpha = 0.5;
+
 	displayCurrentFloor();
 }
 
@@ -565,6 +588,22 @@ function displayCurrentFloor () {
 		mapContainer.children[i].alpha = 0;
 	}
 	mapContainer.children[currentFloor].alpha = 1;
+
+	//map marker
+	mapContainer.children[4].alpha = 1;
+	var newWidth = 0.6 * canvasWidth;
+	var newHeight = 0.95 * (canvasHeight - UIBarHeight - canvasHeight/8);
+
+	var leftLimit = canvasWidth/2 - newWidth/3;
+	var rightLimit = canvasWidth/2 + newWidth/6;
+	
+	var topLimit = canvasHeight/2 - newHeight/2.5;
+	var botLimit = canvasHeight/2 + newHeight/4;
+
+	mapMarker.x = Math.floor((Math.random() * (rightLimit - leftLimit)) + leftLimit);
+	mapMarker.y = Math.floor((Math.random() * (topLimit - botLimit)) + botLimit);
+
+	//mapMarker.x = Math.floor((Math.random() * (canvasWidth/2 + newWidth/2) - (canvasWidth/2 - newWidth/2)) + (canvasWidth/2 - newWidth/2));
 }
 
 function resetFloorButtons () {
