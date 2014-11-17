@@ -2,9 +2,11 @@
 var unlockedTrophies = []; 
 var completedTracks = []; 
 var trackLengths = [];
+var shelfYPositions = [];
+var galleryShelfPositions = [];
 
 function TrophyCase() {
-	var trophyTotal = 50; //total
+	var trophyTotal = 39; //total
 	var trophyCount = 0 //collected so far;
 	var trophyHeight;
 	var largeTrophyHeight;
@@ -56,17 +58,15 @@ function TrophyCase() {
 		//alert( "username = " + sessionStorage.getItem("Trophy total"));
 		
 		
-		// for(var i=0;i<trophyTotal;i++)
-  //   		MyArray[i] = i;
-   		shelfDistance = (canvasHeight - UIBarHeight)/5; 
-   		console.log("Shelf distance : " + shelfDistance);
-  		this.DrawAllGalleryShelves();
-		//this.DrawAllGalleryTrophies();
+   		shelfDistance = (canvasHeight - UIBarHeight)/4; 
+   		largeShelfDistance = (canvasHeight - UIBarHeight)/4; 
+   		normalShelfDistance = (canvasHeight - UIBarHeight)/4; 
 
-		//  this.UnlockTrophy(0);
-		// this.UnlockTrophy(2);
-		// this.UnlockTrophy(17);
-		LoadTrophies();
+
+  		this.DrawAllGalleryShelves();
+		this.DrawAllGalleryTrophies();
+
+		//LoadTrophies();
 
 		//sprite.addEventListener("click", handleClick);
  		sprite.addEventListener("mousedown", handlePress);
@@ -76,27 +76,36 @@ function TrophyCase() {
  		DrawTrackShelves();
  		DrawTrackTrophies();
 
-		//DrawTrophy(0);
-		//this.UnlockTrophy(7);
-		// this.UnlockTrophy(22);
-		// this.UnlockTrophy(29);
 	};
 
 	function DrawTrackShelves()
 	{
+		var spaceForSmallShelves = canvasHeight - (UIBarHeight+largeTrophyHeight+((1.5)*largeShelfDistance));
 		//Draw long shelves
 
 		for (var i = 0; i < longShelfTotal + normalShelfTotal; i++) 
     	{
     		if(i < 2)
+    		{
     			var longshelf = new createjs.Bitmap(queue.getResult("longShelf"));
+    			longshelf.y = UIBarHeight+largeTrophyHeight+((i+0.5)*largeShelfDistance);
+    		}
+    			
     		else
+    		{
     			var longshelf = new createjs.Bitmap(queue.getResult("shelf"));
+    			if(i == 2)
+    				longshelf.y = canvasHeight - spaceForSmallShelves/2;
+    			else
+    				longshelf.y = canvasHeight*0.95;
+    		}
 
-    		longshelf.y = UIBarHeight+largeTrophyHeight+(i*shelfDistance);
+    		shelfYPositions[i] = longshelf.y;
+    			
+    		longshelf.scaleY = (canvasHeight/24)/longshelf.getBounds().height;	
 
     		longshelf.scaleX = bgScaleX;
-    		longshelf.scaleY = 0.75;
+    		
 
     		trackContainer.addChild(longshelf);
     	}
@@ -104,7 +113,7 @@ function TrophyCase() {
     	//Draw labels
 
     	var desiredWidth = (canvasWidth)/4;
-    	var desiredHeight = (canvasWidth)/6;
+    	var desiredHeight = (canvasWidth)/7;
     	var rowNo = 0;
     	var colNo = 0;
 
@@ -126,8 +135,8 @@ function TrophyCase() {
 			label.scaleX = scaleX;
 
 			label.x = colNo * desiredWidth;
-		
-			label.y = ((rowNo*shelfDistance)+UIBarHeight + largeTrophyHeight) - desiredHeight/4;
+			label.y = shelfYPositions[rowNo] - (desiredHeight/4);
+			//label.y = (((rowNo+0.5)*shelfDistance)+UIBarHeight + largeTrophyHeight) - desiredHeight/4;
 
 			trackContainer.addChild(label);
 
@@ -256,31 +265,6 @@ function TrophyCase() {
 		}
 	};
 
-	// function DrawTrophy(drawNo)
-	// {
-	// 	var colNo = 0;
-	// 	var rowNo = 0;
-
-	// 	for(i = 0; i < trophyTotal; i++)
-	// 	{
-	// 		if(colNo > (colTotal - 1))
-	// 		{
-	// 			rowNo++;
-	// 			colNo = 0;
-	// 		}
-
-	// 		if(i == drawNo)
-	// 		{
-	// 			console.log("Found at : " + rowNo + "," + colNo);
-	// 			var newTrophy = new Trophy(rowNo, colNo); //the new trophy knows its number
- //        		MyArray[i] = newTrophy; //add it to the case array
- //        		MyArray[i].init(); //initialize the trophy
-	// 		}
-				
-			
-	// 		colNo++;
-	// 	}
-	// };
 
 	this.UnlockTrophy = function(unlockNo)
 	{
@@ -289,6 +273,9 @@ function TrophyCase() {
 			console.log("Out of range");
 			return;
 		}
+
+		if(unlockNo == trophyTotal) //39
+			this.DrawAllGalleryTrophies();
 
 		for(a=0;a<unlockedTrophies.length;a++)
 		{
@@ -359,7 +346,10 @@ function TrophyCase() {
 		for (var i = 0; i < shelfTotal; i++) 
     	{
     		var shelf = new createjs.Bitmap(queue.getResult("shelf"));
-    		shelf.y = UIBarHeight+(i*shelfDistance)+trophyHeight;
+    		
+    		shelf.y = UIBarHeight+(canvasHeight/11)+(i*normalShelfDistance)+trophyHeight;
+
+    		galleryShelfPositions[i] = shelf.y;
 
     		shelf.scaleX = bgScaleX;
     		galleryContainer.addChild(shelf);
@@ -372,6 +362,8 @@ function TrophyCase() {
 		var colNo = 0;
 		var rowNo = 0;
 
+		var colTotal = 6;
+
   		for(i=0;i < trophyTotal;i++)
 		{
 			if(colNo > (colTotal - 1))
@@ -380,7 +372,7 @@ function TrophyCase() {
 					colNo = 0;
 				}
 
-			var newTrophy = new Trophy(rowNo, colNo); //the new trophy knows its number
+			var newTrophy = new Trophy(rowNo, colNo, i); //the new trophy knows its number
         	MyArray[i] = newTrophy; //add it to the case array
         	MyArray[i].init();
         	colNo++;
@@ -401,6 +393,11 @@ function TrophyCase() {
 
 		for(i=0;i < res.length;i++)
 		{
+			if(colNo > 5)
+			{
+				rowNo++;
+				colNo = 0;
+			}
 			console.log("Drawing : " + res[i]);
 			var loadString = "trophy" + res[i];
 	
@@ -467,13 +464,4 @@ function TrophyCase() {
 			// child.x = 0;	
 		}
 	};
-
-	//GetItems();
-
-	// this.RemoveFromInventory = function() 
- //    {
- //        console.log("called");
-	// };
-
-
 }

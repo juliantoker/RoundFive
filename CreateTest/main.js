@@ -13,6 +13,7 @@ var galleryContainer;
 var trackContainer;
 var mapPointerContainer; //this is for showing map pointers
 var rewardContainer;
+var startContainer;
 var UIContainer;
 //var trophyContainer;
 //for 560x960 px backgrounds
@@ -107,6 +108,7 @@ function init() {
 	"3W4",//track 7
 	"5U1",//track 3
 	"1S5",//track 3
+	"ZZZ",//unlock all trophies
 	//from here onwards it should be large trophies
 	// //38
 	// "5B5",
@@ -129,7 +131,8 @@ function init() {
 	// "0,3,8,10,12,16",
 	//"1,7,11,15,22,29",
 	"5,18,26,34",
-	"2,6,10,37,38",
+	"2,6,10,37,38,17,6,1,9",
+	// "2,6,10,37,38",
 	"9,13,24,31",
 	"4,14,28,30",
 	"17,25,32,33",
@@ -210,6 +213,8 @@ function init() {
 		{id:"titleTracks", src:"assets/titleTracks.png"},
 		{id:"titleMap", src:"assets/titleMap.png"},
 		//other UI stuff
+		{id:"startScreen", src:"assets/startScreen.png"},
+		{id:"startButton", src:"assets/startButton.png"},
 		{id:"mapMarker", src:"assets/mapMarker.png"},
 		{id:"rewardPopup", src:"assets/rewardPopup.png"},
 		{id:"shelf", src:"assets/shelf.png"},
@@ -372,8 +377,41 @@ function handleComplete(event) {
 	initializeGalleryButton();
 	InitializeInventory();
 	AddContainersToStage();
+
+	//showStartScreen();
 	
 	createjs.Ticker.addEventListener("tick",tick);
+}
+
+function showStartScreen()
+{
+	var startScreen = new createjs.Bitmap(queue.getResult("startScreen"));
+
+	startScreen.scaleY = bgScaleY;
+	startScreen.scaleX = bgScaleX;
+
+	startContainer = new createjs.Container();
+	startContainer.name = "startContainer";
+
+	var startButton = new createjs.Bitmap(queue.getResult("startButton"));
+
+	startButton.scaleY = (canvasHeight/13)/startButton.getBounds().height;
+	startButton.scaleX = (canvasWidth/3)/startButton.getBounds().width;
+
+	startButton.x = canvasWidth/2 - (canvasWidth/3)/2;
+	startButton.y = canvasHeight*0.8105;
+
+	startButton.addEventListener("click",moveStartScreenOut);
+
+	startContainer.addChild(startScreen);
+	startContainer.addChild(startButton);
+
+	stage.addChild(startContainer);
+}
+
+function moveStartScreenOut(event)
+{
+	createjs.Tween.get(startContainer,{loop:false}).to({y:-canvasHeight},300);
 }
 
 function tick(event) {
@@ -563,6 +601,8 @@ function initializeMaps() {
 	mapMarker.x = canvasWidth/2 - newWidth/2;
 	mapMarker.y = canvasHeight/2 - desiredHeight/2;
 
+	mapMarker.visible = false;
+
 
 	//stage.addChild(mapMarker);
 
@@ -614,6 +654,7 @@ function moveMapUI (event) {
 
 function openMapToFloor(floorNo)
 {
+	mapMarker.visible = true;
 	console.log("FLOOR NO : " + floorNo);
 	moveMapUI();
 	currentFloor = floorNo;
@@ -633,6 +674,7 @@ function openMapToFloor(floorNo)
 
 function ReAppearItems()
 	{
+		mapMarker.visible = false;
 		trophyCase.SetAllItemsAlpha(1);
 	}
 
@@ -742,11 +784,11 @@ function moveRewardPopup (trophyNo)
 	newSprite = new createjs.Bitmap(queue.getResult(loadString));
 	newSprite.name = "RewardSprite";
 
-	newSprite.scaleX = (canvasWidth*0.5)/newSprite.getBounds().width;
+	newSprite.scaleX = (canvasWidth*0.75)/newSprite.getBounds().width;
 	newSprite.scaleY = newSprite.scaleX;
 
-	newSprite.x = canvasWidth/2 - (canvasWidth*0.5)/2;
-	newSprite.y = canvasHeight/2 - (canvasWidth*0.5)/2;
+	newSprite.x = canvasWidth/2 - (canvasWidth*0.75)/2;
+	newSprite.y = canvasHeight/2 - (canvasWidth*0.75)/2;
 
 	rewardPopup.addEventListener("click",GetRewardOut);
 
