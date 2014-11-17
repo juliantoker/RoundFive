@@ -1,5 +1,7 @@
 
 var unlockedTrophies = []; 
+var completedTracks = []; 
+var trackLengths = [];
 
 function TrophyCase() {
 	var trophyTotal = 50; //total
@@ -26,6 +28,13 @@ function TrophyCase() {
 	this.init = function()
 	{
 		console.log("Inventory Built");	
+
+		//storing track lengths
+		for(var i = 0; i < tracks.length; i++)
+		{
+			var res = tracks[i].split(",");
+			trackLengths[i] = res.length;
+		}
 
 		sprite = bpm;
 
@@ -211,7 +220,6 @@ function TrophyCase() {
         			unlockedTrophies[unlockedTrophies.length] = j; //add to list of all unlocked trophies
 				}
 				
-			
 				colNo++;
 			}
 		}
@@ -298,6 +306,8 @@ function TrophyCase() {
 						this.UpdateCurrentTrack();
 				}
 
+		//CHECK IF ANY TRACKS ARE complete
+		this.CheckIfAnyTracksComplete(unlockNo);
 	};
 
 	this.SaveTrophies = function(trophyNo)
@@ -349,7 +359,7 @@ function TrophyCase() {
 	//this function is called if the correct track is open when the code is entered
 	this.UpdateCurrentTrack = function()
  	{
- 		console.log("IN THIS SAME TRACK, THOUGH");
+ 		console.log("Same track is open");
  		//CLEAR ALL CURRENTLY DISPLAYED MAP POINTERS, IF ANY
 		mapPointerContainer.removeAllChildren();
 		
@@ -368,6 +378,51 @@ function TrophyCase() {
 			trackTrophy.init("MapPointer");
 				
 			colNo++;
+		}
+ 	}
+
+ 	this.CheckIfAnyTracksComplete = function(unlockNo)
+ 	{
+ 		//new trophy unlocked is unlockNo
+
+ 		for(i=0;i < tracks.length;i++)
+		{
+			var res = tracks[i].split(",");
+			for(var j = 0;j<res.length;j++)
+			{
+				if(unlockNo == res[j])
+					trackLengths[i]--; //that element is found in the track
+			}
+		}
+
+		for(i=0;i < trackLengths.length;i++)
+		{
+			if(trackLengths[i] == 0) //this one is done
+			{
+				console.log("Track : "+i+" complete");
+				trackLengths[i] = -1; //so that it does not register again
+				
+				var colNo = 0;
+				var rowNo = 0;
+
+				if(i>=0 && i < 4)
+					colNo += i;
+				else
+				{
+					colNo = i - 4;
+					rowNo++;
+				}
+
+				var trackTrophy = new TrackTrophy(rowNo, colNo); //the new trophy knows its number
+				
+        		trackTrophy.init("Large",i,true);
+
+				completedTracks[completedTracks.length] = i;
+				sessionStorage.setItem("completedTracks", completedTracks);
+				console.log("check if saving : " + sessionStorage.getItem("completedTracks"));
+				console.log("length SSSSSS : " + completedTracks.length);
+			}
+				
 		}
  	}
 

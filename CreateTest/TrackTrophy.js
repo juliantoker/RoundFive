@@ -12,6 +12,8 @@ function TrackTrophy(rowNo, colNo, pIndex) {
 	var index = pIndex;
 	var type;
 
+	var isTrackComplete = false;
+
 	//*********************************************************************************
 	var filters = [new createjs.ColorFilter(0,0,0,0.5), new createjs.ColorFilter(1,1,0,1)];
         var index = 0;
@@ -46,12 +48,31 @@ function TrackTrophy(rowNo, colNo, pIndex) {
    		AssignSprite();
    };
 
+   this.init = function(trophyType, LargeTrophyNo, unlockStatus) 
+   {
+   		isTrackComplete = unlockStatus;
+   		//this.inPos = position;
+   		//inventoryPos = this.inPos;
+   		//console.log("inventory pos : " + inventoryPos);
+   		type = trophyType;
+   		largeTrophyNo = LargeTrophyNo;
+   		AssignSprite();
+   };
+
    	//assigns a sprite to add to the item
 	function AssignSprite()
 	{
 		//only works with string specified, not from loading queue
 		if(type == "Large")
-			sprite = new createjs.Bitmap("assets/largeTrophy.png");
+		{
+			pIndex = largeTrophyNo + 39; //since there are 38 small trophies
+			// if(pIndex > 44)
+			// 	pIndex = 44;
+
+			var loadString = "trophy"+pIndex;
+			sprite = new createjs.Bitmap("assets/Trophies/" + loadString + ".png");
+		}
+			
 		else
 		{
 			//if(index != undefined)
@@ -76,6 +97,24 @@ function TrackTrophy(rowNo, colNo, pIndex) {
 			}
 				
 		}
+
+		if(isTrackComplete)
+			alreadyUnlocked = true;
+
+		var trackCheck = sessionStorage.getItem("completedTracks");
+		
+		//check if track already completed
+		if(trackCheck != null)
+		{
+			console.log("completed tracks length : " + trackCheck.length);
+			var res = trackCheck.split(",");
+
+			for(i=0;i < res.length;i++)
+			{
+				if(largeTrophyNo == res[i])
+					alreadyUnlocked = true;
+			}	
+		}
 			
 		//if(type != "MapPointer")
 		if(!alreadyUnlocked)
@@ -89,7 +128,10 @@ function TrackTrophy(rowNo, colNo, pIndex) {
         }
 
         if(type != "MapPointer") //map pointer trophies are added to the mapPointerContainer
-			trackContainer.addChild(sprite);
+        {
+        	sprite.name = "LargeTropy" + largeTrophyNo;
+        	trackContainer.addChild(sprite);
+        }
 		else
 			mapPointerContainer.addChild(sprite);
 

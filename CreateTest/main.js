@@ -12,6 +12,7 @@ var prizeContainer;
 var galleryContainer;
 var trackContainer;
 var mapPointerContainer; //this is for showing map pointers
+var rewardContainer;
 var UIContainer;
 //var trophyContainer;
 //for 560x960 px backgrounds
@@ -36,6 +37,8 @@ var galleryOpened;
 var prizeScreenOpened;
 var trophyCase;
 var prizeCodes;
+var rewardPopup;
+var rewardTrophy;
 var currentFloor;
 var UIBarHeight;
 var buttonScale;
@@ -45,7 +48,7 @@ var galleryBG;
 var shelfDistance;
 var shelfSize; //vertical size of shelves to prevent bunching up
 var mapPointers = []; //keeps track of which map pointer trophies are on shelf
-var currentTrackOpen;
+var currentTrackOpen = 0; //defaults to 0
 
 function init() {
 	canvas = document.getElementById("myCanvas");
@@ -64,63 +67,73 @@ function init() {
 	prizeCodes = [
 	"5P4", //track 0
 	"4W0",//track 1
-	"6A1",
+	"6A1",//track 3
 	"3D1",//track 0
-	"5R1",
-	"2K3",
-	"0C1",
+	"5R1",//track 5
+	"2K3",//track 2
+	"0C1",//track 3
 	"6B9",//track 1
 	"2H9",//track 0
-	"7A0",
-	"8Z1",
+	"7A0",//track 4
+	"8Z1",//track 3
 	//10
 	"1P6",//track 1
 	"2O1",//track 0
-	"9G6",
-	"2N3",
+	"9G6",//track 4
+	"2N3",//track 5
 	"5L9",//track 1
 	"2H6",//track 0
-	"7P1",
-	"9O7",
+	"7P1",//track 6
+	"9O7",//track 2
 	"6L9",
-	"6X1",
+	"6X1",//track 7
 	//20
 	"7T7",//track 0
 	"2Y6",//track 1
-	"5A5",
-	"5Z1",
-	"5l1",
-	"3P5",
-	"6X7",
-	"0A9",
-	"4H6",
-	"1I3",
+	"5A5",//track 7
+	"5Z1",//track 4
+	"5l1",//track 6
+	"3P5",//track 2
+	"6X7",//track 7
+	"0A9",//track 5
+	"4H6",//track1
+	"1I3",//track 5
 	//30
-	"9F1",
-	"5N9",
-	"4D2",
-	"6H0",
-	"8A7",
-	"3W4",
-	"5U1",
-	"1S5",
-	"5B5",
-	"0B7",
-	//40
-	"6L7",
-	"3D7",
-	"9C1",
-	"4S7",
-	"8A8",
-	"4R5",
-	"4M6",
-	"7D2",
-	"4S8",
-	//49
+	"9F1",//track 4
+	"5N9",//track 6
+	"4D2",//track 6
+	"6H0",//track 2
+	"8A7",//track 7
+	"3W4",//track 7
+	"5U1",//track 3
+	"1S5",//track 3
+	//from here onwards it should be large trophies
+	// //38
+	// "5B5",
+	// "0B7",
+	// //40
+	// "6L7",
+	// "3D7",
+	// "9C1",
+	// "4S7",
+	// "8A8",
+	// "4R5",
+	// "4M6",
+	// "7D2",
+	// "4S8",
+	// //49
 	];
 	tracks = [
-	"0,3,8,10,12,16",
-	"1,7,9,11,15,22"
+	"0",
+	"1",
+	// "0,3,8,10,12,16",
+	//"1,7,11,15,22,29",
+	"5,18,26,34",
+	"2,6,10,37,38",
+	"9,13,24,31",
+	"4,14,28,30",
+	"17,25,32,33",
+	"20,27,35,36"
 	];
 	redeemTrophies = []; //initialized in code
 	queue.loadManifest([
@@ -156,34 +169,36 @@ function init() {
 		{id:"trophy21", src:"assets/Trophies/trophy21.png"},
 		{id:"trophy22", src:"assets/Trophies/trophy22.png"},
 		{id:"trophy23", src:"assets/Trophies/trophy23.png"},
-		// {id:"trophy24", src:"assets/Trophies/trophy24.png"},
-		// {id:"trophy25", src:"assets/Trophies/trophy25.png"},
-		// {id:"trophy26", src:"assets/Trophies/trophy26.png"},
-		// {id:"trophy27", src:"assets/Trophies/trophy27.png"},
-		// {id:"trophy28", src:"assets/Trophies/trophy28.png"},
-		// {id:"trophy29", src:"assets/Trophies/trophy29.png"},
-		// {id:"trophy30", src:"assets/Trophies/trophy30.png"},
-		// {id:"trophy31", src:"assets/Trophies/trophy31.png"},
-		// {id:"trophy32", src:"assets/Trophies/trophy32.png"},
-		// {id:"trophy33", src:"assets/Trophies/trophy33.png"},
-		// {id:"trophy34", src:"assets/Trophies/trophy34.png"},
-		// {id:"trophy35", src:"assets/Trophies/trophy35.png"},
-		// {id:"trophy36", src:"assets/Trophies/trophy36.png"},
-		// {id:"trophy37", src:"assets/Trophies/trophy37.png"},
-		// {id:"trophy38", src:"assets/Trophies/trophy38.png"},
-		// {id:"trophy39", src:"assets/Trophies/trophy39.png"},
-		// {id:"trophy40", src:"assets/Trophies/trophy40.png"},
-		// {id:"trophy41", src:"assets/Trophies/trophy41.png"},
-		// {id:"trophy42", src:"assets/Trophies/trophy42.png"},
-		// {id:"trophy43", src:"assets/Trophies/trophy43.png"},
-		// {id:"trophy44", src:"assets/Trophies/trophy44.png"},
-		// {id:"trophy45", src:"assets/Trophies/trophy45.png"},
-		// {id:"trophy46", src:"assets/Trophies/trophy46.png"},
+		{id:"trophy24", src:"assets/Trophies/trophy24.png"},
+		{id:"trophy25", src:"assets/Trophies/trophy25.png"},
+		{id:"trophy26", src:"assets/Trophies/trophy26.png"},
+		{id:"trophy27", src:"assets/Trophies/trophy27.png"},
+		{id:"trophy28", src:"assets/Trophies/trophy28.png"},
+		{id:"trophy29", src:"assets/Trophies/trophy29.png"},
+		{id:"trophy30", src:"assets/Trophies/trophy30.png"},
+		{id:"trophy31", src:"assets/Trophies/trophy31.png"},
+		{id:"trophy32", src:"assets/Trophies/trophy32.png"},
+		{id:"trophy33", src:"assets/Trophies/trophy33.png"},
+		{id:"trophy34", src:"assets/Trophies/trophy34.png"},
+		{id:"trophy35", src:"assets/Trophies/trophy35.png"},
+		{id:"trophy36", src:"assets/Trophies/trophy36.png"},
+		{id:"trophy37", src:"assets/Trophies/trophy37.png"},
+		{id:"trophy38", src:"assets/Trophies/trophy38.png"},
+		//large trophies
+		{id:"trophy39", src:"assets/Trophies/trophy39.png"},
+		{id:"trophy40", src:"assets/Trophies/trophy40.png"},
+		{id:"trophy41", src:"assets/Trophies/trophy41.png"},
+		{id:"trophy42", src:"assets/Trophies/trophy42.png"},
+		{id:"trophy43", src:"assets/Trophies/trophy43.png"},
+		{id:"trophy44", src:"assets/Trophies/trophy44.png"},
+		{id:"trophy45", src:"assets/Trophies/trophy45.png"},
+		{id:"trophy46", src:"assets/Trophies/trophy46.png"},
 		// {id:"trophy47", src:"assets/Trophies/trophy47.png"},
 		// {id:"trophy48", src:"assets/Trophies/trophy48.png"},
 		// {id:"trophy49", src:"assets/Trophies/trophy49.png"},
 		//UI and stuff
 		{id:"mapMarker", src:"assets/mapMarker.png"},
+		{id:"rewardPopup", src:"assets/rewardPopup.png"},
 		{id:"shelf", src:"assets/shelf.png"},
 		{id:"longShelf", src:"assets/longShelf.png"},
 		{id:"mapBackground",src:"assets/mapBackground.png"},
@@ -269,7 +284,9 @@ function InitializeContainers()
 
 	UIContainer = new createjs.Container();
 	UIContainer.name = "UI";
- 	//trophyContainer.x = canvasWidth/2;
+
+	rewardContainer = new createjs.Container();
+	rewardContainer.name = "rewardContainer";
 
 	console.log("containers made");
 	// worldContainer.x = canvasWidth - bpWidth;
@@ -310,6 +327,7 @@ function AddContainersToStage()
 	stage.addChild(closegb);
 	closegb.visible = false;
 	stage.addChild(mapContainer);
+	stage.addChild(rewardContainer);
 }
 
 function handleComplete(event) {
@@ -319,6 +337,7 @@ function handleComplete(event) {
 	initializeMapBackground();
 	initializeMapButton();
 	initializeMaps();
+	initializeRewardPopup();
 	initializePrizeBackground();
 	initializePrizeButton();
 	initializeGalleryButton();
@@ -431,7 +450,6 @@ function CloseGallery()
 function initializeMapBackground() {
 	buttonContainer.x = -canvasWidth;
 
-	
 	var mapBG = new createjs.Bitmap(queue.getResult("mapBackground"));
 	//scale map BG
 	mapBG.scaleY = bgScaleY;
@@ -474,6 +492,21 @@ function initializeMapBackground() {
 	buttonThree.x = 2*desiredSizeX;
 	buttonFive.x = 3*desiredSizeX;
 	buttonContainer.addChild(mapBG,buttonOne,buttonTwo,buttonThree,buttonFive);
+}
+
+function initializeRewardPopup()
+{
+	rewardContainer.y = -canvasHeight;
+
+	rewardPopup = new createjs.Bitmap(queue.getResult("rewardPopup"));
+ 	rewardPopup.scaleX = (canvasWidth*0.75)/rewardPopup.getBounds().width;
+	rewardPopup.scaleY = (canvasHeight*0.6)/rewardPopup.getBounds().height;
+
+
+	rewardPopup.x = canvasWidth/2 - (canvasWidth*0.75)/2;
+	rewardPopup.y = canvasHeight/2 - (canvasHeight*0.6)/2;
+
+	rewardContainer.addChild(rewardPopup);
 }
 
 function initializeMaps() {
@@ -660,16 +693,52 @@ function movePrizeUI () {
 	prizeScreenOpened = !prizeScreenOpened;
 }
 
+function moveRewardPopup (trophyNo)
+{
+	createjs.Tween.get(rewardContainer,{loop:false}).wait(10).to({y:0},300);
+	
+	var loadString = "trophy"+trophyNo;
+	
+	newSprite = new createjs.Bitmap(queue.getResult(loadString));
+	newSprite.name = "RewardSprite";
+
+	newSprite.scaleX = (canvasWidth*0.5)/newSprite.getBounds().width;
+	newSprite.scaleY = newSprite.scaleX;
+
+	newSprite.x = canvasWidth/2 - (canvasWidth*0.5)/2;
+	newSprite.y = canvasHeight/2 - (canvasWidth*0.5)/2;
+
+	rewardPopup.addEventListener("click",GetRewardOut);
+
+	rewardContainer.addChild(newSprite);
+}
+
+function GetRewardOut()
+{
+	createjs.Tween.get(rewardContainer,{loop:false}).to({y:-canvasHeight},300).call(RemoveRewardTrophy);
+	
+}
+
+function RemoveRewardTrophy()
+{
+	rewardContainer.removeChildAt(1);
+	rewardPopup.removeEventListener("click",GetRewardOut);
+}
+
+
 function enterPrizeCode (event) {
 	console.log("prize string length : " + prizeCodes.length);
 	var userInput = prompt('Enter prize code.');
 	var redeemCode = checkPrizeCode(userInput);
+
+	//Redeemed succesfully
 	if(redeemCode >= 0) 
 	{
 		//Open prize screen if a valid prize code is entered
 		//movePrizeUI();
 		console.log("Trophy redeemed = " + redeemTrophies[redeemCode]);
 		trophyCase.UnlockTrophy(redeemTrophies[redeemCode]);
+		moveRewardPopup(redeemTrophies[redeemCode]);
 	} else {
 		alert("Invalid prize code.");
 	}
