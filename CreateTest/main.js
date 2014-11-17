@@ -378,7 +378,7 @@ function handleComplete(event) {
 	InitializeInventory();
 	AddContainersToStage();
 
-	//showStartScreen();
+	showStartScreen();
 	
 	createjs.Ticker.addEventListener("tick",tick);
 }
