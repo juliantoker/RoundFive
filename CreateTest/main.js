@@ -197,6 +197,19 @@ function init() {
 		// {id:"trophy48", src:"assets/Trophies/trophy48.png"},
 		// {id:"trophy49", src:"assets/Trophies/trophy49.png"},
 		//UI and stuff
+		{id:"trackLabel0", src:"assets/trackLabel0.png"},
+		{id:"trackLabel1", src:"assets/trackLabel1.png"},
+		{id:"trackLabel2", src:"assets/trackLabel2.png"},
+		{id:"trackLabel3", src:"assets/trackLabel3.png"},
+		{id:"trackLabel4", src:"assets/trackLabel4.png"},
+		{id:"trackLabel5", src:"assets/trackLabel5.png"},
+		{id:"trackLabel6", src:"assets/trackLabel6.png"},
+		{id:"trackLabel7", src:"assets/trackLabel7.png"},
+		//title boxes
+		{id:"titleGallery", src:"assets/titleGallery.png"},
+		{id:"titleTracks", src:"assets/titleTracks.png"},
+		{id:"titleMap", src:"assets/titleMap.png"},
+		//other UI stuff
 		{id:"mapMarker", src:"assets/mapMarker.png"},
 		{id:"rewardPopup", src:"assets/rewardPopup.png"},
 		{id:"shelf", src:"assets/shelf.png"},
@@ -253,6 +266,14 @@ function InitializeContainers()
 	galleryContainer.name = "gallery";
 	galleryContainer.y = -3*canvasHeight; //placing off screen
 
+	var galleryLabel = new createjs.Bitmap(queue.getResult("titleGallery"));
+	galleryLabel.scaleY = (canvasHeight/11)/galleryLabel.getBounds().height;
+	galleryLabel.scaleX = (canvasWidth/2)/galleryLabel.getBounds().width;
+	galleryLabel.x = canvasWidth/2 - (canvasWidth/2)/2;
+	galleryLabel.y = canvasHeight/7;
+
+	galleryContainer.addChild(galleryLabel);
+
 	galleryBG = new createjs.Bitmap(queue.getResult("galleryBG"));
 	
 	//scale BG to fit screen
@@ -275,6 +296,14 @@ function InitializeContainers()
 	
 	trackContainer = new createjs.Container();
 	trackContainer.name = "trackContainer";
+
+	var trackLabel = new createjs.Bitmap(queue.getResult("titleTracks"));
+	trackLabel.scaleY = (canvasHeight/11)/trackLabel.getBounds().height;
+	trackLabel.scaleX = (canvasWidth/2)/trackLabel.getBounds().width;
+	trackLabel.x = canvasWidth/2 - (canvasWidth/2)/2;
+	trackLabel.y = canvasHeight/7;
+
+	trackContainer.addChild(trackLabel);
 
 	mapPointerContainer = new createjs.Container();
 	mapPointerContainer.name = "mapPointerContainer";
@@ -491,6 +520,7 @@ function initializeMapBackground() {
 	buttonTwo.x = desiredSizeX;
 	buttonThree.x = 2*desiredSizeX;
 	buttonFive.x = 3*desiredSizeX;
+
 	buttonContainer.addChild(mapBG,buttonOne,buttonTwo,buttonThree,buttonFive);
 }
 
@@ -533,6 +563,7 @@ function initializeMaps() {
 	mapMarker.x = canvasWidth/2 - newWidth/2;
 	mapMarker.y = canvasHeight/2 - desiredHeight/2;
 
+
 	//stage.addChild(mapMarker);
 
 	f1.scaleY *= mapScaleY;
@@ -557,7 +588,14 @@ function initializeMaps() {
 	f3.y = fy;
 	f5.x = fx;
 	f5.y = fy;
-	mapContainer.addChild(f1,f2,f3,f5,mapMarker);
+
+	var mapLabel = new createjs.Bitmap(queue.getResult("titleMap"));
+	mapLabel.scaleY = (canvasHeight/11)/mapLabel.getBounds().height;
+	mapLabel.scaleX = (canvasWidth/2)/mapLabel.getBounds().width;
+	mapLabel.x = canvasWidth/2 - (canvasWidth/2)/2;
+	mapLabel.y = canvasHeight/8;
+
+	mapContainer.addChild(f1,f2,f3,f5,mapMarker,mapLabel);
 	displayCurrentFloor();
 }
 
@@ -624,6 +662,8 @@ function displayCurrentFloor () {
 
 	//map marker
 	mapContainer.children[4].alpha = 1;
+	//map label
+	mapContainer.children[5].alpha = 1;
 	var newWidth = 0.6 * canvasWidth;
 	var newHeight = 0.95 * (canvasHeight - UIBarHeight - canvasHeight/8);
 

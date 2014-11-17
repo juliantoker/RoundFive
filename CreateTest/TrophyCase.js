@@ -99,8 +99,39 @@ function TrophyCase() {
     		longshelf.scaleY = 0.75;
 
     		trackContainer.addChild(longshelf);
+    	}
 
-    		console.log("LONG SHELF DRAWN");
+    	//Draw labels
+
+    	var desiredWidth = (canvasWidth)/4;
+    	var desiredHeight = (canvasWidth)/6;
+    	var rowNo = 0;
+    	var colNo = 0;
+
+    	for(var i = 0; i < 8; i++)
+    	{
+    		if(colNo > 3)
+    		{
+    			rowNo++;
+    			colNo = 0;
+    		}
+
+    		var loadString = "trackLabel" + i;
+    		var label = new createjs.Bitmap(queue.getResult(loadString));
+
+    		var scaleY = (desiredHeight)/label.getBounds().height;
+			var scaleX = (desiredWidth)/label.getBounds().width;
+
+    		label.scaleY = scaleY;
+			label.scaleX = scaleX;
+
+			label.x = colNo * desiredWidth;
+		
+			label.y = ((rowNo*shelfDistance)+UIBarHeight + largeTrophyHeight) - desiredHeight/4;
+
+			trackContainer.addChild(label);
+
+			colNo++;
     	}
 	};
 
