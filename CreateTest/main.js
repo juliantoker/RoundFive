@@ -411,7 +411,7 @@ function InitializeSlideOut()
 	var desiredHeight = (canvasHeight - canvasHeight/7)/2;
 	var desiredWidth = canvasWidth;
 
-	slideOut.scaleY = desiredHeight*1.18/slideOut.getBounds().height;
+	slideOut.scaleY = desiredHeight*1.27/slideOut.getBounds().height;
 	slideOut.scaleX = desiredWidth/slideOut.getBounds().width;
 
 	slideOutBackButton = new createjs.Bitmap(queue.getResult("slideOutBackButton"));
