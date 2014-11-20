@@ -88,8 +88,6 @@ function TrackTrophy(rowNo, colNo, pIndex) {
 		if(isTrackComplete)
 			alreadyUnlocked = true;
 
-
-
 		var trackCheck = sessionStorage.getItem("completedTracks");
 		
 		//check if track already completed

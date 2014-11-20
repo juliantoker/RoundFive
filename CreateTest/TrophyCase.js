@@ -5,8 +5,6 @@ var trackLengths = [];
 var shelfYPositions = [];
 var galleryShelfPositions = [];
 
-
-
 function TrophyCase() {
 	var trophyTotal = 39; //total
 	var trophyCount = 0 //collected so far;
@@ -80,9 +78,9 @@ function TrophyCase() {
 
 
   		this.DrawAllGalleryShelves();
-		//this.DrawAllGalleryTrophies();
+		this.DrawAllGalleryTrophies();
 
-		LoadTrophies();
+		//LoadTrophies();
 
 		//sprite.addEventListener("click", handleClick);
  		sprite.addEventListener("mousedown", handlePress);
@@ -473,7 +471,6 @@ function TrophyCase() {
 				
 		}
  	}
-
 
 	this.SetAllItemsAlpha = function(val)
 	{
