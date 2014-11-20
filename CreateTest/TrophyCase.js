@@ -13,8 +13,8 @@ function TrophyCase() {
 	var trophyHeight;
 	var largeTrophyHeight;
 	var MyArray = []; //keeps track of all trophies on screen
-	var rowTotal = 5;
-	var colTotal = 6;
+	var rowTotal = 6;
+	var colTotal = 5;
 
 	var rowNo = 0;
 	var colNo = 0;
@@ -38,9 +38,23 @@ function TrophyCase() {
 		{
 			var res = tracks[i].split(",");
 			trackLengths[i] = res.length;
+			console.log("Track length : " + i+ "=" + trackLengths[i]);
 		}
 
 		sprite = bpm;
+
+		questGlow =  new createjs.Bitmap(queue.getResult("questGlow"));
+		
+		glowScale = ((2.5*UIBarHeight)/3)/questGlow.getBounds().height; 
+		questGlow.scaleY = glowScale;
+		questGlow.scaleX = glowScale;
+
+		questGlow.x = canvasWidth/2;
+		questGlow.y = canvasHeight/2;
+
+		trackContainer.addChild(questGlow);
+
+		questGlow.visible = false;
 
 		bottomDragLimit = -sprite.getBounds().height * bgScaleY * 1.5;
 
@@ -364,7 +378,7 @@ function TrophyCase() {
 		var colNo = 0;
 		var rowNo = 0;
 
-		var colTotal = 6;
+		var colTotal = 5;
 
   		for(i=0;i < trophyTotal;i++)
 		{
@@ -421,7 +435,11 @@ function TrophyCase() {
 			for(var j = 0;j<res.length;j++)
 			{
 				if(unlockNo == res[j])
+				{
 					trackLengths[i]--; //that element is found in the track
+					console.log("NEW TRACK LENGTH!!!! " + trackLengths[i]);
+				}
+					
 			}
 		}
 

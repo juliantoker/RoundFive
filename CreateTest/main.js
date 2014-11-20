@@ -14,13 +14,24 @@ var trackContainer;
 var mapPointerContainer; //this is for showing map pointers
 var rewardContainer;
 var startContainer;
+var tutorialContainer;
 var UIContainer;
+var slideOutContainer;
 //var trophyContainer;
 //for 560x960 px backgrounds
 var mb;
+var mapCloseIcon;
 var pb;
 var gb;
 //var closegb;
+var closeMap;
+var tut;
+var tutFirstTimeTrackOpened = true;
+var tutFirstTimeMapOpened = true;
+var tutFirstTimeMapClosed = true;
+var tutFirstTimeGalleryOpen = true;
+var isTutorialSequenceOver = false;
+var tutorialViewed = true;
 var bgScaleX; 
 var bgScaleY;
 var bbWidth; //width of build button
@@ -29,6 +40,9 @@ var canvasWidth;
 var canvasHeight;
 var queue;
 var mapOpened;
+var slideOut;
+var slideOutOpened;
+var slideOutBackButton;
 var mapMarker;
 var buttonOne;
 var buttonTwo;
@@ -45,11 +59,16 @@ var UIBarHeight;
 var buttonScale;
 var canvas;
 var bpm;
+var questGlow;
+var glowScale;
 var galleryBG;
 var shelfDistance;
 var shelfSize; //vertical size of shelves to prevent bunching up
 var mapPointers = []; //keeps track of which map pointer trophies are on shelf
 var currentTrackOpen = 0; //defaults to 0
+
+var filters = [new createjs.ColorFilter(0,0,0,0.5), new createjs.ColorFilter(1,1,0,1)];
+        var index = 0;
 
 function init() {
 	canvas = document.getElementById("myCanvas");
@@ -93,7 +112,7 @@ function init() {
 	"2Y6",//track 1
 	"5A5",//track 7
 	"5Z1",//track 4
-	"5l1",//track 6
+	"5I1",//track 6
 	"3P5",//track 2
 	"6X7",//track 7
 	"0A9",//track 5
@@ -126,17 +145,22 @@ function init() {
 	// //49
 	];
 	tracks = [
-	"0",
-	"1",
-	// "0,3,8,10,12,16",
-	//"1,7,11,15,22,29",
-	"5,18,26,34",
-	"2,6,10,37,38,17,6,1,9",
-	// "2,6,10,37,38",
-	"9,13,24,31",
-	"4,14,28,30",
-	"17,25,32,33",
-	"20,27,35,36"
+	"10,20,22,23,25,26,31",
+	"0,17,29,30,38",
+	"4,7,14,23,31",
+	"2,6,20,21,26,36",
+	"3,12,22,33",
+	"8,11,16,19,24,27,32",
+	"1,9,13,15,25,34,35",
+	"5,18,28,37"
+	// "10",
+	// "0",
+	// "1",
+	// "2",
+	// "3",
+	// "4",
+	// "5",
+	// "6"
 	];
 	redeemTrophies = []; //initialized in code
 	queue.loadManifest([
@@ -144,6 +168,7 @@ function init() {
 		{id:"TrophyCase", src:"TrophyCase.js"},
 		{id:"Trophy", src:"Trophy.js"},
 		{id:"TrackTrophy", src:"TrackTrophy.js"},
+		{id:"Tutorial", src:"Tutorial.js"},
 		//Placeholder Trophies
 		{id:"mediumTrophy", src:"assets/mediumTrophy.png"},
 		{id:"largeTrophy", src:"assets/largeTrophy.png"},
@@ -167,7 +192,7 @@ function init() {
 		{id:"trophy16", src:"assets/Trophies/trophy16.png"},
 		{id:"trophy17", src:"assets/Trophies/trophy17.png"},
 		{id:"trophy18", src:"assets/Trophies/trophy18.png"},
-		{id:"trophy19", src:"assets/Trophies/trophy18.png"}, //************************CHANGE THIS TO TROPHY 19 WHEN ITS READY************************
+		{id:"trophy19", src:"assets/Trophies/trophy19.png"}, //************************CHANGE THIS TO TROPHY 19 WHEN ITS READY************************
 		{id:"trophy20", src:"assets/Trophies/trophy20.png"},
 		{id:"trophy21", src:"assets/Trophies/trophy21.png"},
 		{id:"trophy22", src:"assets/Trophies/trophy22.png"},
@@ -208,11 +233,38 @@ function init() {
 		{id:"trackLabel5", src:"assets/trackLabel5.png"},
 		{id:"trackLabel6", src:"assets/trackLabel6.png"},
 		{id:"trackLabel7", src:"assets/trackLabel7.png"},
+		//tutorial
+		{id:"tutorial0", src:"assets/Tutorial/tutorial0.png"},
+		{id:"tutorial1", src:"assets/Tutorial/tutorial1.png"},
+		{id:"tutorial2", src:"assets/Tutorial/tutorial2.png"},
+		{id:"tutorial3", src:"assets/Tutorial/tutorial3.png"},
+		{id:"tutorial4", src:"assets/Tutorial/tutorial4.png"},
+		{id:"tutorial5", src:"assets/Tutorial/tutorial5.png"},
+		{id:"tutorial6", src:"assets/Tutorial/tutorial6.png"},
+		{id:"tutorial7", src:"assets/Tutorial/tutorial7.png"},
+		{id:"tutorial8", src:"assets/Tutorial/tutorial8.png"},
+		{id:"tutorial9", src:"assets/Tutorial/tutorial9.png"},
+		{id:"tutorial10", src:"assets/Tutorial/tutorial10.png"},
+		{id:"tutorial11", src:"assets/Tutorial/tutorial11.png"},
+		{id:"tutorial12", src:"assets/Tutorial/tutorial12.png"},
+		//big trophy descriptions
+		{id:"description0", src:"assets/description0.png"},
+		{id:"description1", src:"assets/description1.png"},
+		{id:"description2", src:"assets/description2.png"},
+		{id:"description3", src:"assets/description3.png"},
+		{id:"description4", src:"assets/description4.png"},
+		{id:"description5", src:"assets/description5.png"},
+		{id:"description6", src:"assets/description6.png"},
+		{id:"description7", src:"assets/description7.png"},
 		//title boxes
 		{id:"titleGallery", src:"assets/titleGallery.png"},
 		{id:"titleTracks", src:"assets/titleTracks.png"},
 		{id:"titleMap", src:"assets/titleMap.png"},
 		//other UI stuff
+		{id:"questGlow", src:"assets/questGlow.png"},
+		{id:"questSlideOut", src:"assets/questSlideOut.png"},
+		{id:"slideOutBackButton", src:"assets/questSlideOutClose.png"},
+		{id:"mapCloseIcon", src:"assets/mapCloseIcon.png"},
 		{id:"startScreen", src:"assets/startScreen.png"},
 		{id:"startButton", src:"assets/startButton.png"},
 		{id:"mapMarker", src:"assets/mapMarker.png"},
@@ -322,6 +374,12 @@ function InitializeContainers()
 	rewardContainer = new createjs.Container();
 	rewardContainer.name = "rewardContainer";
 
+	slideOutContainer = new createjs.Container();
+	slideOutContainer.name = "slideOutContainer";
+
+	tutorialContainer = new createjs.Container();
+	tutorialContainer.name = "tutorialContainer";
+
 	console.log("containers made");
 	// worldContainer.x = canvasWidth - bpWidth;
 }
@@ -346,6 +404,117 @@ function GetItems()
     }
 }
 
+function InitializeSlideOut()
+{
+	slideOut = new createjs.Bitmap(queue.getResult("questSlideOut"));
+
+	var desiredHeight = (canvasHeight - canvasHeight/7)/2;
+	var desiredWidth = canvasWidth;
+
+	slideOut.scaleY = desiredHeight*1.18/slideOut.getBounds().height;
+	slideOut.scaleX = desiredWidth/slideOut.getBounds().width;
+
+	slideOutBackButton = new createjs.Bitmap(queue.getResult("slideOutBackButton"));
+
+	slideOutBackButton.scaleY = (desiredHeight/5)/slideOutBackButton.getBounds().height;
+	slideOutBackButton.scaleY = slideOutBackButton.scaleY;
+
+	slideOut.y = UIBarHeight;
+
+	slideOutBackButton.y = UIBarHeight;
+	slideOutBackButton.x = canvasWidth - (desiredHeight/5);
+
+	slideOutBackButton.addEventListener("click",MoveSlideOut);
+
+	slideOutContainer.addChild(slideOut);
+	slideOutContainer.addChild(slideOutBackButton);
+
+	slideOutContainer.x = -540;
+	slideOutOpened = false;
+}
+
+function MoveSlideOut(largeTrophyNo)
+{
+	// if(galleryOpened)
+	// {
+	// 	moveGalleryOut();
+	// 	return;
+	// }
+
+	if(slideOutOpened) 
+	{
+		pb.visible = true;
+		gb.visible = true;
+		mb.visible = true;
+		createjs.Tween.get(slideOutContainer,{loop:false}).to({x:-540},200).call(UnPopulateSlideOut);
+		//createjs.Tween.get(mapContainer,{loop:false}).to({x:-540},300).call(ReAppearItems);
+	} else 
+	{
+		slideOutContainer.visible = true;
+		PopulateSlideOut(largeTrophyNo);
+		createjs.Tween.get(slideOutContainer,{loop:false}).to({x:0},200);
+		//createjs.Tween.get(mapContainer,{loop:false}).to({x:0},300).call(CheckDisplayMapTutMessage);
+	}
+	slideOutOpened = !slideOutOpened;
+}
+
+function PopulateSlideOut(largeTrophyNo)
+{
+	//this is the big trophy
+	var pIndex = 39+largeTrophyNo;
+	var loadString = "trophy"+pIndex;
+	//sprite = new createjs.Bitmap("assets/Trophies/" + loadString + ".png");
+	
+	var slideOutBigTrophy = new createjs.Bitmap("assets/Trophies/" + loadString + ".png");
+
+	//if(!alreadyUnlocked)
+		//{
+				slideOutBigTrophy.image.onload = function () {
+                slideOutBigTrophy.cache(0, 0, this.width, this.height);
+                //trackContainer.addChild(sprite);
+                slideOutBigTrophy.filters = [filters[0]];
+            	slideOutBigTrophy.updateCache();
+             }
+        //}
+
+	var desiredHeight = canvasHeight/5;
+	var desiredWidth = canvasWidth/4;
+
+	slideOutBigTrophy.scaleY = desiredHeight/slideOutBigTrophy.getBounds().height;
+	slideOutBigTrophy.scaleX = desiredWidth/slideOutBigTrophy.getBounds().width;
+
+	slideOutBigTrophy.y = 0.25 * canvasHeight;
+
+	slideOutContainer.addChild(slideOutBigTrophy);
+
+	//and this is the description
+
+	var bigTrophyDescription = new createjs.Bitmap(queue.getResult("description"+largeTrophyNo));
+
+	// var desiredHeight = canvasHeight/4;
+	// var desiredWidth = canvasWidth/3;
+
+	bigTrophyDescription.scaleY = desiredHeight/slideOutBigTrophy.getBounds().height;
+	bigTrophyDescription.scaleX = desiredWidth/slideOutBigTrophy.getBounds().width;
+
+	bigTrophyDescription.y = 0.25 * canvasHeight;
+	bigTrophyDescription.x = 0.3 * canvasWidth;
+
+	slideOutContainer.addChild(bigTrophyDescription);
+
+	//UnPopulateSlideOut();
+}
+
+function UnPopulateSlideOut()
+{
+	//0 is the slide out background
+	//1 is the back button
+	//2 is the slideout big trophy
+	//3 is the description
+	slideOutContainer.removeChildAt(2); //takes off big trophy
+	slideOutContainer.removeChildAt(2); //takes off description
+}
+
 function AddContainersToStage()
 {
 	stage.addChild(trackContainer);
@@ -361,10 +530,14 @@ function AddContainersToStage()
 	stage.addChild(closegb);
 	closegb.visible = false;
 	stage.addChild(mapContainer);
+	stage.addChild(slideOutContainer);
 	stage.addChild(rewardContainer);
+	stage.addChild(tutorialContainer);
 }
 
 function handleComplete(event) {
+
+	InitializeTutorial();
 	InitializeContainers();
 	makeBg();
 	initializeUIBar();
@@ -376,11 +549,18 @@ function handleComplete(event) {
 	initializePrizeButton();
 	initializeGalleryButton();
 	InitializeInventory();
+	InitializeSlideOut();
 	AddContainersToStage();
 
 	showStartScreen();
 	
 	createjs.Ticker.addEventListener("tick",tick);
+}
+
+function InitializeTutorial()
+{
+	tut = new Tutorial();
+	tut.init();
 }
 
 function showStartScreen()
@@ -411,8 +591,24 @@ function showStartScreen()
 
 function moveStartScreenOut(event)
 {
-	createjs.Tween.get(startContainer,{loop:false}).to({y:-canvasHeight},300);
+	createjs.Tween.get(startContainer,{loop:false}).to({y:-canvasHeight},300).call(StartTutorial);
 }
+
+function StartTutorial()
+{
+	tutorialViewed = sessionStorage.getItem("tutorialViewed");
+	// if(sessionStorage.getItem("tutorialViewed"))
+	if(tutorialViewed)
+		return;
+
+	//tut.ShowFrame(0);
+}
+
+// function ShowNextTutorialFrame(num)
+// {
+// 	console.log("called back");
+// 	tut.ShowFrame(num);
+// }
 
 function tick(event) {
 	stage.update();
@@ -464,13 +660,35 @@ function initializeGalleryButton() {
 	closegb.x =canvasWidth/2 - (closegb.getBounds().width*buttonScale)/2;
 	closegb.y = gb.y;
 
+	mapCloseIcon = new createjs.Bitmap(queue.getResult("mapCloseIcon"));
+	mapCloseIcon.scaleY = gb.scaleY;
+	mapCloseIcon.scaleX = gb.scaleX;
+
+	mapCloseIcon.x = mb.x;
+	mapCloseIcon.y = mb.y;
+
+	mapContainer.addChild(mapCloseIcon);
+
 	galleryOpened = false;
 	closegb.addEventListener("click",moveGalleryOut);
 	gb.addEventListener("click",moveGalleryIn);
+	mapCloseIcon.addEventListener("click",moveMapUI);
 }
 
 function moveGalleryIn (event) {
 
+	if(slideOutOpened)
+ 	{
+ 		//slideOutContainer.visible = false;
+ 		MoveSlideOut();
+ 	}
+
+	if(mapOpened)
+	{
+		moveMapUI();
+		return;
+	}
+		
 	console.log("Gallery IN");
 
 	if(!galleryOpened) 
@@ -486,12 +704,27 @@ function moveGalleryIn (event) {
 
 function OpenGallery()
 {
+	mb.visible = false;
+	pb.visible = false;
+
 	//galleryBG.visible = true;
 	gb.visible = !gb.isVisible();
 	closegb.visible = true;
+	
+	// if(tutFirstTimeGalleryOpen && !tutorialViewed)
+	// {
+	// 	tutFirstTimeGalleryOpen = false;
+	// 	ShowNextTutorialFrame(12);
+	// }
 }
 
 function moveGalleryOut (event) {
+
+	if(mapOpened)
+	{
+		moveMapUI();
+		return;
+	}
 
 	console.log("Gallery OUT");
 
@@ -510,6 +743,8 @@ function moveGalleryOut (event) {
 function CloseGallery()
 {
 	//galleryBG.visible = false;
+	mb.visible = true;
+	pb.visible = true;
 	gb.visible = true;
 	closegb.visible = false;
 }
@@ -584,11 +819,14 @@ function initializeMaps() {
 	var f3 = new createjs.Bitmap(queue.getResult("thirdFloor"));
 	var f5 = new createjs.Bitmap(queue.getResult("fifthFloor"));
 
-	var maxMapHeight = canvasHeight - UIBarHeight - canvasHeight/8;
+	//var maxMapHeight = canvasHeight - UIBarHeight - canvasHeight/8;
+	var maxMapHeight = canvasHeight - (canvasHeight/8); //this is the screen height minus the buttons
 	console.log("Max map height : " + maxMapHeight);
 
-	var desiredHeight = maxMapHeight*0.95;
-	var newWidth = 0.6 * canvasWidth;
+	var desiredHeight = maxMapHeight;
+	var newWidth = canvasWidth;
+	//var desiredHeight = maxMapHeight*0.95;
+	//var newWidth = 0.6 * canvasWidth;
 	//var newHeight = 0.58 * canvasHeight;
 
 	mapScaleY = desiredHeight/f1.getBounds().height;
@@ -616,9 +854,11 @@ function initializeMaps() {
 	f5.scaleX = mapScaleX;
 
 	//var fx = canvasWidth - newWidth*1.5;
+	//var fx = canvasWidth/2 - newWidth/2;
 	var fx = canvasWidth/2 - newWidth/2;
-	// var fy = canvasHeight -desiredHeight*1.5;
-	var fy = canvasHeight/2 - desiredHeight/2;
+	var fy = (canvasHeight - canvasHeight/8)/2 - desiredHeight/2;
+	//var fy = (canvasHeight/8) - UIBarHeight;
+	//var fy = canvasHeight/2 - desiredHeight/2;
 
 	f1.x = fx;
 	f1.y = fy;
@@ -633,7 +873,8 @@ function initializeMaps() {
 	mapLabel.scaleY = (canvasHeight/11)/mapLabel.getBounds().height;
 	mapLabel.scaleX = (canvasWidth/2)/mapLabel.getBounds().width;
 	mapLabel.x = canvasWidth/2 - (canvasWidth/2)/2;
-	mapLabel.y = canvasHeight/8;
+	mapLabel.y = mb.y;
+	//mapLabel.y = canvasHeight/8;
 
 	mapContainer.addChild(f1,f2,f3,f5,mapMarker,mapLabel);
 	displayCurrentFloor();
@@ -641,15 +882,43 @@ function initializeMaps() {
 
 function moveMapUI (event) {
 
+	if(slideOutOpened)
+ 	{
+ 		slideOutContainer.visible = false;
+ 		MoveSlideOut();
+ 	}
+
+	if(galleryOpened)
+	{
+		moveGalleryOut();
+		return;
+	}
+
 	if(mapOpened) {
+		pb.visible = true;
+		gb.visible = true;
+		mb.visible = true;
 		createjs.Tween.get(buttonContainer,{loop:false}).to({x:-540},300);
 		createjs.Tween.get(mapContainer,{loop:false}).to({x:-540},300).call(ReAppearItems);
 	} else {
 		trophyCase.SetAllItemsAlpha(0);
 		createjs.Tween.get(buttonContainer,{loop:false}).to({x:0},300);
-		createjs.Tween.get(mapContainer,{loop:false}).to({x:0},300);
+		createjs.Tween.get(mapContainer,{loop:false}).to({x:0},300).call(CheckDisplayMapTutMessage);
 	}
 	mapOpened = !mapOpened;
+}
+
+function CheckDisplayMapTutMessage()
+{
+	// if(tutFirstTimeMapOpened && !tutorialViewed)
+	// {
+	// 	tutFirstTimeMapOpened = false;
+	// 	ShowNextTutorialFrame(7);
+	// }
+
+	mb.visible = false;
+	pb.visible = false;
+	gb.visible = false;
 }
 
 function openMapToFloor(floorNo)
@@ -673,10 +942,16 @@ function openMapToFloor(floorNo)
 }
 
 function ReAppearItems()
-	{
+{
 		mapMarker.visible = false;
 		trophyCase.SetAllItemsAlpha(1);
-	}
+
+		// if(tutFirstTimeMapClosed && !tutorialViewed)
+		// {
+		// 	tutFirstTimeMapClosed = false;
+		// 	ShowNextTutorialFrame(11);
+		// }
+}
 
 function initializeUIBar () {
 	var UIBar = new createjs.Bitmap(queue.getResult("mainUIBar"));
@@ -701,6 +976,7 @@ function displayCurrentFloor () {
 		mapContainer.children[i].alpha = 0;
 	}
 	mapContainer.children[currentFloor].alpha = 1;
+	mapContainer.children[mapContainer.children.length-1].alpha = 1;
 
 	//map marker
 	mapContainer.children[4].alpha = 1;
@@ -766,6 +1042,7 @@ function initializePrizeButton () {
 }
 
 function movePrizeUI () {
+
 	if (prizeScreenOpened) {
 		createjs.Tween.get(prizeContainer,{loop:false}).to({y:-canvasHeight},300);
 	} else {
@@ -809,6 +1086,19 @@ function RemoveRewardTrophy()
 
 
 function enterPrizeCode (event) {
+
+	if(mapOpened)
+	{
+		moveMapUI();
+		return;
+	}
+
+	if(galleryOpened)
+	{
+		moveGalleryOut();
+		return;
+	}
+
 	console.log("prize string length : " + prizeCodes.length);
 	var userInput = prompt('Enter prize code.');
 	var redeemCode = checkPrizeCode(userInput);

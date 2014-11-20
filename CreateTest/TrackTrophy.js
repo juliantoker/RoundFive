@@ -175,6 +175,11 @@ function TrackTrophy(rowNo, colNo, pIndex) {
  		{
  			if(type != "Large") //small trophy opens map
  			{
+ 				if(slideOutOpened)
+ 				{
+ 					slideOutContainer.visible = false;
+ 					MoveSlideOut();
+ 				}
  				var mapTopOpen = Math.floor((Math.random() * 3));
  				//openMapToFloor(mapTopOpen); //0 corresponds to floor 1, 1-2, 2-3, 3-5	
  				console.log("MAP TO OPEN : " + mapTopOpen);
@@ -182,10 +187,21 @@ function TrackTrophy(rowNo, colNo, pIndex) {
  			}
  			else //large trophy opens track
  			{
+ 				// if(tutFirstTimeTrackOpened || (isTutorialSequenceOver == false))
+ 				// {
+ 				// 	ShowNextTutorialFrame(5);
+ 				// 	tutFirstTimeTrackOpened = false;
+ 				// }
  				//CLEAR ALL CURRENTLY DISPLAYED MAP POINTERS, IF ANY
+ 				MoveSlideOut(largeTrophyNo);
  				mapPointerContainer.removeAllChildren();
  				currentTrackOpen = largeTrophyNo; //currentTrackOpen now marks the currently open track
  				console.log("current track open : " + largeTrophyNo);
+
+ 				questGlow.x = sprite.x + ((canvasWidth)/4)/2 - (questGlow.getBounds().width*glowScale)/2;
+ 				questGlow.y = sprite.y + ((canvasWidth)/4)/2 - (questGlow.getBounds().height*glowScale)/2;
+
+ 				questGlow.visible = true;
 
  				var colNo = 0;
  				var rowNo = 2;
