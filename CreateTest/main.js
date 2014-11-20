@@ -552,7 +552,7 @@ function handleComplete(event) {
 	InitializeSlideOut();
 	AddContainersToStage();
 
-	//showStartScreen();
+	showStartScreen();
 	
 	createjs.Ticker.addEventListener("tick",tick);
 }
